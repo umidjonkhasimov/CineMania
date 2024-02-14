@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CineMania</string>
+    <string name="not_connected">⚠️ You are not connected to the internet</string>
+</resources>
