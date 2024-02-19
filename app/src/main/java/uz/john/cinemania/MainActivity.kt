@@ -12,7 +12,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import uz.john.onboarding.OnboardingScreen
 import uz.john.ui.theme.CineManiaTheme
+import uz.john.util.logging
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -28,7 +30,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                    OnboardingScreen(
+                        onLoginClick = {
+                            logging("onLoginClick")
+                        },
+                        onContinueClick = {
+                            logging("onContinueClick")
+                        }
+                    )
                 }
             }
         }

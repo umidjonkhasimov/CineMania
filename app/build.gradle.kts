@@ -51,6 +51,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
+    implementation(project(":feature:onboarding"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_text_title_page_1">Welcome to CineMania</string>
+    <string name="onboarding_text_title_page_2">Explore Endless Entertainment</string>
+    <string name="onboarding_text_title_page_3">Tailored Just for You</string>
+    <string name="onboarding_text_title_page_4">Explore Every Aspect</string>
+
+    <string name="onboarding_text_subtitle_page_1">Explore millions of movies, discover hidden gems, and dive into a world of entertainment.</string>
+    <string name="onboarding_text_subtitle_page_2">Dive into a world of blockbuster hits, hidden gems, and everything in between. Discover your next favorite movie effortlessly.</string>
+    <string name="onboarding_text_subtitle_page_3">Get personalized movie recommendations based on your preferences, ratings, and viewing history. Find exactly what you love, every time.</string>
+    <string name="onboarding_text_subtitle_page_4">Delve deeper into movies with detailed information on cast, crew, ratings, reviews, and more.</string>
+
+    <string name="login">Login</string>
+    <string name="continue_without_account">Continue without account</string>
+</resources>
