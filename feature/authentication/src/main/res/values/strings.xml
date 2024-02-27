@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello_movie_fan">Hello, Movie fan</string>
+    <string name="welcome_back">Welcome back! Please enter your details.</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="attention">Attention!</string>
+    <string name="you_will_be_redirected">You will be redirected to Sign Up page of TMDB website!</string>
+</resources>

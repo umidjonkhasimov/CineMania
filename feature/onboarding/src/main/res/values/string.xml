@@ -10,6 +10,6 @@
     <string name="onboarding_text_subtitle_page_3">Get personalized movie recommendations based on your preferences, ratings, and viewing history. Find exactly what you love, every time.</string>
     <string name="onboarding_text_subtitle_page_4">Delve deeper into movies with detailed information on cast, crew, ratings, reviews, and more.</string>
 
-    <string name="login">Login</string>
+    <string name="start">Start</string>
     <string name="continue_without_account">Continue without account</string>
 </resources>

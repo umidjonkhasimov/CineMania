@@ -14,6 +14,7 @@ lifecycleRuntimeKtx = "2.7.0"
 agp = "8.2.2"
 kotlin = "1.9.0"
 lifecycleViewmodelCompose = "2.7.0"
+nav_version = "2.7.7"
 
 # Dagger Hilt Version
 hilt = "2.50"
@@ -29,6 +30,19 @@ appcompat = "1.6.1"
 material = "1.11.0"
 uiTooling = "1.6.1"
 
+# DataStore
+androidxDataStore = "1.0.0"
+
+# Retrofit
+squareupRetrofit = "2.9.0"
+squareupOkhttp3 = "4.12.0"
+
+kotlinxSerialization = "1.6.0"
+gson = "2.10.1"
+
+# Lottie
+lottieCompose = "4.0.0"
+
 [libraries]
 # Compose libraries
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -41,6 +55,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version = "2.7.0" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version" }
 
 # Compose test libraries
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -61,6 +76,22 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
+# DataStore
+androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+
+# Serialization
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Retrofit + OkHttp
+squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareupRetrofit" }
+squareup-retrofit2-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareupRetrofit" }
+squareup-okhttp3-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "squareupOkhttp3" }
+squareup-okhttp3-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "squareupOkhttp3" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# Lottie
+airbnb-lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -68,3 +99,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.9.22" }
