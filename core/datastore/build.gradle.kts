@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -30,5 +33,13 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    api(libs.androidx.core.ktx)
+
+    // Proto DataStore
+    implementation(libs.androidx.dataStore)
+    implementation(libs.kotlinx.serialization)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }

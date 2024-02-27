@@ -53,13 +53,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import uz.john.ui.components.CineManiaButton
 
+private const val ONBOARDING_PAGE_COUNT = 4
+private const val ANIMATION_DURATION = 300
+private const val SCROLL_ANIMATION_DURATION = 500
+private val CONTROL_BOX_PADDING = 24.dp
+private val CONTROL_BOX_HEIGHT = 350.dp
+private val DOT_SIZE = 10.dp
+private val EXPANDED_DOT_SIZE = 10.dp
+private val SPACE_BETWEEN_DOTS = 12.dp
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(
-    onLoginClick: () -> Unit,
-    onContinueClick: () -> Unit
+internal fun OnboardingScreen(
+    onStartClick: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = { 4 })
+    val pagerState = rememberPagerState(pageCount = { ONBOARDING_PAGE_COUNT })
     val scope = rememberCoroutineScope()
     val onBoardingImages = listOf(
         R.drawable.onboarding_page_1,
@@ -94,13 +102,12 @@ fun OnboardingScreen(
         ControlBox(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp),
+                .padding(bottom = CONTROL_BOX_PADDING),
             pagerState = pagerState,
             scope = scope,
             titles = onBoardingTitles,
             subtitles = onBoardingSubtitles,
-            onLoginClick = onLoginClick,
-            onContinueClick = onContinueClick
+            onStartClick = onStartClick
         )
     }
 }
@@ -133,19 +140,17 @@ fun ControlBox(
     scope: CoroutineScope,
     titles: List<Int>,
     subtitles: List<Int>,
-    onLoginClick: () -> Unit,
-    onContinueClick: () -> Unit,
-
-    ) {
+    onStartClick: () -> Unit
+) {
     val isLastPage = pagerState.currentPage + 1 == pagerState.pageCount
 
     Box(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
-            .height(350.dp)
+            .height(CONTROL_BOX_HEIGHT)
             .fillMaxWidth(.9f)
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .9f))
-            .padding(24.dp),
+            .padding(CONTROL_BOX_PADDING),
     ) {
         AnimatedContent(
             targetState = pagerState.currentPage,
@@ -193,25 +198,12 @@ fun ControlBox(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CineManiaButton(
-                        onClick = onLoginClick
+                        onClick = onStartClick
                     ) {
                         Text(
-                            text = stringResource(R.string.login),
+                            text = stringResource(R.string.start),
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    CineManiaButton(
-                        onClick = onContinueClick
-                    ) {
-                        Text(
-                            text = stringResource(R.string.continue_without_account),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -232,7 +224,7 @@ fun ControlBox(
                         scope.launch {
                             pagerState.animateScrollToPage(
                                 page = pagerState.currentPage + 1,
-                                animationSpec = tween(500)
+                                animationSpec = tween(SCROLL_ANIMATION_DURATION)
                             )
                         }
                     }
@@ -247,10 +239,10 @@ fun ControlBox(
 fun DotIndicators(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    animationDuration: Int = 300,
-    dotSize: Dp = 10.dp,
-    expandedDotSize: Dp = 26.dp,
-    spaceBetweenDots: Dp = 12.dp
+    animationDuration: Int = ANIMATION_DURATION,
+    dotSize: Dp = DOT_SIZE,
+    expandedDotSize: Dp = EXPANDED_DOT_SIZE,
+    spaceBetweenDots: Dp = SPACE_BETWEEN_DOTS
 ) {
     Row(
         modifier = modifier,
@@ -286,7 +278,7 @@ fun DotIndicators(
 fun NextButton(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
-    animationDuration: Int = 300,
+    animationDuration: Int = ANIMATION_DURATION,
     buttonSize: Dp = 64.dp,
     circleWidth: Dp = 3.dp,
     progressWidth: Dp = 4.dp,
@@ -352,7 +344,6 @@ fun NextButton(
 @Composable
 private fun OnboardingScreenPreview() {
     OnboardingScreen(
-        onLoginClick = {},
-        onContinueClick = {}
+        onStartClick = {},
     )
 }

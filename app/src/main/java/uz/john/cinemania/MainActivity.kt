@@ -12,33 +12,42 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import uz.john.onboarding.OnboardingScreen
 import uz.john.ui.theme.CineManiaTheme
-import uz.john.util.logging
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
         setContent {
             val viewModel: MainViewModel = hiltViewModel()
             val isOffline by viewModel.isOffline.collectAsStateWithLifecycle()
+            val uiState = viewModel.userData.collectAsStateWithLifecycle()
 
-            CineManiaTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    OnboardingScreen(
-                        onLoginClick = {
-                            logging("onLoginClick")
-                        },
-                        onContinueClick = {
-                            logging("onContinueClick")
+            splashScreen.setKeepOnScreenCondition {
+                uiState.value is UiState.Loading
+            }
+
+            when (uiState.value) {
+                is UiState.Success -> {
+                    CineManiaTheme {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.background
+                        ) {
+                            CineManiaNavHost(
+                                isOnboarded = (uiState.value as UiState.Success).userData.isOnboarded,
+                                isLoggedIn = (uiState.value as UiState.Success).userData.isLoggedIn,
+                                setOnboarded = {
+                                    viewModel.setIsOnboarded(it)
+                                }
+                            )
                         }
-                    )
+                    }
                 }
+
+                UiState.Loading -> {}
             }
         }
     }
