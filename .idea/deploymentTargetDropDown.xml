@@ -2,6 +2,18 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="CineManiaErrorDialogPreview">
+        <State />
+      </entry>
+      <entry key="CineManiaTextFieldPreview">
+        <State />
+      </entry>
+      <entry key="SignInScreenPreview">
+        <State />
+      </entry>
+      <entry key="WelcomeScreenPreview">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
