@@ -2,7 +2,6 @@ package uz.john.onboarding
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -25,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -52,15 +50,13 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import uz.john.ui.components.CineManiaButton
+import uz.john.ui.components.DotsIndicator
 
 private const val ONBOARDING_PAGE_COUNT = 4
 private const val ANIMATION_DURATION = 300
 private const val SCROLL_ANIMATION_DURATION = 500
 private val CONTROL_BOX_PADDING = 24.dp
 private val CONTROL_BOX_HEIGHT = 350.dp
-private val DOT_SIZE = 10.dp
-private val EXPANDED_DOT_SIZE = 26.dp
-private val SPACE_BETWEEN_DOTS = 12.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -215,7 +211,7 @@ fun ControlBox(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    DotIndicators(
+                    DotsIndicator(
                         pagerState = pagerState
                     )
                     NextButton(
@@ -230,45 +226,6 @@ fun ControlBox(
                     }
                 }
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun DotIndicators(
-    pagerState: PagerState,
-    modifier: Modifier = Modifier,
-    animationDuration: Int = ANIMATION_DURATION,
-    dotSize: Dp = DOT_SIZE,
-    expandedDotSize: Dp = EXPANDED_DOT_SIZE,
-    spaceBetweenDots: Dp = SPACE_BETWEEN_DOTS
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        repeat(pagerState.pageCount) { selectedPage ->
-            val isSelected = pagerState.currentPage == selectedPage
-            val animatedWidth = animateDpAsState(
-                targetValue = if (isSelected) expandedDotSize else dotSize,
-                label = "animatedWidth",
-                animationSpec = tween(animationDuration)
-            )
-
-            Box(
-                modifier = Modifier
-                    .clip(MaterialTheme.shapes.extraLarge)
-                    .width(animatedWidth.value)
-                    .height(dotSize)
-                    .background(
-                        if (isSelected) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.primary.copy(alpha = .3f)
-                    )
-            )
-            if (selectedPage != pagerState.pageCount - 1)
-                Spacer(modifier = Modifier.width(spaceBetweenDots))
         }
     }
 }

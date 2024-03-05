@@ -1,5 +1,6 @@
 package uz.john.cinemania
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.slideInHorizontally
@@ -13,8 +14,15 @@ import uz.john.authentication.presentation.sign_in_screen.signInScreen
 import uz.john.authentication.presentation.welcome.WELCOME_ROUTE
 import uz.john.authentication.presentation.welcome.navigateToWelcomeScreen
 import uz.john.authentication.presentation.welcome.welcomeScreen
+import uz.john.cinemania.details_screen.movieDetailsScreen
+import uz.john.cinemania.details_screen.navigateToMovieDetailsScreen
+import uz.john.cinemania.main_screen.MAIN_ROUTE
+import uz.john.cinemania.main_screen.mainScreen
+import uz.john.cinemania.main_screen.navigateToMainScreen
 import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
+
+private const val TMDB_SIGN_IN_PAGE = "https://www.themoviedb.org/signup"
 
 @Composable
 fun CineManiaNavHost(
@@ -30,7 +38,7 @@ fun CineManiaNavHost(
     else if (!isLoggedIn)
         WELCOME_ROUTE
     else
-        "" // TODO("Add Main Screen Navigation")
+        MAIN_ROUTE
 
     NavHost(
         navController = navController,
@@ -48,37 +56,50 @@ fun CineManiaNavHost(
             slideOutHorizontally { it }
         }
     ) {
-
         onboardingScreen(
             onStartClick = {
                 setOnboarded(true)
                 navController.navigateToWelcomeScreen()
             },
         )
-
         welcomeScreen(
             onSignUpClick = {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse("https://www.themoviedb.org/signup")
-                }
-                context.startActivity(intent)
+                context.redirectToTMDB()
             },
             onContinueWithoutAccountClick = {
-                // TODO: (Navigate to home screen)
+                navController.navigateToMainScreen()
             },
             onLoginClick = {
                 navController.navigateToSignIn()
             }
         )
-
         signInScreen(
             onBackClick = {
                 navController.popBackStack()
             },
             onNavigateToMainScreen = {
-                // TODO: (Navigate to home screen)
+                navController.navigateToMainScreen()
+            }
+        )
+
+        mainScreen(
+            onMovieItemClick = {
+                navController.navigateToMovieDetailsScreen(it)
+            }
+        )
+
+        movieDetailsScreen(
+            onBackClick = {
+                navController.popBackStack()
             }
         )
     }
+}
+
+private fun Context.redirectToTMDB() {
+    val intent = Intent().apply {
+        action = Intent.ACTION_VIEW
+        data = Uri.parse(TMDB_SIGN_IN_PAGE)
+    }
+    startActivity(intent)
 }

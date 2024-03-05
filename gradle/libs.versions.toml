@@ -43,6 +43,9 @@ gson = "2.10.1"
 # Lottie
 lottieCompose = "4.0.0"
 
+# Coil
+coilVersion = "2.6.0"
+
 [libraries]
 # Compose libraries
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -91,6 +94,9 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 # Lottie
 airbnb-lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+
+# Coil
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

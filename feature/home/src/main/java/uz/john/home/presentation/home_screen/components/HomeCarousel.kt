@@ -1,0 +1,130 @@
+package uz.john.home.presentation.home_screen.components
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import uz.john.domain.model.Movie
+import uz.john.domain.model.NetworkImageSizes
+import uz.john.ui.components.CoilImage
+import uz.john.ui.components.DotsIndicator
+import uz.john.ui.components.VerticalGradient
+import kotlin.math.absoluteValue
+
+private const val AUTO_SCROLL_DELAY = 4000L
+private val PAGER_HEIGHT = 200.dp
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeCarouselItem(
+    pagerState: PagerState,
+    moviesList: List<Movie>,
+    onItemClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LaunchedEffect(pagerState.currentPage) {
+        val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+        delay(AUTO_SCROLL_DELAY)
+        pagerState.scrollToPage(nextPage)
+    }
+
+//    For animated scroll
+//    LaunchedEffect(Unit) {
+//        while (true) {
+//            val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+//            delay(4000)
+//            pagerState.animateScrollToPage(
+//                page = nextPage,
+//                animationSpec = spring(
+//                    dampingRatio = Spring.DampingRatioLowBouncy,
+//                    stiffness = Spring.StiffnessLow
+//                )
+//            )
+//        }
+//    }
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        HorizontalPager(
+            state = pagerState,
+        ) { page ->
+            val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
+            val scaleFactor = 0.75f + (1f - 0.75f) * (1f - pageOffset.absoluteValue)
+
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .height(PAGER_HEIGHT)
+                    .graphicsLayer {
+                        scaleX = scaleFactor
+                        scaleY = scaleFactor
+                    }
+                    .fillMaxSize()
+                    .clip(MaterialTheme.shapes.small)
+                    .clickable {
+                        onItemClick(moviesList[page].id)
+                    }
+            ) {
+                CoilImage(
+                    modifier = Modifier,
+                    imagePath = moviesList[page].backdropPath,
+                    imageSize = NetworkImageSizes.LARGE
+                )
+
+                VerticalGradient(
+                    modifier = Modifier.fillMaxSize(),
+                    colors = listOf(
+                        Color.Black,
+                        Color.Black.copy(alpha = .4f),
+                        Color.Transparent
+                    ),
+                )
+
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Text(
+                        text = moviesList[page].title,
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = moviesList[page].releaseDate,
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        DotsIndicator(pagerState = pagerState)
+    }
+}

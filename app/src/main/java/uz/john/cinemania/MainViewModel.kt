@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import uz.john.data.model.UserData
-import uz.john.data.repository.UserDataRepository
+import uz.john.domain.model.UserData
+import uz.john.domain.repository.UserDataRepository
 import uz.john.util.NetworkMonitor
 import javax.inject.Inject
 

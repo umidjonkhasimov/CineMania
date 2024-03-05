@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -12,6 +15,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        val properties = Properties()
+        properties.load(FileInputStream(project.rootProject.file("local.properties")))
+
+        buildConfigField("String", "IMAGE_BASE_URL", "\"${properties.getProperty("IMAGE_BASE_URL")}\"")
     }
 
     buildTypes {
@@ -30,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -50,4 +58,7 @@ dependencies {
 
     // Lottie
     implementation(libs.airbnb.lottie.compose)
+
+    // Coil
+    implementation(libs.coil)
 }

@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -15,6 +18,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
+        val properties = Properties()
+        properties.load(FileInputStream(project.rootProject.file("local.properties")))
+
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+        buildConfigField("String", "BASE_URL", "\"${properties.getProperty("BASE_URL")}\"")
     }
 
     buildTypes {
@@ -22,6 +30,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {
@@ -35,12 +47,14 @@ android {
 
 dependencies {
     implementation(project(":core:datastore"))
-    implementation(project(":core:network"))
     implementation(project(":core:util"))
     implementation(libs.androidx.core.ktx)
 
     // Retrofit
     implementation(libs.squareup.retrofit2)
+    implementation(libs.squareup.retrofit2.converter)
+    implementation(libs.squareup.okhttp3.core)
+    implementation(libs.squareup.okhttp3.logging)
 
     // Hilt
     implementation(libs.hilt.android)

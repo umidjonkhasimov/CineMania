@@ -63,34 +63,35 @@ fun CineManiaErrorDialog(
             enter = scaleIn(),
             exit = scaleOut()
         ) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .height(DIALOG_HEIGHT)
                     .background(MaterialTheme.colorScheme.background)
                     .padding(DIALOG_PADDING),
             ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.error),
-                        style = MaterialTheme.typography.titleLarge,
-                        maxLines = 1
-                    )
+                Text(
+                    text = stringResource(R.string.error),
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1
+                )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
-                        text = errorText,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                Text(
+                    text = errorText,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
-                    modifier = Modifier.align(Alignment.BottomEnd)
+                    modifier = Modifier
                 ) {
+                    Spacer(modifier = Modifier.weight(1f))
+
                     Button(
                         onClick = onCancel,
                         shape = MaterialTheme.shapes.medium,

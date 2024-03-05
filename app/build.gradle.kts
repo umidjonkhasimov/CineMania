@@ -55,6 +55,10 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:authentication"))
+    implementation(project(":feature:for_you"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:search"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -40,6 +40,8 @@ import uz.john.ui.components.CineManiaTextField
 import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.theme.CineManiaTheme
 
+private val SCREEN_PADDING = 16.dp
+
 @Composable
 fun SignInScreen(
     onBackClick: () -> Unit,
@@ -98,7 +100,6 @@ private fun SignInScreen(
     Scaffold(
         topBar = {
             CineManiaTopBar(
-                modifier = Modifier.padding(horizontal = 24.dp),
                 title = stringResource(R.string.login),
                 leadingContent = {
                     CineManiaBackButton(
@@ -112,7 +113,7 @@ private fun SignInScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = SCREEN_PADDING),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))

@@ -2,12 +2,12 @@ package uz.john.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import uz.john.data.remote.api.AuthenticationApi
+import uz.john.data.remote.model.authentication.get.CreateSessionResponse
+import uz.john.data.remote.model.authentication.get.RequestTokenResponse
+import uz.john.data.remote.model.authentication.post.CreateSessionRequest
+import uz.john.data.remote.model.authentication.post.ValidateTokenRequest
 import uz.john.datastore.repository.DataStoreRepository
-import uz.john.network.api.AuthenticationApi
-import uz.john.network.model.authentication.get.CreateSessionResponse
-import uz.john.network.model.authentication.get.RequestTokenResponse
-import uz.john.network.model.authentication.post.CreateSessionRequest
-import uz.john.network.model.authentication.post.ValidateTokenRequest
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 import javax.inject.Inject

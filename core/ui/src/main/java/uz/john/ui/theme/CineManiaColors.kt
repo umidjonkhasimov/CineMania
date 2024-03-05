@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 @Immutable
-internal object CineManiaColors {
+object CineManiaColors {
     val ExtraLightGray = Color(0xFFEBEBF0)
     val White = Color(0xFFFAFAFC)
     val LightGray = Color(0xFFCBCBD6)
