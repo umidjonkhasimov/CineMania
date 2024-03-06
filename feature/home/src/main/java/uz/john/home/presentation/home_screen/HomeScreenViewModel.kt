@@ -38,7 +38,6 @@ class HomeScreenViewModel @Inject constructor(
     private fun initializeScreen() {
         viewModelScope.launch {
             updateUiState { copy(isLoading = true) }
-            delay(10_000)
             getNowPlayingMovies()
             getPopularMovies()
             getTopRatedMovies()

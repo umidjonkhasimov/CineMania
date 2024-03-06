@@ -54,4 +54,14 @@ class MoviesRepository @Inject constructor(
             )
         }
     }
+
+    suspend fun getSimilarMovies(movieId: Int, page: Int): ResultModel<MoviesResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            moviesApi.getSimilarMovies(
+                movieId = movieId,
+                language = language,
+                page = page
+            )
+        }
+    }
 }

@@ -6,9 +6,14 @@ import java.util.Locale
 fun String.formatDate(): String {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val outputFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
-    val date = inputFormat.parse(this)
-    if (date != null)
-        return outputFormat.format(date)
+    try {
+        val date = inputFormat.parse(this)
+        if (date != null)
+            return outputFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return this
+    }
     return this
 }
 

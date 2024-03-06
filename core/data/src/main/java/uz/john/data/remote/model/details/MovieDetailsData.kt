@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieDetailsData(
     val adult: Boolean,
     @SerializedName(value = "backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerializedName(value = "belongs_to_collection")
     val collectionData: CollectionData?,
     val budget: Int,
@@ -14,7 +14,7 @@ data class MovieDetailsData(
     val homepage: String,
     val id: Int,
     @SerializedName(value = "imdb_id")
-    val imdbId: String,
+    val imdbId: String?,
     @SerializedName(value = "original_language")
     val originalLanguage: String,
     @SerializedName(value = "original_title")
@@ -22,7 +22,7 @@ data class MovieDetailsData(
     val overview: String,
     val popularity: Double,
     @SerializedName(value = "poster_path")
-    val posterPath: String,
+    val posterPath: String?,
     @SerializedName(value = "production_companies")
     val productionCompanies: List<ProductionCompanyData>,
     @SerializedName(value = "production_countries")
@@ -41,5 +41,6 @@ data class MovieDetailsData(
     val voteAverage: Double,
     @SerializedName(value = "vote_count")
     val voteCount: Int,
-    val credits: CreditsData
+    val credits: CreditsData,
+    val videos: VideosResponseData
 )

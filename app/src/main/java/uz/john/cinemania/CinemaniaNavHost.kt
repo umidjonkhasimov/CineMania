@@ -14,8 +14,10 @@ import uz.john.authentication.presentation.sign_in_screen.signInScreen
 import uz.john.authentication.presentation.welcome.WELCOME_ROUTE
 import uz.john.authentication.presentation.welcome.navigateToWelcomeScreen
 import uz.john.authentication.presentation.welcome.welcomeScreen
-import uz.john.cinemania.details_screen.movieDetailsScreen
-import uz.john.cinemania.details_screen.navigateToMovieDetailsScreen
+import uz.john.cinemania.image_viewer.imageViewerScreen
+import uz.john.cinemania.image_viewer.navigateToImageViewerScreen
+import uz.john.cinemania.movie_details_screen.movieDetailsScreen
+import uz.john.cinemania.movie_details_screen.navigateToMovieDetailsScreen
 import uz.john.cinemania.main_screen.MAIN_ROUTE
 import uz.john.cinemania.main_screen.mainScreen
 import uz.john.cinemania.main_screen.navigateToMainScreen
@@ -83,15 +85,25 @@ fun CineManiaNavHost(
         )
 
         mainScreen(
-            onMovieItemClick = {
-                navController.navigateToMovieDetailsScreen(it)
+            onMovieItemClick = { movieId ->
+                navController.navigateToMovieDetailsScreen(movieId)
             }
         )
 
         movieDetailsScreen(
             onBackClick = {
                 navController.popBackStack()
+            },
+            onImageClick = { imagePath ->
+                navController.navigateToImageViewerScreen(imagePath)
+            },
+            onMovieClick = { movieId ->
+                navController.navigateToMovieDetailsScreen(movieId)
             }
+        )
+
+        imageViewerScreen(
+            onBackClick = { navController.popBackStack() }
         )
     }
 }

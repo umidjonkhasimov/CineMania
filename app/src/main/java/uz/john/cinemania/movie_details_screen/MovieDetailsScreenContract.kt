@@ -1,11 +1,13 @@
-package uz.john.cinemania.details_screen
+package uz.john.cinemania.movie_details_screen
 
+import uz.john.domain.model.Movie
 import uz.john.domain.model.movie_details.MovieDetails
 
 sealed interface MovieDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
-        val movieDetails: MovieDetails? = null
+        val movieDetails: MovieDetails? = null,
+        val similarMovies: List<Movie> = emptyList()
     ) : MovieDetailsScreenContract
 
     sealed interface SideEffect : MovieDetailsScreenContract {
@@ -13,6 +15,6 @@ sealed interface MovieDetailsScreenContract {
     }
 
     sealed interface UiAction : MovieDetailsScreenContract {
-        data class GetMovieDetails(val movieId: Int) : UiAction
+        data object GetMovieDetails : UiAction
     }
 }

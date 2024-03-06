@@ -1,5 +1,8 @@
-package uz.john.cinemania.details_screen
+package uz.john.cinemania.movie_details_screen
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -41,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -48,17 +52,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import uz.john.cinemania.R
-import uz.john.cinemania.details_screen.MovieDetailsScreenContract.SideEffect
-import uz.john.cinemania.details_screen.MovieDetailsScreenContract.UiAction
-import uz.john.cinemania.details_screen.MovieDetailsScreenContract.UiState
-import uz.john.cinemania.details_screen.components.CastAndCrewHolderItem
-import uz.john.cinemania.details_screen.components.CastItem
-import uz.john.cinemania.details_screen.components.CrewItem
-import uz.john.cinemania.details_screen.components.ProductionCountryItem
+import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.SideEffect
+import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiAction
+import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiState
+import uz.john.cinemania.movie_details_screen.components.CastAndCrewHolderItem
+import uz.john.cinemania.movie_details_screen.components.CastItem
+import uz.john.cinemania.movie_details_screen.components.CrewItem
+import uz.john.cinemania.movie_details_screen.components.LazyRowItemsHolder
+import uz.john.cinemania.movie_details_screen.components.MovieItem
+import uz.john.cinemania.movie_details_screen.components.ProductionCountryItem
+import uz.john.cinemania.movie_details_screen.components.VideoItem
+import uz.john.cinemania.movie_details_screen.components.VideosHolder
+import uz.john.domain.model.Movie
 import uz.john.domain.model.NetworkImageSizes
 import uz.john.domain.model.movie_details.Cast
 import uz.john.domain.model.movie_details.Crew
 import uz.john.domain.model.movie_details.MovieDetails
+import uz.john.domain.model.movie_details.Video
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
@@ -67,6 +77,7 @@ import uz.john.ui.components.VerticalGradient
 import uz.john.ui.theme.CineManiaColors
 import uz.john.ui.theme.CineManiaIcons
 import uz.john.util.getYear
+import uz.john.util.logging
 
 private const val ANIMATED_CONTENT_DURATION = 200
 private val MOVIE_DETAILS_HEIGHT = 500.dp
@@ -76,22 +87,21 @@ private val SCREEN_PADDING = 16.dp
 
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onImageClick: (String) -> Unit,
+    onMovieClick: (Int) -> Unit
 ) {
+    logging("MovieDetailsScreen")
     val viewModel: MovieDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(movieId) {
-        viewModel.onAction(UiAction.GetMovieDetails(movieId))
-    }
 
     MovieDetailsScreenContent(
         uiState = uiState,
         onUiAction = viewModel::onAction,
         sideEffect = viewModel.sideEffect,
-        movieId = movieId,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onImageClick = onImageClick,
+        onMovieClick = onMovieClick
     )
 }
 
@@ -100,8 +110,9 @@ private fun MovieDetailsScreenContent(
     uiState: UiState,
     onUiAction: (UiAction) -> Unit,
     sideEffect: Flow<SideEffect>,
-    movieId: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onImageClick: (String) -> Unit,
+    onMovieClick: (Int) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -121,7 +132,7 @@ private fun MovieDetailsScreenContent(
         CineManiaErrorDialog(
             errorText = errorDialogMessage,
             onCancel = { shouldShowErrorDialog = false },
-            onRetry = { onUiAction(UiAction.GetMovieDetails(movieId)) },
+            onRetry = { onUiAction(UiAction.GetMovieDetails) },
             onDismissRequest = { shouldShowErrorDialog = false }
         )
     }
@@ -147,11 +158,14 @@ private fun MovieDetailsScreenContent(
                 }
 
                 false -> {
+                    val context = LocalContext.current
+
                     uiState.movieDetails?.let { movieDetails ->
                         LazyColumn {
                             movieDetails(
                                 movieDetails = movieDetails,
-                                onBackClick = onBackClick
+                                onBackClick = onBackClick,
+                                onImageClick = onImageClick
                             )
 
                             movieDescription(
@@ -164,6 +178,18 @@ private fun MovieDetailsScreenContent(
 
                             crew(
                                 crewList = movieDetails.credits.crew
+                            )
+
+                            videos(
+                                videoList = movieDetails.videos.videoList,
+                                onVideoClick = { videoKey ->
+                                    startYoutube(videoKey, context)
+                                }
+                            )
+
+                            similarMovies(
+                                similarMovies = uiState.similarMovies,
+                                onMovieClick = onMovieClick
                             )
                         }
                     } ?: run {
@@ -183,7 +209,8 @@ private fun MovieDetailsScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 fun LazyListScope.movieDetails(
     movieDetails: MovieDetails,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onImageClick: (String) -> Unit
 ) {
     val ratingColor = if (movieDetails.voteAverage >= 8) CineManiaColors.Orange.primary
     else if (movieDetails.voteAverage >= 7) CineManiaColors.Green.primary
@@ -222,7 +249,10 @@ fun LazyListScope.movieDetails(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
                         .height(MOVIE_IMAGE_HEIGHT)
-                        .width(MOVIE_IMAGE_WIDTH),
+                        .width(MOVIE_IMAGE_WIDTH)
+                        .clickable {
+                            movieDetails.posterPath?.let { onImageClick(it) }
+                        },
                     imagePath = movieDetails.posterPath,
                     imageSize = NetworkImageSizes.LARGE
                 )
@@ -388,4 +418,74 @@ fun LazyListScope.crew(
             }
         }
     }
+}
+
+fun LazyListScope.videos(
+    videoList: List<Video>,
+    onVideoClick: (String) -> Unit
+) {
+    item {
+        VideosHolder(
+            modifier = Modifier.padding(start = SCREEN_PADDING),
+            title = stringResource(R.string.trailers_teasers),
+            onSeeAllClick = {
+
+            }
+        ) {
+            LazyRow {
+                items(
+                    items = videoList,
+                    key = { it.id }
+                ) { video ->
+                    VideoItem(
+                        video = video,
+                        onVideoClick = onVideoClick
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+fun LazyListScope.similarMovies(
+    similarMovies: List<Movie>,
+    onMovieClick: (Int) -> Unit
+) {
+    if (similarMovies.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier.padding(start = SCREEN_PADDING),
+                title = "Similar Movies",
+                itemsCount = similarMovies.size,
+                onSeeAllClick = {
+
+                }
+            ) {
+                LazyRow {
+                    items(
+                        items = similarMovies,
+                        key = { it.id }
+                    ) { movie ->
+                        MovieItem(
+                            movieData = movie,
+                            onMovieClick = onMovieClick
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun startYoutube(videoKey: String, context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse("https://www.youtube.com/watch?v=$videoKey")
+    }
+
+    context.startActivity(intent)
 }

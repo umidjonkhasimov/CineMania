@@ -12,6 +12,7 @@ internal const val NOW_PLAYING_ENDPOINT = "movie/now_playing"
 internal const val POPULAR_MOVIES_ENDPOINT = "movie/popular"
 internal const val TOP_RATED_MOVIES_ENDPOINT = "movie/top_rated"
 internal const val MOVIE_DETAILS_ENDPOINT = "movie/{movie_id}"
+internal const val SIMILAR_MOVIES_ENDPOINT = "movie/{movie_id}/similar"
 
 // Query Params
 internal const val LANGUAGE = "language"

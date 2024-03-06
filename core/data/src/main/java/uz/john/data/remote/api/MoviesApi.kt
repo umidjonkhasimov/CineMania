@@ -12,6 +12,7 @@ import uz.john.data.remote.NOW_PLAYING_ENDPOINT
 import uz.john.data.remote.PAGE
 import uz.john.data.remote.POPULAR_MOVIES_ENDPOINT
 import uz.john.data.remote.REGION
+import uz.john.data.remote.SIMILAR_MOVIES_ENDPOINT
 import uz.john.data.remote.TOP_RATED_MOVIES_ENDPOINT
 import uz.john.data.remote.model.details.MovieDetailsData
 import uz.john.data.remote.model.home.MoviesResponseData
@@ -42,6 +43,13 @@ interface MoviesApi {
     suspend fun getMovieDetails(
         @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String,
-        @Query(ADD_TO_RESPONSE) appendToResponse: String = "credits"
+        @Query(ADD_TO_RESPONSE) appendToResponse: String = "credits,videos"
     ): Response<MovieDetailsData>
+
+    @GET(SIMILAR_MOVIES_ENDPOINT)
+    suspend fun getSimilarMovies(
+        @Path(MOVIE_ID) movieId: Int,
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int,
+    ): Response<MoviesResponseData>
 }

@@ -6,18 +6,18 @@ import uz.john.util.roundToOneDecimal
 
 data class MovieDetails(
     val adult: Boolean,
-    val backdropPath: String,
+    val backdropPath: String?,
     val collection: Collection?,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,
     val id: Int,
-    val imdbId: String,
+    val imdbId: String?,
     val originalLanguage: String,
     val originalTitle: String,
     val overview: String,
     val popularity: Double,
-    val posterPath: String,
+    val posterPath: String?,
     val productionCompanies: List<ProductionCompany>,
     val productionCountries: List<ProductionCountry>,
     val releaseDate: String,
@@ -30,7 +30,8 @@ data class MovieDetails(
     val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int,
-    val credits: Credits
+    val credits: Credits,
+    val videos: VideosResponse
 )
 
 fun MovieDetailsData.toDomain(): MovieDetails {
@@ -60,6 +61,7 @@ fun MovieDetailsData.toDomain(): MovieDetails {
         video = video,
         voteAverage = voteAverage.roundToOneDecimal(),
         voteCount = voteCount,
-        credits = credits.toDomain()
+        credits = credits.toDomain(),
+        videos = videos.toDomain()
     )
 }

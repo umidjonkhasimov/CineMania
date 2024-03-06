@@ -1,4 +1,4 @@
-package uz.john.cinemania.details_screen.components
+package uz.john.cinemania.movie_details_screen.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border

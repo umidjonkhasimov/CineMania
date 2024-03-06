@@ -1,4 +1,4 @@
-package uz.john.cinemania.details_screen
+package uz.john.cinemania.movie_details_screen
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -17,15 +17,15 @@ fun NavHostController.navigateToMovieDetailsScreen(movieId: Int, navOptions: Nav
 }
 
 fun NavGraphBuilder.movieDetailsScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onImageClick: (String) -> Unit,
+    onMovieClick: (Int) -> Unit
 ) {
     composable(ALL_MOVIES_ROUTE) {
-        val movieId = it.arguments?.getString(MOVIE_ID_ARG)?.toIntOrNull()
-        movieId?.let {
-            MovieDetailsScreen(
-                movieId = movieId,
-                onBackClick = onBackClick
-            )
-        }
+        MovieDetailsScreen(
+            onBackClick = onBackClick,
+            onImageClick = onImageClick,
+            onMovieClick = onMovieClick
+        )
     }
 }

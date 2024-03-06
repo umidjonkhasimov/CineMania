@@ -25,3 +25,21 @@ fun CoilImage(
         contentDescription = null
     )
 }
+
+@Composable
+fun CoilVideoThumbnail(
+    videoId: String,
+    modifier: Modifier = Modifier
+) {
+    AsyncImage(
+        modifier = modifier.fillMaxSize(),
+        model = constructThumbnailUrl(videoId),
+        error = painterResource(R.drawable.ic_image_not_found),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
+}
+
+private fun constructThumbnailUrl(videoId: String): String {
+    return "https://img.youtube.com/vi/$videoId/maxresdefault.jpg"
+}
