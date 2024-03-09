@@ -3,8 +3,9 @@ package uz.john.cinemania.main_screen
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,13 +56,14 @@ fun MainScreen(
     onSeeAllClick: (AllMoviesMediaType) -> Unit
 ) {
     val bottomNavigationItems = listOf(
-        BottomNavigationItems.HomeItem,
-        BottomNavigationItems.ForYouItem,
-        BottomNavigationItems.SearchItem,
-        BottomNavigationItems.ProfileItem
+        BottomNavigationItems.HOME_ITEM,
+        BottomNavigationItems.FOR_YOU_ITEM,
+        BottomNavigationItems.SEARCH_ITEM,
+        BottomNavigationItems.PROFILE_ITEM
     )
+
     var selectedItem by remember {
-        mutableStateOf<String?>(BottomNavigationItems.HomeItem.route)
+        mutableStateOf<String?>(BottomNavigationItems.HOME_ITEM.route)
     }
 
     bottomNavController.addOnDestinationChangedListener { _, destination, _ ->
@@ -108,16 +110,24 @@ fun MainScreen(
             startDestination = HOME_ROUTE,
             navController = bottomNavController,
             enterTransition = {
-                fadeIn()
+                if (
+                    bottomNavDestinationRoutes.indexOf(initialState.destination.route) <
+                    bottomNavDestinationRoutes.indexOf(targetState.destination.route)
+                ) {
+                    slideInHorizontally { it }
+                } else {
+                    slideInHorizontally { -it }
+                }
             },
             exitTransition = {
-                fadeOut()
-            },
-            popEnterTransition = {
-                fadeIn()
-            },
-            popExitTransition = {
-                fadeOut()
+                if (
+                    bottomNavDestinationRoutes.indexOf(initialState.destination.route) <
+                    bottomNavDestinationRoutes.indexOf(targetState.destination.route)
+                ) {
+                    slideOutHorizontally { -it }
+                } else {
+                    slideOutHorizontally { it }
+                }
             }
         ) {
             homeScreen(

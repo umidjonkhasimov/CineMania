@@ -36,42 +36,40 @@ fun NavGraphBuilder.mainScreen(
     }
 }
 
+val bottomNavDestinationRoutes = BottomNavigationItems.entries.map { it.route }
+
 @Immutable
-sealed class BottomNavigationItems(
+enum class BottomNavigationItems(
     val route: String,
     @StringRes val title: Int,
     @DrawableRes val icon: Int,
     @DrawableRes val selectedIcon: Int
 ) {
-    data object HomeItem :
-        BottomNavigationItems(
-            route = HOME_ROUTE,
-            title = R.string.home,
-            icon = CineManiaIcons.Home,
-            selectedIcon = CineManiaIcons.Filled.Home
-        )
+    HOME_ITEM(
+        route = HOME_ROUTE,
+        title = R.string.home,
+        icon = CineManiaIcons.Home,
+        selectedIcon = CineManiaIcons.Filled.Home
+    ),
 
-    data object ForYouItem :
-        BottomNavigationItems(
-            route = FOR_YOU_ROUTE,
-            title = R.string.for_you,
-            icon = CineManiaIcons.ForYou,
-            selectedIcon = CineManiaIcons.Filled.ForYou
-        )
+    FOR_YOU_ITEM(
+        route = FOR_YOU_ROUTE,
+        title = R.string.for_you,
+        icon = CineManiaIcons.ForYou,
+        selectedIcon = CineManiaIcons.Filled.ForYou
+    ),
 
-    data object SearchItem :
-        BottomNavigationItems(
-            route = SEARCH_SCREEN,
-            title = R.string.search,
-            icon = CineManiaIcons.Search,
-            selectedIcon = CineManiaIcons.Filled.Search
-        )
+    SEARCH_ITEM(
+        route = SEARCH_SCREEN,
+        title = R.string.search,
+        icon = CineManiaIcons.Search,
+        selectedIcon = CineManiaIcons.Filled.Search
+    ),
 
-    data object ProfileItem :
-        BottomNavigationItems(
-            route = PROFILE_SCREEN,
-            title = R.string.profile,
-            icon = CineManiaIcons.Profile,
-            selectedIcon = CineManiaIcons.Filled.Profile
-        )
+    PROFILE_ITEM(
+        route = PROFILE_SCREEN,
+        title = R.string.profile,
+        icon = CineManiaIcons.Profile,
+        selectedIcon = CineManiaIcons.Filled.Profile
+    )
 }
