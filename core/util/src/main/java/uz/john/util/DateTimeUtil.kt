@@ -20,8 +20,13 @@ fun String.formatDate(): String {
 fun String.getYear(): String {
     val inputFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
     val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
-    val date = inputFormat.parse(this)
-    if (date != null)
-        return outputFormat.format(date)
+    try {
+        val date = inputFormat.parse(this)
+        if (date != null)
+            return outputFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return this
+    }
     return this
 }

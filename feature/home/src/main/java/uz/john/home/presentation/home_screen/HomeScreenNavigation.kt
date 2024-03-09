@@ -12,11 +12,13 @@ fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.homeScreen(
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onSeeAllClick: (AllMoviesMediaType) -> Unit
 ) {
     composable(route = HOME_ROUTE) {
         HomeScreen(
-            onMovieItemClick = onMovieItemClick
+            onMovieItemClick = onMovieItemClick,
+            onSeeAllClick = onSeeAllClick
         )
     }
 }

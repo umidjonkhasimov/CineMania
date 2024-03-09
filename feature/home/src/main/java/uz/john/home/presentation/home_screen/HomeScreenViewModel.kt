@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uz.john.domain.use_cases.GetNowPlayingMoviesUseCase
 import uz.john.domain.use_cases.GetPopularMoviesUseCase
@@ -62,7 +61,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(nowPlayingMovies = nowPlayingResponse.data)
+                    copy(nowPlayingMovies = nowPlayingResponse.data.take(10))
                 }
             }
         }
@@ -85,7 +84,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(popularMovies = popularMoviesResponse.data)
+                    copy(popularMovies = popularMoviesResponse.data.take(10))
                 }
             }
         }
@@ -108,7 +107,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(topRated = topRatedMoviesResponse.data)
+                    copy(topRated = topRatedMoviesResponse.data.take(10))
                 }
             }
         }

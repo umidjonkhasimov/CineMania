@@ -14,4 +14,6 @@
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
     <string name="trailers_teasers"><![CDATA[Trailers & Teasers]]></string>
+    <string name="images">Images</string>
+    <string name="similar_movies">Similar Movies</string>
 </resources>

@@ -21,7 +21,7 @@ data class MovieDetails(
     val productionCompanies: List<ProductionCompany>,
     val productionCountries: List<ProductionCountry>,
     val releaseDate: String,
-    val revenue: Int,
+    val revenue: Long,
     val runtime: Int,
     val spokenLanguages: List<SpokenLanguage>,
     val status: String,
@@ -31,7 +31,8 @@ data class MovieDetails(
     val voteAverage: Double,
     val voteCount: Int,
     val credits: Credits,
-    val videos: VideosResponse
+    val videos: VideosResponse,
+    val images: ImagesResponse
 )
 
 fun MovieDetailsData.toDomain(): MovieDetails {
@@ -62,6 +63,7 @@ fun MovieDetailsData.toDomain(): MovieDetails {
         voteAverage = voteAverage.roundToOneDecimal(),
         voteCount = voteCount,
         credits = credits.toDomain(),
-        videos = videos.toDomain()
+        videos = videos.toDomain(),
+        images = images.toDomain()
     )
 }

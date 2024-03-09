@@ -27,7 +27,7 @@ class GetTopRatedMoviesUseCase @Inject constructor(
                 }
 
                 ResultModel.Success(
-                    list.take(10).shuffled()
+                    list
                 )
             }
         }

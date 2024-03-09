@@ -29,7 +29,7 @@ data class MovieDetailsData(
     val productionCountries: List<ProductionCountryData>,
     @SerializedName(value = "release_date")
     val releaseDate: String,
-    val revenue: Int,
+    val revenue: Long,
     val runtime: Int,
     @SerializedName(value = "spoken_languages")
     val spokenLanguageData: List<SpokenLanguageData>,
@@ -42,5 +42,6 @@ data class MovieDetailsData(
     @SerializedName(value = "vote_count")
     val voteCount: Int,
     val credits: CreditsData,
-    val videos: VideosResponseData
+    val videos: VideosResponseData,
+    val images: ImagesResponseData,
 )

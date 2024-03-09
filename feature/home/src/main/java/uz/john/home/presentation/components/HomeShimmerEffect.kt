@@ -1,4 +1,4 @@
-package uz.john.home.presentation.home_screen.components
+package uz.john.home.presentation.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box

@@ -3,10 +3,15 @@ package uz.john.cinemania
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import uz.john.authentication.presentation.sign_in_screen.navigateToSignIn
@@ -16,15 +21,18 @@ import uz.john.authentication.presentation.welcome.navigateToWelcomeScreen
 import uz.john.authentication.presentation.welcome.welcomeScreen
 import uz.john.cinemania.image_viewer.imageViewerScreen
 import uz.john.cinemania.image_viewer.navigateToImageViewerScreen
-import uz.john.cinemania.movie_details_screen.movieDetailsScreen
-import uz.john.cinemania.movie_details_screen.navigateToMovieDetailsScreen
 import uz.john.cinemania.main_screen.MAIN_ROUTE
 import uz.john.cinemania.main_screen.mainScreen
 import uz.john.cinemania.main_screen.navigateToMainScreen
+import uz.john.cinemania.movie_details_screen.movieDetailsScreen
+import uz.john.cinemania.movie_details_screen.navigateToMovieDetailsScreen
+import uz.john.home.presentation.all_movies_screen.allMoviesScreen
+import uz.john.home.presentation.all_movies_screen.navigateToAllMoviesScreen
 import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
 
 private const val TMDB_SIGN_IN_PAGE = "https://www.themoviedb.org/signup"
+private const val NAVIGATION_ANIMATION_DURATION = 400
 
 @Composable
 fun CineManiaNavHost(
@@ -46,16 +54,36 @@ fun CineManiaNavHost(
         navController = navController,
         startDestination = startDestination,
         enterTransition = {
-            slideInHorizontally { it }
+            scaleIn(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION),
+                initialScale = .95f,
+            ) + fadeIn(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION)
+            )
         },
         exitTransition = {
-            slideOutHorizontally { -it }
+            scaleOut(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION),
+                targetScale = .95f,
+            ) + fadeOut(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION)
+            )
         },
         popEnterTransition = {
-            slideInHorizontally { -it }
+            scaleIn(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION),
+                initialScale = .95f,
+            ) + fadeIn(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION)
+            )
         },
         popExitTransition = {
-            slideOutHorizontally { it }
+            scaleOut(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION),
+                targetScale = .95f,
+            ) + fadeOut(
+                animationSpec = tween(NAVIGATION_ANIMATION_DURATION)
+            )
         }
     ) {
         onboardingScreen(
@@ -77,34 +105,54 @@ fun CineManiaNavHost(
         )
         signInScreen(
             onBackClick = {
-                navController.popBackStack()
+                navController.popBack()
             },
             onNavigateToMainScreen = {
                 navController.navigateToMainScreen()
             }
         )
-
         mainScreen(
             onMovieItemClick = { movieId ->
                 navController.navigateToMovieDetailsScreen(movieId)
+            },
+            onSeeAllClick = { mediaType ->
+                navController.navigateToAllMoviesScreen(mediaType)
             }
         )
-
         movieDetailsScreen(
             onBackClick = {
-                navController.popBackStack()
+                navController.popBack()
             },
             onImageClick = { imagePath ->
                 navController.navigateToImageViewerScreen(imagePath)
             },
             onMovieClick = { movieId ->
                 navController.navigateToMovieDetailsScreen(movieId)
+            },
+            onSeeAllSimilarClick = { mediaType ->
+                navController.navigateToAllMoviesScreen(mediaType)
             }
         )
-
-        imageViewerScreen(
-            onBackClick = { navController.popBackStack() }
+        allMoviesScreen(
+            onMovieItemClick = { movieId ->
+                navController.navigateToMovieDetailsScreen(movieId)
+            },
+            onBackClick = {
+                navController.popBack()
+            }
         )
+        imageViewerScreen(
+            onBackClick = { navController.popBack() }
+        )
+    }
+}
+
+val NavHostController.canPopBack: Boolean
+    get() = currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+
+fun NavHostController.popBack() {
+    if (canPopBack) {
+        popBackStack()
     }
 }
 

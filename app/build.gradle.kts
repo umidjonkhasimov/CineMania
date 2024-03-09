@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -52,7 +53,6 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":core:domain"))
-    implementation(project(":core:data"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:authentication"))
     implementation(project(":feature:for_you"))
@@ -87,4 +87,7 @@ dependencies {
 
     // Splash
     implementation(libs.splashscreen)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization)
 }

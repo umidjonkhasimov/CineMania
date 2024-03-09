@@ -46,6 +46,10 @@ lottieCompose = "4.0.0"
 # Coil
 coilVersion = "2.6.0"
 
+# Paging
+pagingRuntimeVersion = "3.2.1"
+pagingComposeVersion = "3.2.1"
+
 [libraries]
 # Compose libraries
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -97,6 +101,10 @@ airbnb-lottie-compose = { group = "com.airbnb.android", name = "lottie-compose",
 
 # Coil
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
+
+# Paging
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "pagingRuntimeVersion" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingComposeVersion" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

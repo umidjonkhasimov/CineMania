@@ -1,9 +1,10 @@
-package uz.john.cinemania.movie_details_screen.components
+package uz.john.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,16 +20,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import uz.john.domain.model.Movie
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.ui.components.CoilImage
 import uz.john.ui.theme.CineManiaColors
 
-private val MOVIE_ITEM_HEIGHT = 230.dp
-private val MOVIE_ITEM_WIDTH = 150.dp
-
 @Composable
-fun MovieItem(
+fun MovieCardItem(
     movieData: Movie,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val rating = movieData.voteAverage
 
@@ -38,9 +36,8 @@ fun MovieItem(
         else CineManiaColors.Orange.primary
 
     Column(
-        modifier = Modifier
-            .height(MOVIE_ITEM_HEIGHT)
-            .width(MOVIE_ITEM_WIDTH)
+        modifier = modifier
+            .aspectRatio(ratio = 2f / 3f)
     ) {
         Box(
             modifier = Modifier

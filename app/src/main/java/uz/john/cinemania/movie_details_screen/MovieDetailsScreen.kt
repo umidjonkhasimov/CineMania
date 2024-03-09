@@ -55,29 +55,31 @@ import uz.john.cinemania.R
 import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.SideEffect
 import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiAction
 import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiState
-import uz.john.cinemania.movie_details_screen.components.CastAndCrewHolderItem
 import uz.john.cinemania.movie_details_screen.components.CastItem
 import uz.john.cinemania.movie_details_screen.components.CrewItem
-import uz.john.cinemania.movie_details_screen.components.LazyRowItemsHolder
-import uz.john.cinemania.movie_details_screen.components.MovieItem
+import uz.john.cinemania.movie_details_screen.components.ImageItem
 import uz.john.cinemania.movie_details_screen.components.ProductionCountryItem
 import uz.john.cinemania.movie_details_screen.components.VideoItem
-import uz.john.cinemania.movie_details_screen.components.VideosHolder
 import uz.john.domain.model.Movie
 import uz.john.domain.model.NetworkImageSizes
 import uz.john.domain.model.movie_details.Cast
 import uz.john.domain.model.movie_details.Crew
+import uz.john.domain.model.movie_details.ImagesResponse
 import uz.john.domain.model.movie_details.MovieDetails
 import uz.john.domain.model.movie_details.Video
+import uz.john.home.presentation.home_screen.AllMoviesMediaType
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.components.CoilImage
+import uz.john.ui.components.LazyRowItemsHolder
+import uz.john.ui.components.MovieCardItem
+import uz.john.ui.components.SeeAllItem
 import uz.john.ui.components.VerticalGradient
 import uz.john.ui.theme.CineManiaColors
 import uz.john.ui.theme.CineManiaIcons
+import uz.john.util.formatWithCommaSeparators
 import uz.john.util.getYear
-import uz.john.util.logging
 
 private const val ANIMATED_CONTENT_DURATION = 200
 private val MOVIE_DETAILS_HEIGHT = 500.dp
@@ -89,9 +91,9 @@ private val SCREEN_PADDING = 16.dp
 fun MovieDetailsScreen(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onSeeAllSimilarClick: (AllMoviesMediaType) -> Unit
 ) {
-    logging("MovieDetailsScreen")
     val viewModel: MovieDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -101,7 +103,8 @@ fun MovieDetailsScreen(
         sideEffect = viewModel.sideEffect,
         onBackClick = onBackClick,
         onImageClick = onImageClick,
-        onMovieClick = onMovieClick
+        onMovieClick = onMovieClick,
+        onSeeAllSimilarClick = onSeeAllSimilarClick
     )
 }
 
@@ -112,7 +115,8 @@ private fun MovieDetailsScreenContent(
     sideEffect: Flow<SideEffect>,
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onSeeAllSimilarClick: (AllMoviesMediaType) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -168,17 +172,26 @@ private fun MovieDetailsScreenContent(
                                 onImageClick = onImageClick
                             )
 
-                            movieDescription(
-                                movieDetails = movieDetails
-                            )
+                            space()
 
                             cast(
                                 castList = movieDetails.credits.cast,
                             )
 
+                            space()
+
                             crew(
                                 crewList = movieDetails.credits.crew
                             )
+
+                            space()
+
+                            images(
+                                images = movieDetails.images,
+                                onImageClick = onImageClick
+                            )
+
+                            space()
 
                             videos(
                                 videoList = movieDetails.videos.videoList,
@@ -187,9 +200,14 @@ private fun MovieDetailsScreenContent(
                                 }
                             )
 
+                            space()
+
                             similarMovies(
                                 similarMovies = uiState.similarMovies,
-                                onMovieClick = onMovieClick
+                                onMovieClick = onMovieClick,
+                                onSeeAllSimilarClick = {
+                                    onSeeAllSimilarClick(AllMoviesMediaType.SimilarMovies(movieDetails.id))
+                                }
                             )
                         }
                     } ?: run {
@@ -215,22 +233,27 @@ fun LazyListScope.movieDetails(
     val ratingColor = if (movieDetails.voteAverage >= 8) CineManiaColors.Orange.primary
     else if (movieDetails.voteAverage >= 7) CineManiaColors.Green.primary
     else CineManiaColors.Gray
+    var shouldShowMore by mutableStateOf(true)
 
     item {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MOVIE_DETAILS_HEIGHT)
         ) {
             CoilImage(
                 modifier = Modifier
                     .alpha(.4f)
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .height(MOVIE_DETAILS_HEIGHT),
                 imagePath = movieDetails.posterPath,
                 imageSize = NetworkImageSizes.MEDIUM
             )
 
-            VerticalGradient(modifier = Modifier.fillMaxSize())
+            VerticalGradient(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MOVIE_DETAILS_HEIGHT)
+            )
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -292,8 +315,25 @@ fun LazyListScope.movieDetails(
 
                     Icon(painter = painterResource(CineManiaIcons.Genre), contentDescription = null)
                     Text(
-                        text = movieDetails.genres.first().name,
+                        text = movieDetails.genres.firstOrNull()?.name ?: "",
                         style = MaterialTheme.typography.titleSmall
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(CineManiaIcons.DollarSign),
+                        contentDescription = null
+                    )
+                    Text(
+                        text = movieDetails.revenue.formatWithCommaSeparators(),
+                        style = MaterialTheme.typography.titleSmall,
                     )
                 }
 
@@ -331,63 +371,62 @@ fun LazyListScope.movieDetails(
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = SCREEN_PADDING)
+                        .align(Alignment.Start)
+                ) {
+                    Text(
+                        text = movieDetails.tagline,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    AnimatedVisibility(
+                        visible = shouldShowMore,
+                    ) {
+                        Text(
+                            text = movieDetails.overview,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.clickable { shouldShowMore = !shouldShowMore },
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        text = if (shouldShowMore) stringResource(R.string.less) else stringResource(R.string.more)
+                    )
+                }
             }
         }
-    }
-}
-
-fun LazyListScope.movieDescription(
-    movieDetails: MovieDetails,
-) {
-    var shouldShowMore by mutableStateOf(true)
-
-    item {
-        Column(
-            modifier = Modifier.padding(horizontal = SCREEN_PADDING)
-        ) {
-            Text(
-                text = movieDetails.tagline,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            AnimatedVisibility(
-                visible = shouldShowMore,
-            ) {
-                Text(
-                    text = movieDetails.overview,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            Text(
-                modifier = Modifier.clickable { shouldShowMore = !shouldShowMore },
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-                text = if (shouldShowMore) stringResource(R.string.less) else stringResource(R.string.more)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 fun LazyListScope.cast(
     castList: List<Cast>,
 ) {
-    item {
-        CastAndCrewHolderItem(
-            modifier = Modifier
-                .padding(start = SCREEN_PADDING),
-            title = stringResource(R.string.cast),
-            onSeeAllClick = { }
-        ) {
-            LazyHorizontalGrid(
-                rows = GridCells.Fixed(3),
+    if (castList.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier
+                    .padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.cast),
+                shouldShowSeeAllButton = true,
+                onSeeAllClick = { }
             ) {
-                items(
-                    items = castList,
-                    key = { it.id }
-                ) { cast ->
-                    CastItem(cast = cast)
+                LazyHorizontalGrid(
+                    rows = GridCells.Fixed(3),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(
+                        items = castList,
+                        key = { it.id }
+                    ) { cast ->
+                        CastItem(cast = cast)
+                    }
                 }
             }
         }
@@ -397,23 +436,57 @@ fun LazyListScope.cast(
 fun LazyListScope.crew(
     crewList: List<Crew>
 ) {
-    item {
-        CastAndCrewHolderItem(
-            modifier = Modifier
-                .padding(start = SCREEN_PADDING),
-            title = stringResource(R.string.crew),
-            onSeeAllClick = { }
-        ) {
-            LazyHorizontalGrid(
-                rows = GridCells.Fixed(3),
+    if (crewList.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier
+                    .padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.crew),
+                shouldShowSeeAllButton = true,
+                onSeeAllClick = { }
             ) {
-                items(
-                    items = crewList,
-                    key = {
-                        it.creditId
+                LazyHorizontalGrid(
+                    rows = GridCells.Fixed(3),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(
+                        items = crewList,
+                        key = {
+                            it.creditId
+                        }
+                    ) { crew ->
+                        CrewItem(crew = crew)
                     }
-                ) { crew ->
-                    CrewItem(crew = crew)
+                }
+            }
+        }
+    }
+}
+
+fun LazyListScope.images(
+    images: ImagesResponse,
+    onImageClick: (String) -> Unit
+) {
+    if (images.backdrops.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier
+                    .height(200.dp)
+                    .padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.images),
+                shouldShowSeeAllButton = false
+            ) {
+                LazyRow {
+                    items(
+                        items = images.backdrops
+                    ) { image ->
+                        ImageItem(
+                            image = image,
+                            onImageClick = onImageClick
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
             }
         }
@@ -424,61 +497,69 @@ fun LazyListScope.videos(
     videoList: List<Video>,
     onVideoClick: (String) -> Unit
 ) {
-    item {
-        VideosHolder(
-            modifier = Modifier.padding(start = SCREEN_PADDING),
-            title = stringResource(R.string.trailers_teasers),
-            onSeeAllClick = {
-
-            }
-        ) {
-            LazyRow {
-                items(
-                    items = videoList,
-                    key = { it.id }
-                ) { video ->
-                    VideoItem(
-                        video = video,
-                        onVideoClick = onVideoClick
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
+    if (videoList.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier
+                    .height(200.dp)
+                    .padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.trailers_teasers),
+                shouldShowSeeAllButton = false
+            ) {
+                LazyRow {
+                    items(
+                        items = videoList,
+                        key = { it.id }
+                    ) { video ->
+                        VideoItem(
+                            video = video,
+                            onVideoClick = onVideoClick
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 fun LazyListScope.similarMovies(
     similarMovies: List<Movie>,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onSeeAllSimilarClick: () -> Unit
 ) {
     if (similarMovies.isNotEmpty()) {
         item {
             LazyRowItemsHolder(
                 modifier = Modifier.padding(start = SCREEN_PADDING),
-                title = "Similar Movies",
-                itemsCount = similarMovies.size,
-                onSeeAllClick = {
-
-                }
+                title = stringResource(R.string.similar_movies),
+                shouldShowSeeAllButton = true,
+                onSeeAllClick = onSeeAllSimilarClick
             ) {
                 LazyRow {
                     items(
                         items = similarMovies,
                         key = { it.id }
                     ) { movie ->
-                        MovieItem(
+                        MovieCardItem(
                             movieData = movie,
                             onMovieClick = onMovieClick
                         )
 
                         Spacer(modifier = Modifier.width(8.dp))
                     }
+                    item {
+                        SeeAllItem(onSeeAllClick = onSeeAllSimilarClick)
+                    }
                 }
             }
         }
+    }
+}
+
+fun LazyListScope.space(modifier: Modifier = Modifier) {
+    item {
+        Spacer(modifier = modifier.height(40.dp))
     }
 }
 

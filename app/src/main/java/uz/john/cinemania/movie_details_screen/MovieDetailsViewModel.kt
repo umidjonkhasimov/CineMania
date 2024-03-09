@@ -58,7 +58,23 @@ class MovieDetailsViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(movieDetails = response.data)
+                    // Take only 20 items out of images and videos
+                    val backdrops = response.data.images.backdrops.take(20)
+                    val logos = response.data.images.logos.take(20)
+                    val posters = response.data.images.posters.take(20)
+                    val images = response.data.images.copy(
+                        backdrops = backdrops,
+                        logos = logos,
+                        posters = posters
+                    )
+
+                    val videos = response.data.videos.copy(
+                        videoList = response.data.videos.videoList.take(20)
+                    )
+
+                    val movieDetails = response.data.copy(images = images, videos = videos)
+
+                    copy(movieDetails = movieDetails)
                 }
             }
         }
@@ -81,7 +97,7 @@ class MovieDetailsViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(similarMovies = response.data)
+                    copy(similarMovies = response.data.take(10))
                 }
             }
         }

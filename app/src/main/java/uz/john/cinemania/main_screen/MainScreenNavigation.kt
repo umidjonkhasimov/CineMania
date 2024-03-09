@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uz.john.cinemania.R
 import uz.john.for_you.presentation.for_you_screen.FOR_YOU_ROUTE
+import uz.john.home.presentation.home_screen.AllMoviesMediaType
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.profile.presentation.profile_screen.PROFILE_SCREEN
 import uz.john.search.presentation.search_screen.SEARCH_SCREEN
@@ -22,13 +23,15 @@ fun NavController.navigateToMainScreen(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.mainScreen(
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onSeeAllClick: (AllMoviesMediaType) -> Unit
 ) {
     composable(MAIN_ROUTE) {
         val bottomNavController = rememberNavController()
         MainScreen(
             bottomNavController = bottomNavController,
-            onMovieItemClick = onMovieItemClick
+            onMovieItemClick = onMovieItemClick,
+            onSeeAllClick = onSeeAllClick
         )
     }
 }

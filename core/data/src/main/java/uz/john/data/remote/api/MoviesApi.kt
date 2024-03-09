@@ -5,6 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import uz.john.data.remote.ADD_TO_RESPONSE
+import uz.john.data.remote.APPEND_CREDITS
+import uz.john.data.remote.APPEND_IMAGES
+import uz.john.data.remote.APPEND_VIDEOS
 import uz.john.data.remote.LANGUAGE
 import uz.john.data.remote.MOVIE_DETAILS_ENDPOINT
 import uz.john.data.remote.MOVIE_ID
@@ -43,7 +46,7 @@ interface MoviesApi {
     suspend fun getMovieDetails(
         @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String,
-        @Query(ADD_TO_RESPONSE) appendToResponse: String = "credits,videos"
+        @Query(ADD_TO_RESPONSE) appendToResponse: String = "$APPEND_IMAGES,$APPEND_CREDITS,$APPEND_VIDEOS"
     ): Response<MovieDetailsData>
 
     @GET(SIMILAR_MOVIES_ENDPOINT)

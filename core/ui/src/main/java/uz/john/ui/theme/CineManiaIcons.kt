@@ -12,6 +12,8 @@ object CineManiaIcons {
     val Genre = R.drawable.ic_genre
     val Star = R.drawable.ic_star
     val YouTube = R.drawable.ic_youtube
+    val RightArrow = R.drawable.ic_right_arrow
+    val DollarSign = R.drawable.ic_dollar_sign
 
     object Filled {
         val Home = R.drawable.ic_home_filled

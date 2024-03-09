@@ -1,4 +1,4 @@
-package uz.john.cinemania.movie_details_screen.components
+package uz.john.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -15,15 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import uz.john.cinemania.R
+import uz.john.ui.R
 
 private val HOLDER_HEIGHT = 300.dp
 
 @Composable
-fun CastAndCrewHolderItem(
+fun LazyRowItemsHolder(
     modifier: Modifier = Modifier,
     title: String,
-    onSeeAllClick: () -> Unit,
+    shouldShowSeeAllButton: Boolean,
+    onSeeAllClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -36,16 +37,18 @@ fun CastAndCrewHolderItem(
         ) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = stringResource(R.string.see_all),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .clickable { onSeeAllClick() }
-                    .padding(8.dp),
-                color = MaterialTheme.colorScheme.primary
-            )
+            if (shouldShowSeeAllButton) {
+                Text(
+                    text = stringResource(R.string.see_all),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable { onSeeAllClick?.invoke() }
+                        .padding(8.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))

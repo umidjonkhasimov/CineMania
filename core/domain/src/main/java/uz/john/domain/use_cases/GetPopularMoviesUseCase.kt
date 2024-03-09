@@ -11,7 +11,6 @@ class GetPopularMoviesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(page: Int): ResultModel<List<Movie>> {
         val response = moviesRepository.getPopularMovies(page)
-
         return when (response) {
             is ResultModel.Error -> {
                 ResultModel.Error(response.error)
@@ -27,7 +26,7 @@ class GetPopularMoviesUseCase @Inject constructor(
                 }
 
                 ResultModel.Success(
-                    list.take(10).shuffled()
+                    list
                 )
             }
         }

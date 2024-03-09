@@ -2,11 +2,9 @@ package uz.john.cinemania.main_screen
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +39,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import uz.john.for_you.presentation.for_you_screen.forYouScreen
+import uz.john.home.presentation.home_screen.AllMoviesMediaType
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.home.presentation.home_screen.homeScreen
 import uz.john.profile.presentation.profile_screen.profileScreen
@@ -48,12 +47,12 @@ import uz.john.search.presentation.search_screen.searchScreen
 
 private val BOTTOM_NAV_BAR_HEIGHT = 50.dp
 private val BOTTOM_NAV_BAR_ITEM_HEIGHT = 40.dp
-private const val BOTTOM_BAR_ANIMATION_DURATION = 500
 
 @Composable
 fun MainScreen(
     bottomNavController: NavHostController,
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onSeeAllClick: (AllMoviesMediaType) -> Unit
 ) {
     val bottomNavigationItems = listOf(
         BottomNavigationItems.HomeItem,
@@ -122,7 +121,8 @@ fun MainScreen(
             }
         ) {
             homeScreen(
-                onMovieItemClick = onMovieItemClick
+                onMovieItemClick = onMovieItemClick,
+                onSeeAllClick = onSeeAllClick
             )
             forYouScreen()
             profileScreen()
@@ -189,8 +189,7 @@ fun RowScope.CineManiaNavBarItem(
         )
         AnimatedVisibility(
             visible = selected,
-            enter = expandHorizontally(tween(BOTTOM_BAR_ANIMATION_DURATION)),
-            exit = shrinkHorizontally(tween(BOTTOM_BAR_ANIMATION_DURATION))
+            enter = scaleIn() + fadeIn()
         ) {
             Text(
                 text = label,

@@ -13,6 +13,9 @@ internal const val POPULAR_MOVIES_ENDPOINT = "movie/popular"
 internal const val TOP_RATED_MOVIES_ENDPOINT = "movie/top_rated"
 internal const val MOVIE_DETAILS_ENDPOINT = "movie/{movie_id}"
 internal const val SIMILAR_MOVIES_ENDPOINT = "movie/{movie_id}/similar"
+internal const val APPEND_IMAGES = "images"
+internal const val APPEND_CREDITS = "credits"
+internal const val APPEND_VIDEOS = "videos"
 
 // Query Params
 internal const val LANGUAGE = "language"

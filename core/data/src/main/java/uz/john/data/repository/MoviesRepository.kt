@@ -1,7 +1,12 @@
 package uz.john.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import uz.john.data.pagination.PopularMoviesPagingSource
+import uz.john.data.pagination.SimilarMoviesPagingSource
+import uz.john.data.pagination.TopRatedMoviesPagingSource
 import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.model.details.MovieDetailsData
 import uz.john.data.remote.model.home.MoviesResponseData
@@ -11,7 +16,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
-    private val moviesApi: MoviesApi
+    private val moviesApi: MoviesApi,
 ) {
     private val region = Locale.getDefault().country
     private val language = Locale.getDefault().language
@@ -64,4 +69,43 @@ class MoviesRepository @Inject constructor(
             )
         }
     }
+
+    fun getPaginatedPopularMovies() = Pager(
+        config = PagingConfig(
+            pageSize = 20
+        ),
+        pagingSourceFactory = {
+            PopularMoviesPagingSource(
+                moviesApi = moviesApi,
+                language = language,
+                region = region
+            )
+        }
+    ).flow
+
+    fun getPaginatedTopRatedMovies() = Pager(
+        config = PagingConfig(
+            pageSize = 20
+        ),
+        pagingSourceFactory = {
+            TopRatedMoviesPagingSource(
+                moviesApi = moviesApi,
+                language = language,
+                region = region
+            )
+        }
+    ).flow
+
+    fun getPaginatedSimilarMovies(movieId: Int) = Pager(
+        config = PagingConfig(
+            pageSize = 20
+        ),
+        pagingSourceFactory = {
+            SimilarMoviesPagingSource(
+                moviesApi = moviesApi,
+                movieId = movieId,
+                language = language
+            )
+        }
+    ).flow
 }

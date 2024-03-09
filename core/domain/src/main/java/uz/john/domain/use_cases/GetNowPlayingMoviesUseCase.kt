@@ -4,8 +4,6 @@ import uz.john.data.repository.MoviesRepository
 import uz.john.domain.model.Movie
 import uz.john.domain.model.toDomain
 import uz.john.util.ResultModel
-import uz.john.util.formatDate
-import uz.john.util.roundToOneDecimal
 import javax.inject.Inject
 
 class GetNowPlayingMoviesUseCase @Inject constructor(
@@ -29,7 +27,7 @@ class GetNowPlayingMoviesUseCase @Inject constructor(
                 }
 
                 ResultModel.Success(
-                    list.take(10).shuffled()
+                    list
                 )
             }
         }
