@@ -1,4 +1,4 @@
-package uz.john.home.presentation.all_movies_screen
+package uz.john.paginated_movies_list.all_movies_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,15 +27,14 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
 import uz.john.domain.model.Movie
-import uz.john.home.presentation.all_movies_screen.AllMoviesScreenContract.UiAction
-import uz.john.home.presentation.all_movies_screen.AllMoviesScreenContract.UiState
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
 import uz.john.ui.components.AnimatedProgressIndicator
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.components.MovieCardItem
 import uz.john.ui.components.PagingErrorItem
-import uz.john.util.logging
 
 private const val GRID_CELL_COUNT = 2
 private val SCREEN_PADDING = 16.dp

@@ -3,10 +3,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "uz.john.home"
+    namespace = "uz.john.paginated_movies_list"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -41,7 +42,6 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":core:domain"))
-    implementation(project(":feature:paginated_movies_list"))
 
     implementation(libs.androidx.core.ktx)
 
@@ -58,4 +58,11 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization)
+
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 }

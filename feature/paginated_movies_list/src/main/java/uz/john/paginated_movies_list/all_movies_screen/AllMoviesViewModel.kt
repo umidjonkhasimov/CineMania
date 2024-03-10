@@ -1,4 +1,4 @@
-package uz.john.home.presentation.all_movies_screen
+package uz.john.paginated_movies_list.all_movies_screen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,10 +13,10 @@ import uz.john.domain.model.Movie
 import uz.john.domain.use_cases.pagination.GetPaginatedPopularMoviesUseCase
 import uz.john.domain.use_cases.pagination.GetPaginatedSimilarMoviesUseCase
 import uz.john.domain.use_cases.pagination.GetPaginatedTopRatedMoviesUseCase
-import uz.john.home.presentation.all_movies_screen.AllMoviesScreenContract.SideEffect
-import uz.john.home.presentation.all_movies_screen.AllMoviesScreenContract.UiAction
-import uz.john.home.presentation.all_movies_screen.AllMoviesScreenContract.UiState
-import uz.john.home.presentation.home_screen.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.SideEffect
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
 import uz.john.ui.delegations.MVI
 import uz.john.ui.delegations.mvi
 import javax.inject.Inject

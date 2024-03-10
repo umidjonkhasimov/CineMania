@@ -1,6 +1,5 @@
 package uz.john.for_you.presentation.for_you_screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

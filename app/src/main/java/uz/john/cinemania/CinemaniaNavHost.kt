@@ -24,12 +24,12 @@ import uz.john.cinemania.image_viewer.navigateToImageViewerScreen
 import uz.john.cinemania.main_screen.MAIN_ROUTE
 import uz.john.cinemania.main_screen.mainScreen
 import uz.john.cinemania.main_screen.navigateToMainScreen
-import uz.john.cinemania.movie_details_screen.movieDetailsScreen
-import uz.john.cinemania.movie_details_screen.navigateToMovieDetailsScreen
-import uz.john.home.presentation.all_movies_screen.allMoviesScreen
-import uz.john.home.presentation.all_movies_screen.navigateToAllMoviesScreen
+import uz.john.details.movie_details_screen.movieDetailsScreen
+import uz.john.details.movie_details_screen.navigateToMovieDetailsScreen
 import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
+import uz.john.paginated_movies_list.all_movies_screen.allMoviesScreen
+import uz.john.paginated_movies_list.all_movies_screen.navigateToAllMoviesScreen
 
 private const val TMDB_SIGN_IN_PAGE = "https://www.themoviedb.org/signup"
 private const val NAVIGATION_ANIMATION_DURATION = 400

@@ -1,4 +1,4 @@
-package uz.john.cinemania.movie_details_screen
+package uz.john.details.movie_details_screen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.SideEffect
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiAction
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiState
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.SideEffect
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiAction
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiState
 import uz.john.domain.use_cases.GetMovieDetailsUseCase
 import uz.john.domain.use_cases.GetSimilarMoviesUseCase
 import uz.john.ui.delegations.MVI

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="movie_details_are_not_available">Movie Details are not available</string>
+    <string name="duration">%1$s Minutes</string>
+    <string name="reviews">%1$s (%2$s reviews)</string>
+    <string name="less">Less</string>
+    <string name="more">More</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="trailers_teasers"><![CDATA[Trailers & Teasers]]></string>
+    <string name="images">Images</string>
+    <string name="similar_movies">Similar Movies</string>
+</resources>

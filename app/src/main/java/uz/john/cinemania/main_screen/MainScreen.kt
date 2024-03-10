@@ -40,9 +40,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import uz.john.for_you.presentation.for_you_screen.forYouScreen
-import uz.john.home.presentation.home_screen.AllMoviesMediaType
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.home.presentation.home_screen.homeScreen
+import uz.john.paginated_movies_list.AllMoviesMediaType
 import uz.john.profile.presentation.profile_screen.profileScreen
 import uz.john.search.presentation.search_screen.searchScreen
 

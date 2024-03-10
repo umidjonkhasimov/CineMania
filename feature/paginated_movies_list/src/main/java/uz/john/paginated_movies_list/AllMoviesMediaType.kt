@@ -1,8 +1,7 @@
-package uz.john.home.presentation.home_screen
+package uz.john.paginated_movies_list
 
 import androidx.annotation.StringRes
 import kotlinx.serialization.Serializable
-import uz.john.home.R
 
 @Serializable
 sealed class AllMoviesMediaType(

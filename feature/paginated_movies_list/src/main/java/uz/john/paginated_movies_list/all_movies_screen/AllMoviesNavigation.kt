@@ -1,4 +1,4 @@
-package uz.john.home.presentation.all_movies_screen
+package uz.john.paginated_movies_list.all_movies_screen
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import uz.john.home.presentation.home_screen.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesMediaType
 
 const val ALL_MOVIES_ARG = "ALL_MOVIES_ARG"
 const val ALL_MOVIES = "ALL_MOVIES"

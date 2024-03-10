@@ -1,4 +1,4 @@
-package uz.john.home.presentation.all_movies_screen
+package uz.john.paginated_movies_list.all_movies_screen
 
 import androidx.annotation.StringRes
 

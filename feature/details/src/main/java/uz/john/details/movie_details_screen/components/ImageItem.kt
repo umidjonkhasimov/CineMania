@@ -1,4 +1,4 @@
-package uz.john.cinemania.movie_details_screen.components
+package uz.john.details.movie_details_screen.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

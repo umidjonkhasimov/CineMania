@@ -1,4 +1,4 @@
-package uz.john.cinemania.movie_details_screen
+package uz.john.details.movie_details_screen
 
 import uz.john.domain.model.Movie
 import uz.john.domain.model.movie_details.MovieDetails

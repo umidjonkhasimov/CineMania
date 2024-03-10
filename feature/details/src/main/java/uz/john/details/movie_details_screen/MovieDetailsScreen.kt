@@ -1,4 +1,4 @@
-package uz.john.cinemania.movie_details_screen
+package uz.john.details.movie_details_screen
 
 import android.content.Context
 import android.content.Intent
@@ -51,15 +51,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
-import uz.john.cinemania.R
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.SideEffect
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiAction
-import uz.john.cinemania.movie_details_screen.MovieDetailsScreenContract.UiState
-import uz.john.cinemania.movie_details_screen.components.CastItem
-import uz.john.cinemania.movie_details_screen.components.CrewItem
-import uz.john.cinemania.movie_details_screen.components.ImageItem
-import uz.john.cinemania.movie_details_screen.components.ProductionCountryItem
-import uz.john.cinemania.movie_details_screen.components.VideoItem
+import uz.john.details.R
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.SideEffect
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiAction
+import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiState
+import uz.john.details.movie_details_screen.components.CastItem
+import uz.john.details.movie_details_screen.components.CrewItem
+import uz.john.details.movie_details_screen.components.ImageItem
+import uz.john.details.movie_details_screen.components.ProductionCountryItem
+import uz.john.details.movie_details_screen.components.VideoItem
 import uz.john.domain.model.Movie
 import uz.john.domain.model.NetworkImageSizes
 import uz.john.domain.model.movie_details.Cast
@@ -67,7 +67,7 @@ import uz.john.domain.model.movie_details.Crew
 import uz.john.domain.model.movie_details.ImagesResponse
 import uz.john.domain.model.movie_details.MovieDetails
 import uz.john.domain.model.movie_details.Video
-import uz.john.home.presentation.home_screen.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesMediaType
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar

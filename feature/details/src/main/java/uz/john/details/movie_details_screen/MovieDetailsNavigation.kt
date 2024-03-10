@@ -1,10 +1,10 @@
-package uz.john.cinemania.movie_details_screen
+package uz.john.details.movie_details_screen
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import uz.john.home.presentation.home_screen.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesMediaType
 
 const val MOVIE_ID_ARG = "MOVIE_ID_ARG"
 const val MOVIE_DETAILS = "MOVIE_DETAILS"

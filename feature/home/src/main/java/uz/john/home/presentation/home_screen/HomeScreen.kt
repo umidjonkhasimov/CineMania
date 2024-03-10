@@ -34,6 +34,7 @@ import uz.john.domain.model.Movie
 import uz.john.home.R
 import uz.john.home.presentation.components.HomeCarouselItem
 import uz.john.home.presentation.components.HomeShimmerEffect
+import uz.john.paginated_movies_list.AllMoviesMediaType
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.LazyRowItemsHolder
 import uz.john.ui.components.MovieCardItem

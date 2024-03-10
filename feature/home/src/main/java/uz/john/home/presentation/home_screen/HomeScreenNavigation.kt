@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import uz.john.paginated_movies_list.AllMoviesMediaType
 
 const val HOME_ROUTE = "HOME_ROUTE"
 

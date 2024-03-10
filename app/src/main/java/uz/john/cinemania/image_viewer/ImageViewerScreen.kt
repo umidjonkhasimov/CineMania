@@ -31,7 +31,7 @@ import uz.john.ui.components.CoilImage
 
 private const val ANIMATION_DURATION = 700
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageViewerScreen(
     imagePath: String,
