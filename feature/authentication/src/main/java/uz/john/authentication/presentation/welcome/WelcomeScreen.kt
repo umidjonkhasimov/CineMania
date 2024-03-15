@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import uz.john.authentication.R
 import uz.john.ui.components.CineManiaAlertDialog
 import uz.john.ui.components.CineManiaButton
+import uz.john.ui.theme.CineManiaIcons
 import uz.john.ui.theme.CineManiaTheme
 
 private val LOGO_SIZE = 200.dp
@@ -70,7 +71,7 @@ internal fun WelcomeScreen(
         ) {
             Image(
                 modifier = Modifier.size(LOGO_SIZE),
-                painter = painterResource(R.drawable.cinemania_logo),
+                painter = painterResource(CineManiaIcons.CineManiaLogo),
                 contentDescription = null
             )
             Text(
@@ -179,7 +180,7 @@ internal fun WelcomeScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_google),
+                        painter = painterResource(CineManiaIcons.GoogleLogo),
                         contentDescription = null,
                     )
                 }
@@ -194,7 +195,7 @@ internal fun WelcomeScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_apple),
+                        painter = painterResource(CineManiaIcons.AppleLogo),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
@@ -210,7 +211,7 @@ internal fun WelcomeScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_facebook),
+                        painter = painterResource(CineManiaIcons.FaceBookLogo),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )

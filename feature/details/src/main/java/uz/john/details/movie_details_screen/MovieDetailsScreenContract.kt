@@ -1,13 +1,14 @@
 package uz.john.details.movie_details_screen
 
-import uz.john.domain.model.Movie
-import uz.john.domain.model.movie_details.MovieDetails
+import uz.john.domain.model.movie.Movie
+import uz.john.domain.model.movie.movie_details.MovieDetails
 
 sealed interface MovieDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
         val movieDetails: MovieDetails? = null,
-        val similarMovies: List<Movie> = emptyList()
+        val similarMovies: List<Movie> = emptyList(),
+        val recommendedMovies: List<Movie> = emptyList()
     ) : MovieDetailsScreenContract
 
     sealed interface SideEffect : MovieDetailsScreenContract {

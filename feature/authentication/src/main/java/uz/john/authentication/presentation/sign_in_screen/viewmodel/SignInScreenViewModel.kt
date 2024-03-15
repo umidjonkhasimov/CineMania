@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.SideEffect
 import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.UiAction
 import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.UiState
-import uz.john.domain.use_cases.SignInUseCase
+import uz.john.domain.use_cases.authentication.SignInUseCase
 import uz.john.ui.delegations.MVI
 import uz.john.ui.delegations.mvi
 import uz.john.util.ResultModel

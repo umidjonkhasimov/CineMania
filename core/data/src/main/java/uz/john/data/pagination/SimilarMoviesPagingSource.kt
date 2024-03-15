@@ -3,7 +3,7 @@ package uz.john.data.pagination
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import uz.john.data.remote.api.MoviesApi
-import uz.john.data.remote.model.home.MovieData
+import uz.john.data.remote.model.movie.MovieData
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 

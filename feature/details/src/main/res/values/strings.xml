@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="person_details_are_not_available">Person Details are not available</string>
+    <string name="movies_as_an_actor">Movies as an actor</string>
+    <string name="movies_as_a_crew_member">Movies as a crew member</string>
+    <string name="known_for">Known for:</string>
+    <string name="born">Born:</string>
+    <string name="passed_away">Passed away:</string>
+    <string name="recommended">Recommended</string>
+</resources>

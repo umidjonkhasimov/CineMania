@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recommended">Recommended</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="genre">Genre</string>
+</resources>

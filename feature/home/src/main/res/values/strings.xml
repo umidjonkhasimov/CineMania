@@ -4,4 +4,7 @@
     <string name="popular_movies">Popular Movies</string>
     <string name="top_rated">Top Rated</string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="trending_today">Trending Today</string>
+    <string name="genres">Genres</string>
 </resources>

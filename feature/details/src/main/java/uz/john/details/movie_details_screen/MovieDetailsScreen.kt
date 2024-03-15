@@ -60,14 +60,14 @@ import uz.john.details.movie_details_screen.components.CrewItem
 import uz.john.details.movie_details_screen.components.ImageItem
 import uz.john.details.movie_details_screen.components.ProductionCountryItem
 import uz.john.details.movie_details_screen.components.VideoItem
-import uz.john.domain.model.Movie
+import uz.john.domain.model.movie.Movie
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.movie_details.Cast
-import uz.john.domain.model.movie_details.Crew
-import uz.john.domain.model.movie_details.ImagesResponse
-import uz.john.domain.model.movie_details.MovieDetails
-import uz.john.domain.model.movie_details.Video
-import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.domain.model.movie.movie_details.Cast
+import uz.john.domain.model.movie.movie_details.Crew
+import uz.john.domain.model.movie.movie_details.ImagesResponse
+import uz.john.domain.model.movie.movie_details.MovieDetails
+import uz.john.domain.model.movie.movie_details.Video
+import uz.john.paginated_movies_list.AllMoviesScreenParam
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
@@ -92,7 +92,8 @@ fun MovieDetailsScreen(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesMediaType) -> Unit
+    onPersonClick: (Int) -> Unit,
+    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
 ) {
     val viewModel: MovieDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,6 +105,7 @@ fun MovieDetailsScreen(
         onBackClick = onBackClick,
         onImageClick = onImageClick,
         onMovieClick = onMovieClick,
+        onPersonClick = onPersonClick,
         onSeeAllSimilarClick = onSeeAllSimilarClick
     )
 }
@@ -116,7 +118,8 @@ private fun MovieDetailsScreenContent(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesMediaType) -> Unit
+    onPersonClick: (Int) -> Unit,
+    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -176,12 +179,14 @@ private fun MovieDetailsScreenContent(
 
                             cast(
                                 castList = movieDetails.credits.cast,
+                                onPersonClick = onPersonClick
                             )
 
                             space()
 
                             crew(
-                                crewList = movieDetails.credits.crew
+                                crewList = movieDetails.credits.crew,
+                                onPersonClick = onPersonClick
                             )
 
                             space()
@@ -196,7 +201,17 @@ private fun MovieDetailsScreenContent(
                             videos(
                                 videoList = movieDetails.videos.videoList,
                                 onVideoClick = { videoKey ->
-                                    startYoutube(videoKey, context)
+                                    launchYoutube(videoKey, context)
+                                }
+                            )
+
+                            space()
+
+                            recommendedMovies(
+                                recommendedMovies = uiState.recommendedMovies,
+                                onMovieClick = onMovieClick,
+                                onSeeAllSimilarClick = {
+                                    onSeeAllSimilarClick(AllMoviesScreenParam.RecommendedMovies(movieDetails.id))
                                 }
                             )
 
@@ -206,7 +221,7 @@ private fun MovieDetailsScreenContent(
                                 similarMovies = uiState.similarMovies,
                                 onMovieClick = onMovieClick,
                                 onSeeAllSimilarClick = {
-                                    onSeeAllSimilarClick(AllMoviesMediaType.SimilarMovies(movieDetails.id))
+                                    onSeeAllSimilarClick(AllMoviesScreenParam.SimilarMovies(movieDetails.id))
                                 }
                             )
                         }
@@ -404,8 +419,9 @@ fun LazyListScope.movieDetails(
     }
 }
 
-fun LazyListScope.cast(
+private fun LazyListScope.cast(
     castList: List<Cast>,
+    onPersonClick: (Int) -> Unit,
 ) {
     if (castList.isNotEmpty()) {
         item {
@@ -413,8 +429,7 @@ fun LazyListScope.cast(
                 modifier = Modifier
                     .padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.cast),
-                shouldShowSeeAllButton = true,
-                onSeeAllClick = { }
+                shouldShowSeeAllButton = false
             ) {
                 LazyHorizontalGrid(
                     rows = GridCells.Fixed(3),
@@ -425,7 +440,10 @@ fun LazyListScope.cast(
                         items = castList,
                         key = { it.id }
                     ) { cast ->
-                        CastItem(cast = cast)
+                        CastItem(
+                            cast = cast,
+                            onPersonClick = onPersonClick
+                        )
                     }
                 }
             }
@@ -433,8 +451,9 @@ fun LazyListScope.cast(
     }
 }
 
-fun LazyListScope.crew(
-    crewList: List<Crew>
+private fun LazyListScope.crew(
+    crewList: List<Crew>,
+    onPersonClick: (Int) -> Unit,
 ) {
     if (crewList.isNotEmpty()) {
         item {
@@ -442,8 +461,7 @@ fun LazyListScope.crew(
                 modifier = Modifier
                     .padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.crew),
-                shouldShowSeeAllButton = true,
-                onSeeAllClick = { }
+                shouldShowSeeAllButton = false
             ) {
                 LazyHorizontalGrid(
                     rows = GridCells.Fixed(3),
@@ -456,7 +474,10 @@ fun LazyListScope.crew(
                             it.creditId
                         }
                     ) { crew ->
-                        CrewItem(crew = crew)
+                        CrewItem(
+                            crew = crew,
+                            onPersonClick = onPersonClick
+                        )
                     }
                 }
             }
@@ -464,7 +485,7 @@ fun LazyListScope.crew(
     }
 }
 
-fun LazyListScope.images(
+private fun LazyListScope.images(
     images: ImagesResponse,
     onImageClick: (String) -> Unit
 ) {
@@ -493,7 +514,7 @@ fun LazyListScope.images(
     }
 }
 
-fun LazyListScope.videos(
+private fun LazyListScope.videos(
     videoList: List<Video>,
     onVideoClick: (String) -> Unit
 ) {
@@ -523,7 +544,41 @@ fun LazyListScope.videos(
     }
 }
 
-fun LazyListScope.similarMovies(
+private fun LazyListScope.recommendedMovies(
+    recommendedMovies: List<Movie>,
+    onMovieClick: (Int) -> Unit,
+    onSeeAllSimilarClick: () -> Unit
+) {
+    if (recommendedMovies.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier.padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.recommended),
+                shouldShowSeeAllButton = true,
+                onSeeAllClick = onSeeAllSimilarClick
+            ) {
+                LazyRow {
+                    items(
+                        items = recommendedMovies,
+                        key = { it.id }
+                    ) { movie ->
+                        MovieCardItem(
+                            movieData = movie,
+                            onMovieClick = onMovieClick
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    item {
+                        SeeAllItem(onSeeAllClick = onSeeAllSimilarClick)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun LazyListScope.similarMovies(
     similarMovies: List<Movie>,
     onMovieClick: (Int) -> Unit,
     onSeeAllSimilarClick: () -> Unit
@@ -557,13 +612,13 @@ fun LazyListScope.similarMovies(
     }
 }
 
-fun LazyListScope.space(modifier: Modifier = Modifier) {
+private fun LazyListScope.space(modifier: Modifier = Modifier) {
     item {
         Spacer(modifier = modifier.height(40.dp))
     }
 }
 
-private fun startYoutube(videoKey: String, context: Context) {
+private fun launchYoutube(videoKey: String, context: Context) {
     val intent = Intent(Intent.ACTION_VIEW).apply {
         data = Uri.parse("https://www.youtube.com/watch?v=$videoKey")
     }

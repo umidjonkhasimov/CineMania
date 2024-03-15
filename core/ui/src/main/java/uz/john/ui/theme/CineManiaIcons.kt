@@ -14,6 +14,10 @@ object CineManiaIcons {
     val YouTube = R.drawable.ic_youtube
     val RightArrow = R.drawable.ic_right_arrow
     val DollarSign = R.drawable.ic_dollar_sign
+    val CineManiaLogo = R.drawable.cinemania_logo
+    val AppleLogo = R.drawable.ic_apple
+    val FaceBookLogo = R.drawable.ic_facebook
+    val GoogleLogo = R.drawable.ic_google
 
     object Filled {
         val Home = R.drawable.ic_home_filled

@@ -9,8 +9,9 @@ import kotlinx.coroutines.launch
 import uz.john.details.movie_details_screen.MovieDetailsScreenContract.SideEffect
 import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiAction
 import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiState
-import uz.john.domain.use_cases.GetMovieDetailsUseCase
-import uz.john.domain.use_cases.GetSimilarMoviesUseCase
+import uz.john.domain.use_cases.movies.GetMovieDetailsUseCase
+import uz.john.domain.use_cases.movies.GetRecommendedMoviesUseCase
+import uz.john.domain.use_cases.movies.GetSimilarMoviesUseCase
 import uz.john.ui.delegations.MVI
 import uz.john.ui.delegations.mvi
 import uz.john.util.ResultModel
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
+    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
     private val movieId = savedStateHandle.get<String>(MOVIE_ID_ARG)?.toIntOrNull()
@@ -38,6 +40,7 @@ class MovieDetailsViewModel @Inject constructor(
                     movieId?.let {
                         getMovieDetails(movieId)
                         getSimilarMovies(movieId)
+                        getRecommendedMovies(movieId)
                     }
                     updateUiState { copy(isLoading = false) }
                 }
@@ -75,6 +78,29 @@ class MovieDetailsViewModel @Inject constructor(
                     val movieDetails = response.data.copy(images = images, videos = videos)
 
                     copy(movieDetails = movieDetails)
+                }
+            }
+        }
+    }
+
+    private suspend fun getRecommendedMovies(movieId: Int) {
+        val response = getRecommendedMoviesUseCase.invoke(movieId = movieId, 1)
+        when (response) {
+            is ResultModel.Error -> {
+                updateUiState {
+                    copy(recommendedMovies = emptyList())
+                }
+            }
+
+            is ResultModel.Exception -> {
+                updateUiState {
+                    copy(recommendedMovies = emptyList())
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(recommendedMovies = response.data.take(10))
                 }
             }
         }

@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesScreenParam
 
 const val HOME_ROUTE = "HOME_ROUTE"
 
@@ -14,7 +14,7 @@ fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit
 ) {
     composable(route = HOME_ROUTE) {
         HomeScreen(

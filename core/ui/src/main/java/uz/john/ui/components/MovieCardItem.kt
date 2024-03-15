@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import uz.john.domain.model.Movie
+import uz.john.domain.model.movie.Movie
 import uz.john.domain.model.NetworkImageSizes
 import uz.john.ui.theme.CineManiaColors
 

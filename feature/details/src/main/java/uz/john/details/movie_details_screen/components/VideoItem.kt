@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import uz.john.domain.model.movie_details.Video
+import uz.john.domain.model.movie.movie_details.Video
 import uz.john.ui.components.CoilVideoThumbnail
 import uz.john.ui.theme.CineManiaIcons
 

@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import uz.john.domain.model.movie_details.ProductionCountry
+import uz.john.domain.model.movie.movie_details.ProductionCountry
 
 @Composable
 fun ProductionCountryItem(

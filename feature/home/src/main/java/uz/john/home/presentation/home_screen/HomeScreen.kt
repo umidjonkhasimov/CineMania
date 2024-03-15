@@ -30,16 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.Flow
-import uz.john.domain.model.Movie
+import uz.john.domain.model.movie.Movie
+import uz.john.domain.model.movie.movie_details.Genre
 import uz.john.home.R
 import uz.john.home.presentation.components.HomeCarouselItem
 import uz.john.home.presentation.components.HomeShimmerEffect
-import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesScreenParam
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.LazyRowItemsHolder
 import uz.john.ui.components.MovieCardItem
+import uz.john.ui.components.MovieGenreItem
 import uz.john.ui.components.SeeAllItem
 
+private val GENRES_HEIGHT = 130.dp
 private val SCREEN_PADDING = 16.dp
 private val SPACE_BETWEEN_MOVIES = 8.dp
 private const val FADE_ANIMATION_DURATION = 200
@@ -47,7 +50,7 @@ private const val FADE_ANIMATION_DURATION = 200
 @Composable
 fun HomeScreen(
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit
 ) {
     val viewModel: HomeScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -68,7 +71,7 @@ private fun HomeScreenContent(
     onUiAction: (HomeScreenContract.UiAction) -> Unit,
     sideEffect: Flow<HomeScreenContract.SideEffect>,
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var dialogErrorMessage by remember { mutableStateOf("") }
@@ -123,9 +126,19 @@ private fun HomeScreenContent(
                 LazyColumn(
                     modifier = Modifier.padding(top = SCREEN_PADDING)
                 ) {
-                    nowPlayingMoviesPager(
+                    trendingTodayPager(
                         pagerState = pagerState,
+                        trendingTodayMovies = uiState.trendingTodayMovies,
+                        onMovieItemClick = { movieId ->
+                            onMovieItemClick(movieId)
+                        }
+                    )
+
+                    space()
+
+                    nowPlayingMovies(
                         nowPlayingMovies = uiState.nowPlayingMovies,
+                        onSeeAllClick = onSeeAllClick,
                         onMovieItemClick = { movieId ->
                             onMovieItemClick(movieId)
                         }
@@ -137,6 +150,13 @@ private fun HomeScreenContent(
                         popularMovies = uiState.popularMovies,
                         onSeeAllClick = onSeeAllClick,
                         onMovieItemClick = onMovieItemClick
+                    )
+
+                    space()
+
+                    allGenres(
+                        allGenres = uiState.genres,
+                        onGenreClick = onSeeAllClick
                     )
 
                     space()
@@ -153,16 +173,17 @@ private fun HomeScreenContent(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun LazyListScope.nowPlayingMoviesPager(
+fun LazyListScope.trendingTodayPager(
     pagerState: PagerState,
-    nowPlayingMovies: List<Movie>?,
+    trendingTodayMovies: List<Movie>?,
     onMovieItemClick: (Int) -> Unit
 ) {
-    nowPlayingMovies?.let {
+    trendingTodayMovies?.let {
         item {
             HomeCarouselItem(
                 pagerState = pagerState,
-                moviesList = nowPlayingMovies,
+                moviesList = trendingTodayMovies,
+                title = stringResource(R.string.trending_today),
                 modifier = Modifier,
                 onItemClick = { movieId ->
                     onMovieItemClick(movieId)
@@ -172,9 +193,44 @@ fun LazyListScope.nowPlayingMoviesPager(
     }
 }
 
+fun LazyListScope.nowPlayingMovies(
+    nowPlayingMovies: List<Movie>?,
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
+    onMovieItemClick: (Int) -> Unit
+) {
+    nowPlayingMovies?.let {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier.padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.now_playing),
+                shouldShowSeeAllButton = true,
+                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.NowPlayingMovies) }
+            ) {
+                LazyRow {
+                    items(
+                        items = nowPlayingMovies,
+                        key = { it.id }
+                    ) { movieData ->
+                        MovieCardItem(
+                            movieData = movieData,
+                            onMovieClick = { movieId ->
+                                onMovieItemClick(movieId)
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
+                    }
+                    item {
+                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.NowPlayingMovies) })
+                    }
+                }
+            }
+        }
+    }
+}
+
 fun LazyListScope.popularMovies(
     popularMovies: List<Movie>?,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit,
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
     onMovieItemClick: (Int) -> Unit
 ) {
     popularMovies?.let {
@@ -183,7 +239,7 @@ fun LazyListScope.popularMovies(
                 modifier = Modifier.padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.popular_movies),
                 shouldShowSeeAllButton = true,
-                onSeeAllClick = { onSeeAllClick(AllMoviesMediaType.PopularMovies) }
+                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.PopularMovies) }
             ) {
                 LazyRow {
                     items(
@@ -199,7 +255,39 @@ fun LazyListScope.popularMovies(
                         Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
                     }
                     item {
-                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesMediaType.PopularMovies) })
+                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.PopularMovies) })
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun LazyListScope.allGenres(
+    allGenres: List<Genre>?,
+    onGenreClick: (AllMoviesScreenParam) -> Unit
+) {
+    allGenres?.let {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier
+                    .padding(start = SCREEN_PADDING)
+                    .height(GENRES_HEIGHT),
+                title = stringResource(R.string.genres),
+                shouldShowSeeAllButton = false
+            ) {
+                LazyRow {
+                    items(
+                        items = allGenres,
+                        key = { it.id }
+                    ) { genre ->
+                        MovieGenreItem(
+                            genre = genre,
+                            onGenreClick = { genreId ->
+                                onGenreClick(AllMoviesScreenParam.AllMoviesByGenre(genreId = genreId, name = genre.name))
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }
@@ -209,7 +297,7 @@ fun LazyListScope.popularMovies(
 
 fun LazyListScope.topRatedMovies(
     topRatedMovies: List<Movie>?,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit,
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
     onMovieItemClick: (Int) -> Unit
 ) {
     topRatedMovies?.let {
@@ -218,7 +306,7 @@ fun LazyListScope.topRatedMovies(
                 modifier = Modifier.padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.top_rated),
                 shouldShowSeeAllButton = true,
-                onSeeAllClick = { onSeeAllClick(AllMoviesMediaType.TopRated) }
+                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.TopRated) }
             ) {
                 LazyRow {
                     items(
@@ -234,7 +322,7 @@ fun LazyListScope.topRatedMovies(
                         Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
                     }
                     item {
-                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesMediaType.TopRated) })
+                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.TopRated) })
                     }
                 }
             }

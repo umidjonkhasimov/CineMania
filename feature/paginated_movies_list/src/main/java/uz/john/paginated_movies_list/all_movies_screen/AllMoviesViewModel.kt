@@ -9,11 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
-import uz.john.domain.model.Movie
-import uz.john.domain.use_cases.pagination.GetPaginatedPopularMoviesUseCase
-import uz.john.domain.use_cases.pagination.GetPaginatedSimilarMoviesUseCase
-import uz.john.domain.use_cases.pagination.GetPaginatedTopRatedMoviesUseCase
-import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.domain.model.movie.Movie
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesByGenreUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedNowPlayingMoviesUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedPopularMoviesUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedRecommendedMoviesUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedSimilarMoviesUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedTopRatedMoviesUseCase
+import uz.john.paginated_movies_list.AllMoviesScreenParam
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.SideEffect
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
@@ -23,37 +26,52 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllMoviesViewModel @Inject constructor(
+    getPaginatedNowPlayingMoviesUseCase: GetPaginatedNowPlayingMoviesUseCase,
     getPaginatedPopularMoviesUseCase: GetPaginatedPopularMoviesUseCase,
     getPaginatedTopRatedMoviesUseCase: GetPaginatedTopRatedMoviesUseCase,
     getPaginatedSimilarMoviesUseCase: GetPaginatedSimilarMoviesUseCase,
+    getPaginatedRecommendedMoviesUseCase: GetPaginatedRecommendedMoviesUseCase,
+    getPaginatedMoviesByGenreUseCase: GetPaginatedMoviesByGenreUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
     private val json = savedStateHandle.get<String>(ALL_MOVIES_ARG)
 
-    private val mediaType = json?.let {
-        Json.decodeFromString<AllMoviesMediaType>(json)
+    private val allMoviesScreenParam = json?.let {
+        Json.decodeFromString<AllMoviesScreenParam>(json)
     }
 
     init {
-        mediaType?.let {
+        allMoviesScreenParam?.let {
             updateUiState {
-                copy(title = mediaType.title)
+                copy(title = allMoviesScreenParam.title)
             }
         }
     }
 
     var paginatedMovies: Flow<PagingData<Movie>> =
-        when (mediaType) {
-            AllMoviesMediaType.PopularMovies -> {
+        when (allMoviesScreenParam) {
+            AllMoviesScreenParam.NowPlayingMovies -> {
+                getPaginatedNowPlayingMoviesUseCase().cachedIn(viewModelScope)
+            }
+
+            AllMoviesScreenParam.PopularMovies -> {
                 getPaginatedPopularMoviesUseCase().cachedIn(viewModelScope)
             }
 
-            is AllMoviesMediaType.SimilarMovies -> {
-                getPaginatedSimilarMoviesUseCase(mediaType.movieId).cachedIn(viewModelScope)
+            is AllMoviesScreenParam.SimilarMovies -> {
+                getPaginatedSimilarMoviesUseCase(allMoviesScreenParam.movieId).cachedIn(viewModelScope)
             }
 
-            AllMoviesMediaType.TopRated -> {
+            AllMoviesScreenParam.TopRated -> {
                 getPaginatedTopRatedMoviesUseCase().cachedIn(viewModelScope)
+            }
+
+            is AllMoviesScreenParam.RecommendedMovies -> {
+                getPaginatedRecommendedMoviesUseCase(allMoviesScreenParam.movieId).cachedIn(viewModelScope)
+            }
+
+            is AllMoviesScreenParam.AllMoviesByGenre -> {
+                getPaginatedMoviesByGenreUseCase(allMoviesScreenParam.genreId).cachedIn(viewModelScope)
             }
 
             null -> {

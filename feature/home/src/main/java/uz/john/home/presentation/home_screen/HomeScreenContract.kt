@@ -1,15 +1,16 @@
 package uz.john.home.presentation.home_screen
 
-import uz.john.domain.model.Movie
+import uz.john.domain.model.movie.Movie
+import uz.john.domain.model.movie.movie_details.Genre
 
 sealed interface HomeScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
+        val trendingTodayMovies: List<Movie>? = null,
         val nowPlayingMovies: List<Movie>? = null,
         val popularMovies: List<Movie>? = null,
         val topRated: List<Movie>? = null,
-        val categories: List<Movie>? = null,
-        val trendingToday: List<Movie>? = null
+        val genres: List<Genre>? = null,
     ) : HomeScreenContract
 
     sealed interface UiAction : HomeScreenContract {

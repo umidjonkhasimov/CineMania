@@ -1,5 +1,6 @@
 package uz.john.details.movie_details_screen.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.movie_details.Cast
-import uz.john.domain.model.movie_details.Crew
+import uz.john.domain.model.movie.movie_details.Cast
+import uz.john.domain.model.movie.movie_details.Crew
 import uz.john.ui.components.CoilImage
 
 private val ITEM_WIDTH = 250.dp
@@ -24,12 +25,16 @@ private val ITEM_WIDTH = 250.dp
 @Composable
 fun CastItem(
     cast: Cast,
+    onPersonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .padding(end = 16.dp)
             .width(ITEM_WIDTH)
+            .clickable {
+                onPersonClick(cast.id)
+            }
     ) {
         CoilImage(
             modifier = Modifier
@@ -61,12 +66,16 @@ fun CastItem(
 @Composable
 fun CrewItem(
     crew: Crew,
+    onPersonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .padding(end = 16.dp)
             .width(ITEM_WIDTH)
+            .clickable {
+                onPersonClick(crew.id)
+            }
     ) {
         CoilImage(
             modifier = Modifier

@@ -26,6 +26,8 @@ import uz.john.cinemania.main_screen.mainScreen
 import uz.john.cinemania.main_screen.navigateToMainScreen
 import uz.john.details.movie_details_screen.movieDetailsScreen
 import uz.john.details.movie_details_screen.navigateToMovieDetailsScreen
+import uz.john.details.person_details.navigateToPersonDetailsScreen
+import uz.john.details.person_details.personDetailsScreen
 import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
 import uz.john.paginated_movies_list.all_movies_screen.allMoviesScreen
@@ -129,8 +131,22 @@ fun CineManiaNavHost(
             onMovieClick = { movieId ->
                 navController.navigateToMovieDetailsScreen(movieId)
             },
+            onPersonClick = { personId ->
+                navController.navigateToPersonDetailsScreen(personId)
+            },
             onSeeAllSimilarClick = { mediaType ->
                 navController.navigateToAllMoviesScreen(mediaType)
+            }
+        )
+        personDetailsScreen(
+            onBackClick = {
+                navController.popBack()
+            },
+            onImageClick = { imagePath ->
+                navController.navigateToImageViewerScreen(imagePath)
+            },
+            onMovieItemClick = { movieId ->
+                navController.navigateToMovieDetailsScreen(movieId)
             }
         )
         allMoviesScreen(

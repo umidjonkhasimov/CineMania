@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import uz.john.domain.model.Movie
 import uz.john.domain.model.NetworkImageSizes
+import uz.john.domain.model.movie.Movie
 import uz.john.ui.components.CoilImage
 import uz.john.ui.components.DotsIndicator
 import uz.john.ui.components.VerticalGradient
@@ -37,6 +37,7 @@ private val PAGER_HEIGHT = 200.dp
 fun HomeCarouselItem(
     pagerState: PagerState,
     moviesList: List<Movie>,
+    title: String,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -62,9 +63,16 @@ fun HomeCarouselItem(
 //    }
 
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         HorizontalPager(
             state = pagerState,
         ) { page ->
@@ -73,7 +81,6 @@ fun HomeCarouselItem(
 
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
                     .height(PAGER_HEIGHT)
                     .graphicsLayer {
                         scaleX = scaleFactor

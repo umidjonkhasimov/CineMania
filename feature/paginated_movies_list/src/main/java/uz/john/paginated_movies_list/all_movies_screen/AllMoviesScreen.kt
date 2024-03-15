@@ -26,7 +26,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
-import uz.john.domain.model.Movie
+import uz.john.domain.model.movie.Movie
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
 import uz.john.ui.components.AnimatedProgressIndicator

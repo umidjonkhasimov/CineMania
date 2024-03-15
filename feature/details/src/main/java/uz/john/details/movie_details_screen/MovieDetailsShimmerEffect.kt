@@ -81,77 +81,17 @@ fun MovieDetailsShimmerEffect(
         Spacer(modifier = Modifier.height(32.dp))
 
         Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(generateFloatRange(.5f))
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(generateFloatRange(.5f))
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(generateFloatRange(.5f))
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(generateFloatRange(.5f))
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect()
-            )
+            repeat(10) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(generateFloatRange(.5f))
+                        .height(16.dp)
+                        .clip(MaterialTheme.shapes.small)
+                        .shimmerEffect()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }

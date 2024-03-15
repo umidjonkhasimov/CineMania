@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import uz.john.data.BuildConfig
 import uz.john.data.remote.api.AuthenticationApi
 import uz.john.data.remote.api.MoviesApi
+import uz.john.data.remote.api.PersonApi
 import uz.john.data.remote.interceptors.ApiKeyInterceptor
 import uz.john.data.remote.interceptors.InternetConnectionInterceptor
 import javax.inject.Singleton
@@ -30,6 +31,12 @@ object NetworkModule {
     @Singleton
     fun provideMoviesApiService(retrofit: Retrofit): MoviesApi {
         return retrofit.create(MoviesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePersonApiService(retrofit: Retrofit): PersonApi {
+        return retrofit.create(PersonApi::class.java)
     }
 
     @Provides

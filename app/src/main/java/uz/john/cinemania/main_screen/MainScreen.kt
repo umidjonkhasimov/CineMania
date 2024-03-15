@@ -42,7 +42,7 @@ import androidx.navigation.navOptions
 import uz.john.for_you.presentation.for_you_screen.forYouScreen
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.home.presentation.home_screen.homeScreen
-import uz.john.paginated_movies_list.AllMoviesMediaType
+import uz.john.paginated_movies_list.AllMoviesScreenParam
 import uz.john.profile.presentation.profile_screen.profileScreen
 import uz.john.search.presentation.search_screen.searchScreen
 
@@ -53,7 +53,7 @@ private val BOTTOM_NAV_BAR_ITEM_HEIGHT = 40.dp
 fun MainScreen(
     bottomNavController: NavHostController,
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesMediaType) -> Unit
+    onSeeAllClick: (AllMoviesScreenParam) -> Unit
 ) {
     val bottomNavigationItems = listOf(
         BottomNavigationItems.HOME_ITEM,

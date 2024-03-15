@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Welcome Screen -->
+    <string name="app_name">CineMania</string>
+    <string name="enter_email">Enter your Email to Sign Up</string>
+    <string name="continue_without_account">Continue without account</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="sign_up_with">Or Sign up with</string>
+
+    <!-- Login Screen -->
     <string name="hello_movie_fan">Hello, Movie fan</string>
     <string name="welcome_back">Welcome back! Please enter your details.</string>
     <string name="password">Password</string>
