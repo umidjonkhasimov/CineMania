@@ -117,9 +117,15 @@ fun CineManiaNavHost(
             onMovieItemClick = { movieId ->
                 navController.navigateToMovieDetailsScreen(movieId)
             },
-            onSeeAllClick = { mediaType ->
+            onSeeAllMoviesClick = { mediaType ->
                 navController.navigateToAllMoviesScreen(mediaType)
-            }
+            },
+            onPersonClick = { personId ->
+                navController.navigateToPersonDetailsScreen(personId)
+            },
+            onTvShowClick = { tvShowId ->
+
+            },
         )
         movieDetailsScreen(
             onBackClick = {

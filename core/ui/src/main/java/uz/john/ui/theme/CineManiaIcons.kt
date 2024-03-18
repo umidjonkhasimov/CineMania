@@ -18,6 +18,8 @@ object CineManiaIcons {
     val AppleLogo = R.drawable.ic_apple
     val FaceBookLogo = R.drawable.ic_facebook
     val GoogleLogo = R.drawable.ic_google
+    val Clear = R.drawable.ic_clear
+    val ArrowBack = R.drawable.ic_arrow_back
 
     object Filled {
         val Home = R.drawable.ic_home_filled

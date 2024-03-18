@@ -1,6 +1,6 @@
-package uz.john.domain.model.person
+package uz.john.domain.model.person.details
 
-import uz.john.data.remote.model.person.PersonCreditsResponseData
+import uz.john.data.remote.model.person.details.PersonCreditsResponseData
 
 data class PersonCredits(
     val cast: List<CastCredit>,

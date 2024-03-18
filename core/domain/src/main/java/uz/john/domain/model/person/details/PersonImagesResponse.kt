@@ -1,6 +1,6 @@
-package uz.john.domain.model.person
+package uz.john.domain.model.person.details
 
-import uz.john.data.remote.model.person.PersonImagesResponseData
+import uz.john.data.remote.model.person.details.PersonImagesResponseData
 
 data class PersonImagesResponse(
     val profiles: List<Profile>

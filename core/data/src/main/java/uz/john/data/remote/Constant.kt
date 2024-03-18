@@ -21,8 +21,17 @@ internal const val ALL_GENRES_ENDPOINT = "genre/movie/list"
 internal const val TRENDING_TIME_WINDOW_DAY = "day"
 internal const val TRENDING_TIME_WINDOW_WEEK = "week"
 
+// Search
+internal const val SEARCH_MOVIE_ENDPOINT = "search/movie"
+internal const val SEARCH_PEOPLE_ENDPOINT = "search/person"
+internal const val SEARCH_TV_SHOWS_ENDPOINT = "search/tv"
+internal const val YEAR = "year"
+internal const val QUERY = "query"
+internal const val FIRST_AIR_DATE_YEAR = "first_air_date_year"
+
 // Person
 internal const val PERSON_DETAILS_ENDPOINT = "person/{person_id}"
+internal const val POPULAR_PEOPLE_ENDPOINT = "person/popular"
 
 // Query Params
 internal const val LANGUAGE = "language"

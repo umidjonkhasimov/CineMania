@@ -22,6 +22,7 @@ import uz.john.data.remote.TOP_RATED_MOVIES_ENDPOINT
 import uz.john.data.remote.TRENDING_ENDPOINT
 import uz.john.data.remote.TRENDING_TIME_WINDOW
 import uz.john.data.remote.TRENDING_TIME_WINDOW_DAY
+import uz.john.data.remote.TRENDING_TIME_WINDOW_WEEK
 import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.MoviesResponseData
 import uz.john.data.remote.model.movie.movie_details.MovieDetailsData
@@ -30,6 +31,13 @@ interface MoviesApi {
     @GET(TRENDING_ENDPOINT)
     suspend fun getTrendingTodayMovies(
         @Path(TRENDING_TIME_WINDOW) timeWindow: String = TRENDING_TIME_WINDOW_DAY,
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int,
+    ): Response<MoviesResponseData>
+
+    @GET(TRENDING_ENDPOINT)
+    suspend fun getTrendingThisWeekMovies(
+        @Path(TRENDING_TIME_WINDOW) timeWindow: String = TRENDING_TIME_WINDOW_WEEK,
         @Query(LANGUAGE) language: String,
         @Query(PAGE) page: Int,
     ): Response<MoviesResponseData>

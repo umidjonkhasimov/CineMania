@@ -45,7 +45,7 @@ import uz.john.details.person_details.PersonDetailsScreenContract.UiAction
 import uz.john.details.person_details.PersonDetailsScreenContract.UiState
 import uz.john.details.person_details.components.PersonImageItem
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.person.Person
+import uz.john.domain.model.person.details.PersonDetails
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
@@ -171,7 +171,7 @@ fun PersonDetailsScreenContent(
 }
 
 private fun LazyListScope.personDetails(
-    personDetails: Person,
+    personDetails: PersonDetails,
     onImageClick: (String) -> Unit
 ) {
     item {
@@ -276,7 +276,7 @@ private fun LazyListScope.personDetails(
 }
 
 private fun LazyListScope.images(
-    personDetails: Person,
+    personDetails: PersonDetails,
     onImageClick: (String) -> Unit
 ) {
     if (personDetails.images.profiles.isNotEmpty()) {
@@ -306,7 +306,7 @@ private fun LazyListScope.images(
 }
 
 private fun LazyListScope.cast(
-    personDetails: Person,
+    personDetails: PersonDetails,
     onMovieItemClick: (Int) -> Unit
 ) {
     if (personDetails.credits.cast.isNotEmpty()) {
@@ -334,7 +334,7 @@ private fun LazyListScope.cast(
 }
 
 private fun LazyListScope.crew(
-    personDetails: Person,
+    personDetails: PersonDetails,
     onMovieItemClick: (Int) -> Unit
 ) {
     if (personDetails.credits.crew.isNotEmpty()) {

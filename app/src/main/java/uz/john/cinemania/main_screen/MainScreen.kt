@@ -53,7 +53,9 @@ private val BOTTOM_NAV_BAR_ITEM_HEIGHT = 40.dp
 fun MainScreen(
     bottomNavController: NavHostController,
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit
+    onPersonClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit
 ) {
     val bottomNavigationItems = listOf(
         BottomNavigationItems.HOME_ITEM,
@@ -132,11 +134,18 @@ fun MainScreen(
         ) {
             homeScreen(
                 onMovieItemClick = onMovieItemClick,
-                onSeeAllClick = onSeeAllClick
+                onSeeAllClick = onSeeAllMoviesClick
             )
             forYouScreen()
             profileScreen()
-            searchScreen()
+            searchScreen(
+                onPersonClick = onPersonClick,
+                onMovieClick = onMovieItemClick,
+                onTvShowClick = onTvShowClick,
+                onSeeAllMoviesClick = onSeeAllMoviesClick,
+                onSeeAllPeopleClick = { },
+                onSeeAllTvShowsClick = { }
+            )
         }
     }
 }

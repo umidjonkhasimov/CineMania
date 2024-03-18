@@ -1,4 +1,4 @@
-package uz.john.data.remote.model.person
+package uz.john.data.remote.model.person.details
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,6 @@
-package uz.john.domain.model.person
+package uz.john.domain.model.person.details
 
-import uz.john.data.remote.model.person.CrewCreditData
+import uz.john.data.remote.model.person.details.CrewCreditData
 import uz.john.util.formatDate
 import uz.john.util.roundToOneDecimal
 

@@ -96,6 +96,15 @@ class MoviesRepository @Inject constructor(
         }
     }
 
+    suspend fun getTrendingThisWeekMovies(page: Int): ResultModel<MoviesResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            moviesApi.getTrendingThisWeekMovies(
+                language = language,
+                page = page,
+            )
+        }
+    }
+
     fun getPaginatedPopularMovies() = Pager(
         config = PagingConfig(
             pageSize = 20

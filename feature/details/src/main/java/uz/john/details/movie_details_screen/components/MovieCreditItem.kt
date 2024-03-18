@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.person.CastCredit
-import uz.john.domain.model.person.CrewCredit
+import uz.john.domain.model.person.details.CastCredit
+import uz.john.domain.model.person.details.CrewCredit
 import uz.john.ui.components.CoilImage
 import uz.john.ui.theme.CineManiaColors
 

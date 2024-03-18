@@ -1,11 +1,13 @@
 package uz.john.paginated_movies_list.all_movies_screen
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
@@ -32,6 +34,7 @@ class AllMoviesViewModel @Inject constructor(
     getPaginatedSimilarMoviesUseCase: GetPaginatedSimilarMoviesUseCase,
     getPaginatedRecommendedMoviesUseCase: GetPaginatedRecommendedMoviesUseCase,
     getPaginatedMoviesByGenreUseCase: GetPaginatedMoviesByGenreUseCase,
+    @ApplicationContext context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
     private val json = savedStateHandle.get<String>(ALL_MOVIES_ARG)
@@ -43,7 +46,7 @@ class AllMoviesViewModel @Inject constructor(
     init {
         allMoviesScreenParam?.let {
             updateUiState {
-                copy(title = allMoviesScreenParam.title)
+                copy(title = allMoviesScreenParam.getTitle(context))
             }
         }
     }
@@ -72,6 +75,14 @@ class AllMoviesViewModel @Inject constructor(
 
             is AllMoviesScreenParam.AllMoviesByGenre -> {
                 getPaginatedMoviesByGenreUseCase(allMoviesScreenParam.genreId).cachedIn(viewModelScope)
+            }
+
+            is AllMoviesScreenParam.AllMoviesBySearchQuery -> {
+                flowOf()
+            }
+
+            AllMoviesScreenParam.MoviesTrendingThisWeek -> {
+                flowOf()
             }
 
             null -> {

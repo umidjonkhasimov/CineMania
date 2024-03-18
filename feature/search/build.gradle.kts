@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":core:domain"))
+    implementation(project(":feature:paginated_movies_list"))
     implementation(libs.androidx.core.ktx)
 
     // Compose

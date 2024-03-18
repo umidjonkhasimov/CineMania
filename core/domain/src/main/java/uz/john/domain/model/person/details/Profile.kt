@@ -1,6 +1,6 @@
-package uz.john.domain.model.person
+package uz.john.domain.model.person.details
 
-import uz.john.data.remote.model.person.ProfileData
+import uz.john.data.remote.model.person.details.ProfileData
 
 data class Profile(
     val aspectRatio: Double,

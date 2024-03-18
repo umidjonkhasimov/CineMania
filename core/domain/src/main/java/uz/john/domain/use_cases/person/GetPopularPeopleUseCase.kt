@@ -1,16 +1,16 @@
 package uz.john.domain.use_cases.person
 
 import uz.john.data.repository.PersonRepository
-import uz.john.domain.model.person.details.PersonDetails
-import uz.john.domain.model.person.details.toDomain
+import uz.john.domain.model.person.Person
+import uz.john.domain.model.person.toDomain
 import uz.john.util.ResultModel
 import javax.inject.Inject
 
-class GetPersonDetailsUseCase @Inject constructor(
+class GetPopularPeopleUseCase @Inject constructor(
     private val personRepository: PersonRepository
 ) {
-    suspend operator fun invoke(personId: Int): ResultModel<PersonDetails> {
-        val response = personRepository.getPersonDetails(personId)
+    suspend operator fun invoke(page: Int): ResultModel<List<Person>> {
+        val response = personRepository.getPopularPeople(page = page)
 
         return when (response) {
             is ResultModel.Error -> {
@@ -22,8 +22,8 @@ class GetPersonDetailsUseCase @Inject constructor(
             }
 
             is ResultModel.Success -> {
-                val person = response.data.toDomain()
-                ResultModel.Success(person)
+                val list = response.data.results.map { it.toDomain() }
+                ResultModel.Success(list)
             }
         }
     }

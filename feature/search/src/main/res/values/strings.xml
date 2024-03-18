@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="people">People</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">Tv Shows</string>
+    <string name="search_for_movies_tv_shows_people">Search for movies, tv shows, people etc…</string>
+    <string name="popular_people">Popular people</string>
+    <string name="movies_trending_this_week">Movies trending this week</string>
+    <string name="tv_shows_trending_this_week">Tv shows trending this week</string>
+    <string name="nothing_found">Nothing found :(</string>
+</resources>

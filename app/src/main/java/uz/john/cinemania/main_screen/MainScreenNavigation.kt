@@ -24,14 +24,18 @@ fun NavController.navigateToMainScreen(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.mainScreen(
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit
+    onPersonClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit
 ) {
     composable(MAIN_ROUTE) {
         val bottomNavController = rememberNavController()
         MainScreen(
             bottomNavController = bottomNavController,
             onMovieItemClick = onMovieItemClick,
-            onSeeAllClick = onSeeAllClick
+            onSeeAllMoviesClick = onSeeAllMoviesClick,
+            onPersonClick = onPersonClick,
+            onTvShowClick = onTvShowClick
         )
     }
 }

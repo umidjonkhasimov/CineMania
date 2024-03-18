@@ -1,11 +1,11 @@
 package uz.john.details.person_details
 
-import uz.john.domain.model.person.Person
+import uz.john.domain.model.person.details.PersonDetails
 
 sealed interface PersonDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
-        val personDetails: Person? = null
+        val personDetails: PersonDetails? = null
     ) : PersonDetailsScreenContract
 
     sealed interface SideEffect : PersonDetailsScreenContract {
