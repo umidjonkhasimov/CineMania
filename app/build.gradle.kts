@@ -59,7 +59,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:search"))
     implementation(project(":feature:details"))
-    implementation(project(":feature:paginated_movies_list"))
+    implementation(project(":feature:paginated_items"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
