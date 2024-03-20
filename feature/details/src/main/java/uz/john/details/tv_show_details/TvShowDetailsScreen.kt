@@ -1,4 +1,4 @@
-package uz.john.details.movie_details_screen
+package uz.john.details.tv_show_details
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,84 +53,81 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import uz.john.details.R
-import uz.john.details.movie_details_screen.MovieDetailsScreenContract.SideEffect
-import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiAction
-import uz.john.details.movie_details_screen.MovieDetailsScreenContract.UiState
-import uz.john.details.movie_details_screen.components.CastItem
-import uz.john.details.movie_details_screen.components.CrewItem
 import uz.john.details.components.ImageItem
 import uz.john.details.components.ProductionCountryItem
 import uz.john.details.components.VideoItem
-import uz.john.domain.model.movie.Movie
+import uz.john.details.tv_show_details.TvShowDetailsScreenContract.SideEffect
+import uz.john.details.tv_show_details.TvShowDetailsScreenContract.UiAction
+import uz.john.details.tv_show_details.TvShowDetailsScreenContract.UiState
+import uz.john.details.tv_show_details.components.TvShowCastItem
+import uz.john.details.tv_show_details.components.TvShowCrewItem
+import uz.john.details.tv_show_details.components.TvShowDetailsShimmerEffect
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.movie.movie_details.Cast
-import uz.john.domain.model.movie.movie_details.Crew
 import uz.john.domain.model.common.ImagesResponse
-import uz.john.domain.model.movie.movie_details.MovieDetails
 import uz.john.domain.model.common.Video
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.domain.model.tv_show.TvShow
+import uz.john.domain.model.tv_show.tv_show_details.TvShowCast
+import uz.john.domain.model.tv_show.tv_show_details.TvShowCrew
+import uz.john.domain.model.tv_show.tv_show_details.TvShowDetails
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.components.CoilImage
 import uz.john.ui.components.LazyRowItemsHolder
-import uz.john.ui.components.MovieCardItem
 import uz.john.ui.components.SeeAllItem
+import uz.john.ui.components.TvShowItem
 import uz.john.ui.components.VerticalGradient
 import uz.john.ui.theme.CineManiaColors
 import uz.john.ui.theme.CineManiaIcons
-import uz.john.util.formatWithCommaSeparators
 import uz.john.util.getYear
 
 private const val ANIMATED_CONTENT_DURATION = 200
-private val MOVIE_DETAILS_HEIGHT = 500.dp
-private val MOVIE_IMAGE_HEIGHT = 300.dp
-private val MOVIE_IMAGE_WIDTH = 200.dp
+private val TV_SHOW_DETAILS_HEIGHT = 400.dp
+private val TV_SHOW_IMAGE_HEIGHT = 200.dp
+private val LAZY_ROW_HEIGHT = 230.dp
+private val TV_SHOW_IMAGE_WIDTH = 300.dp
 private val SCREEN_PADDING = 16.dp
 
 @Composable
-fun MovieDetailsScreen(
+fun TvShowDetailsScreen(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
 ) {
-    val viewModel: MovieDetailsViewModel = hiltViewModel()
+    val viewModel: TvShowDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    MovieDetailsScreenContent(
+    TvShowDetailsScreenContent(
         uiState = uiState,
-        onUiAction = viewModel::onAction,
         sideEffect = viewModel.sideEffect,
+        onUiAction = viewModel::onAction,
         onBackClick = onBackClick,
         onImageClick = onImageClick,
-        onMovieClick = onMovieClick,
+        onTvShowClick = onTvShowClick,
         onPersonClick = onPersonClick,
-        onSeeAllSimilarClick = onSeeAllSimilarClick
     )
 }
 
 @Composable
-private fun MovieDetailsScreenContent(
+fun TvShowDetailsScreenContent(
     uiState: UiState,
-    onUiAction: (UiAction) -> Unit,
     sideEffect: Flow<SideEffect>,
+    onUiAction: (UiAction) -> Unit,
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(sideEffect) {
-        sideEffect.collect { sideEffect ->
-            when (sideEffect) {
+        sideEffect.collect {
+            when (it) {
                 is SideEffect.ShowErrorDialog -> {
                     shouldShowErrorDialog = true
-                    errorDialogMessage = sideEffect.message
+                    errorDialogMessage = it.errorMessage
                 }
             }
         }
@@ -139,7 +137,7 @@ private fun MovieDetailsScreenContent(
         CineManiaErrorDialog(
             errorText = errorDialogMessage,
             onCancel = { shouldShowErrorDialog = false },
-            onRetry = { onUiAction(UiAction.GetMovieDetails) },
+            onRetry = { onUiAction(UiAction.InitializeScreen) },
             onDismissRequest = { shouldShowErrorDialog = false }
         )
     }
@@ -161,16 +159,16 @@ private fun MovieDetailsScreenContent(
         ) { isLoading ->
             when (isLoading) {
                 true -> {
-                    MovieDetailsShimmerEffect()
+                    TvShowDetailsShimmerEffect()
                 }
 
                 false -> {
                     val context = LocalContext.current
 
-                    uiState.movieDetails?.let { movieDetails ->
+                    uiState.tvShowDetails?.let { tvShowDetails ->
                         LazyColumn {
-                            movieDetails(
-                                movieDetails = movieDetails,
+                            tvShowDetails(
+                                tvShowDetails = tvShowDetails,
                                 onBackClick = onBackClick,
                                 onImageClick = onImageClick
                             )
@@ -178,28 +176,28 @@ private fun MovieDetailsScreenContent(
                             space()
 
                             cast(
-                                castList = movieDetails.credits.cast,
+                                castList = tvShowDetails.credits.cast,
                                 onPersonClick = onPersonClick
                             )
 
                             space()
 
                             crew(
-                                crewList = movieDetails.credits.crew,
+                                crewList = tvShowDetails.credits.crew,
                                 onPersonClick = onPersonClick
                             )
 
                             space()
 
                             images(
-                                images = movieDetails.images,
+                                images = tvShowDetails.images,
                                 onImageClick = onImageClick
                             )
 
                             space()
 
                             videos(
-                                videoList = movieDetails.videos.videoList,
+                                videoList = tvShowDetails.videos.videoList,
                                 onVideoClick = { videoKey ->
                                     launchYoutube(videoKey, context)
                                 }
@@ -207,22 +205,18 @@ private fun MovieDetailsScreenContent(
 
                             space()
 
-                            recommendedMovies(
-                                recommendedMovies = uiState.recommendedMovies,
-                                onMovieClick = onMovieClick,
-                                onSeeAllSimilarClick = {
-                                    onSeeAllSimilarClick(AllMoviesScreenParam.RecommendedMovies(movieDetails.id))
-                                }
+                            recommendedTvShows(
+                                recommendedTvShows = uiState.recommendedTvShows,
+                                onTvShowClick = onTvShowClick,
+                                onSeeAllSimilarClick = {} // TODO
                             )
 
                             space()
 
-                            similarMovies(
-                                similarMovies = uiState.similarMovies,
-                                onMovieClick = onMovieClick,
-                                onSeeAllSimilarClick = {
-                                    onSeeAllSimilarClick(AllMoviesScreenParam.SimilarMovies(movieDetails.id))
-                                }
+                            similarTvShows(
+                                similarTvShows = uiState.similarTvShows,
+                                onTvShowClick = onTvShowClick,
+                                onSeeAllSimilarClick = {} // TODO
                             )
                         }
                     } ?: run {
@@ -239,14 +233,15 @@ private fun MovieDetailsScreenContent(
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
-private fun LazyListScope.movieDetails(
-    movieDetails: MovieDetails,
+private fun LazyListScope.tvShowDetails(
+    tvShowDetails: TvShowDetails,
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit
 ) {
-    val ratingColor = if (movieDetails.voteAverage >= 8) CineManiaColors.Orange.primary
-    else if (movieDetails.voteAverage >= 7) CineManiaColors.Green.primary
+    val ratingColor = if (tvShowDetails.voteAverage >= 8) CineManiaColors.Orange.primary
+    else if (tvShowDetails.voteAverage >= 7) CineManiaColors.Green.primary
     else CineManiaColors.Gray
     var shouldShowMore by mutableStateOf(true)
 
@@ -259,22 +254,22 @@ private fun LazyListScope.movieDetails(
                 modifier = Modifier
                     .alpha(.4f)
                     .fillMaxWidth()
-                    .height(MOVIE_DETAILS_HEIGHT),
-                imagePath = movieDetails.posterPath,
+                    .height(TV_SHOW_DETAILS_HEIGHT),
+                imagePath = tvShowDetails.posterPath,
                 imageSize = NetworkImageSizes.MEDIUM
             )
 
             VerticalGradient(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(MOVIE_DETAILS_HEIGHT)
+                    .height(TV_SHOW_DETAILS_HEIGHT)
             )
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CineManiaTopBar(
-                    title = movieDetails.title,
+                    title = tvShowDetails.name,
                     backgroundColor = Color.Transparent,
                     leadingContent = {
                         CineManiaBackButton(
@@ -286,12 +281,12 @@ private fun LazyListScope.movieDetails(
                 CoilImage(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
-                        .height(MOVIE_IMAGE_HEIGHT)
-                        .width(MOVIE_IMAGE_WIDTH)
+                        .height(TV_SHOW_IMAGE_HEIGHT)
+                        .width(TV_SHOW_IMAGE_WIDTH)
                         .clickable {
-                            movieDetails.posterPath?.let { onImageClick(it) }
+                            tvShowDetails.backdropPath?.let { onImageClick(it) }
                         },
-                    imagePath = movieDetails.posterPath,
+                    imagePath = tvShowDetails.backdropPath,
                     imageSize = NetworkImageSizes.LARGE
                 )
 
@@ -307,20 +302,7 @@ private fun LazyListScope.movieDetails(
                         contentDescription = null
                     )
                     Text(
-                        text = movieDetails.releaseDate.getYear(),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                    VerticalDivider(modifier = Modifier.height(12.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Icon(
-                        painter = painterResource(CineManiaIcons.Duration),
-                        contentDescription = null
-                    )
-                    Text(
-                        text = stringResource(R.string.duration, movieDetails.runtime),
+                        text = tvShowDetails.firstAirDate.getYear(),
                         style = MaterialTheme.typography.titleSmall
                     )
 
@@ -330,7 +312,7 @@ private fun LazyListScope.movieDetails(
 
                     Icon(painter = painterResource(CineManiaIcons.Genre), contentDescription = null)
                     Text(
-                        text = movieDetails.genres.firstOrNull()?.name ?: "",
+                        text = tvShowDetails.genres.firstOrNull()?.name ?: "",
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
@@ -338,17 +320,24 @@ private fun LazyListScope.movieDetails(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.extraLarge)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        painter = painterResource(CineManiaIcons.DollarSign),
+                        painter = painterResource(CineManiaIcons.Duration),
                         contentDescription = null
                     )
                     Text(
-                        text = movieDetails.revenue.formatWithCommaSeparators(),
-                        style = MaterialTheme.typography.titleSmall,
+                        text = stringResource(
+                            R.string.season_and_episodes_count,
+                            tvShowDetails.numberOfSeasons,
+                            tvShowDetails.numberOfEpisodes
+                        ),
+                        style = MaterialTheme.typography.titleSmall
                     )
                 }
 
@@ -368,8 +357,8 @@ private fun LazyListScope.movieDetails(
                     Text(
                         text = stringResource(
                             R.string.reviews,
-                            movieDetails.voteAverage,
-                            movieDetails.voteCount
+                            tvShowDetails.voteAverage,
+                            tvShowDetails.voteCount
                         ),
                         style = MaterialTheme.typography.titleSmall,
                         color = ratingColor
@@ -380,12 +369,14 @@ private fun LazyListScope.movieDetails(
 
                 LazyRow {
                     items(
-                        items = movieDetails.productionCountries,
+                        items = tvShowDetails.productionCountries,
                     ) { productionCountry ->
                         ProductionCountryItem(productionCountry)
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -395,7 +386,7 @@ private fun LazyListScope.movieDetails(
                         .align(Alignment.Start)
                 ) {
                     Text(
-                        text = movieDetails.tagline,
+                        text = tvShowDetails.tagline,
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -403,7 +394,7 @@ private fun LazyListScope.movieDetails(
                         visible = shouldShowMore,
                     ) {
                         Text(
-                            text = movieDetails.overview,
+                            text = tvShowDetails.overview,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -420,7 +411,7 @@ private fun LazyListScope.movieDetails(
 }
 
 private fun LazyListScope.cast(
-    castList: List<Cast>,
+    castList: List<TvShowCast>,
     onPersonClick: (Int) -> Unit,
 ) {
     if (castList.isNotEmpty()) {
@@ -440,7 +431,7 @@ private fun LazyListScope.cast(
                         items = castList,
                         key = { it.id }
                     ) { cast ->
-                        CastItem(
+                        TvShowCastItem(
                             cast = cast,
                             onPersonClick = onPersonClick
                         )
@@ -452,7 +443,7 @@ private fun LazyListScope.cast(
 }
 
 private fun LazyListScope.crew(
-    crewList: List<Crew>,
+    crewList: List<TvShowCrew>,
     onPersonClick: (Int) -> Unit,
 ) {
     if (crewList.isNotEmpty()) {
@@ -474,7 +465,7 @@ private fun LazyListScope.crew(
                             it.creditId
                         }
                     ) { crew ->
-                        CrewItem(
+                        TvShowCrewItem(
                             crew = crew,
                             onPersonClick = onPersonClick
                         )
@@ -544,28 +535,27 @@ private fun LazyListScope.videos(
     }
 }
 
-private fun LazyListScope.recommendedMovies(
-    recommendedMovies: List<Movie>,
-    onMovieClick: (Int) -> Unit,
+private fun LazyListScope.recommendedTvShows(
+    recommendedTvShows: List<TvShow>?,
+    onTvShowClick: (Int) -> Unit,
     onSeeAllSimilarClick: () -> Unit
 ) {
-    if (recommendedMovies.isNotEmpty()) {
+    if (!recommendedTvShows.isNullOrEmpty()) {
         item {
             LazyRowItemsHolder(
-                modifier = Modifier.padding(start = SCREEN_PADDING),
+                modifier = Modifier
+                    .height(LAZY_ROW_HEIGHT)
+                    .padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.recommended),
                 shouldShowSeeAllButton = true,
                 onSeeAllClick = onSeeAllSimilarClick
             ) {
                 LazyRow {
                     items(
-                        items = recommendedMovies,
+                        items = recommendedTvShows,
                         key = { it.id }
-                    ) { movie ->
-                        MovieCardItem(
-                            movieData = movie,
-                            onMovieClick = onMovieClick
-                        )
+                    ) { tvShow ->
+                        TvShowItem(tvShow = tvShow, onTvShowClick = onTvShowClick)
 
                         Spacer(modifier = Modifier.width(8.dp))
                     }
@@ -578,28 +568,27 @@ private fun LazyListScope.recommendedMovies(
     }
 }
 
-private fun LazyListScope.similarMovies(
-    similarMovies: List<Movie>,
-    onMovieClick: (Int) -> Unit,
+private fun LazyListScope.similarTvShows(
+    similarTvShows: List<TvShow>?,
+    onTvShowClick: (Int) -> Unit,
     onSeeAllSimilarClick: () -> Unit
 ) {
-    if (similarMovies.isNotEmpty()) {
+    if (!similarTvShows.isNullOrEmpty()) {
         item {
             LazyRowItemsHolder(
-                modifier = Modifier.padding(start = SCREEN_PADDING),
-                title = stringResource(R.string.similar_movies),
+                modifier = Modifier
+                    .height(LAZY_ROW_HEIGHT)
+                    .padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.similar_tv_shows),
                 shouldShowSeeAllButton = true,
                 onSeeAllClick = onSeeAllSimilarClick
             ) {
                 LazyRow {
                     items(
-                        items = similarMovies,
+                        items = similarTvShows,
                         key = { it.id }
-                    ) { movie ->
-                        MovieCardItem(
-                            movieData = movie,
-                            onMovieClick = onMovieClick
-                        )
+                    ) { tvShow ->
+                        TvShowItem(tvShow = tvShow, onTvShowClick = onTvShowClick)
 
                         Spacer(modifier = Modifier.width(8.dp))
                     }

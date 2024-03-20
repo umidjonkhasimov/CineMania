@@ -1,19 +1,16 @@
 package uz.john.domain.use_cases.tv_shows
 
 import uz.john.data.repository.TvShowsRepository
-import uz.john.domain.model.tv_show.TvShow
-import uz.john.domain.model.tv_show.toDomain
+import uz.john.domain.model.tv_show.tv_show_details.TvShowDetails
+import uz.john.domain.model.tv_show.tv_show_details.toDomain
 import uz.john.util.ResultModel
 import javax.inject.Inject
 
-class GetTrendingThisWeekTvShowsUseCase @Inject constructor(
+class GetTvShowDetailsUseCase @Inject constructor(
     private val tvShowsRepository: TvShowsRepository
 ) {
-    suspend operator fun invoke(page: Int): ResultModel<List<TvShow>> {
-        val response = tvShowsRepository.getTrendingThisWeekTvShows(
-            page = page,
-        )
-
+    suspend operator fun invoke(seriesId: Int): ResultModel<TvShowDetails> {
+        val response = tvShowsRepository.getTvShowDetails(seriesId = seriesId)
         return when (response) {
             is ResultModel.Error -> {
                 ResultModel.Error(response.error)
@@ -24,13 +21,7 @@ class GetTrendingThisWeekTvShowsUseCase @Inject constructor(
             }
 
             is ResultModel.Success -> {
-                val list = response.data.results.map {
-                    it.toDomain()
-                }
-
-                ResultModel.Success(
-                    list
-                )
+                ResultModel.Success(response.data.toDomain())
             }
         }
     }

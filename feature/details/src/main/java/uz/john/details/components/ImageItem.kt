@@ -1,4 +1,4 @@
-package uz.john.details.movie_details_screen.components
+package uz.john.details.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.movie.movie_details.Image
+import uz.john.domain.model.common.Image
 import uz.john.ui.components.CoilImage
 
 @Composable

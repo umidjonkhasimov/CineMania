@@ -1,4 +1,4 @@
-package uz.john.details.movie_details_screen.components
+package uz.john.details.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import uz.john.domain.model.movie.movie_details.Video
+import uz.john.domain.model.common.Video
 import uz.john.ui.components.CoilVideoThumbnail
 import uz.john.ui.theme.CineManiaIcons
 

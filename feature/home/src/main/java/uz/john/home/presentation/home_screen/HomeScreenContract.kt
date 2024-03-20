@@ -1,7 +1,7 @@
 package uz.john.home.presentation.home_screen
 
 import uz.john.domain.model.movie.Movie
-import uz.john.domain.model.movie.movie_details.Genre
+import uz.john.domain.model.common.Genre
 
 sealed interface HomeScreenContract {
     data class UiState(

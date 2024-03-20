@@ -21,6 +21,16 @@ internal const val ALL_GENRES_ENDPOINT = "genre/movie/list"
 internal const val TRENDING_TIME_WINDOW_DAY = "day"
 internal const val TRENDING_TIME_WINDOW_WEEK = "week"
 
+// Person
+internal const val PERSON_DETAILS_ENDPOINT = "person/{person_id}"
+internal const val POPULAR_PEOPLE_ENDPOINT = "person/popular"
+
+// Tv Shows
+internal const val TRENDING_TV_SHOWS_ENDPOINT = "trending/tv/{time_window}"
+internal const val TV_SHOW_DETAILS_ENDPOINT = "tv/{series_id}"
+internal const val SIMILAR_TV_SHOWS_ENDPOINT = "tv/{series_id}/similar"
+internal const val RECOMMENDED_TV_SHOWS_ENDPOINT = "tv/{series_id}/recommendations"
+
 // Search
 internal const val SEARCH_MOVIE_ENDPOINT = "search/movie"
 internal const val SEARCH_PEOPLE_ENDPOINT = "search/person"
@@ -29,15 +39,12 @@ internal const val YEAR = "year"
 internal const val QUERY = "query"
 internal const val FIRST_AIR_DATE_YEAR = "first_air_date_year"
 
-// Person
-internal const val PERSON_DETAILS_ENDPOINT = "person/{person_id}"
-internal const val POPULAR_PEOPLE_ENDPOINT = "person/popular"
 
 // Query Params
 internal const val LANGUAGE = "language"
 internal const val PAGE = "page"
 internal const val REGION = "region"
-internal const val ADD_TO_RESPONSE = "append_to_response"
+internal const val APPEND_TO_RESPONSE = "append_to_response"
 
 // Discover Movie Params
 internal const val INCLUDE_ADULT = "include_adult"
@@ -58,5 +65,6 @@ internal const val WITH_PEOPLE = "with_people"
 
 // Path
 internal const val MOVIE_ID = "movie_id"
+internal const val SERIES_ID = "series_id"
 internal const val PERSON_ID = "person_id"
 internal const val TRENDING_TIME_WINDOW = "time_window"

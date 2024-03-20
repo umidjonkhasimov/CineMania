@@ -10,4 +10,8 @@
     <string name="trailers_teasers"><![CDATA[Trailers & Teasers]]></string>
     <string name="images">Images</string>
     <string name="similar_movies">Similar Movies</string>
+
+    <!-- Tv Shows -->
+    <string name="season_and_episodes_count">%1$s Seasons, %2$s episodes</string>
+    <string name="similar_tv_shows">Similar Tv Shows</string>
 </resources>

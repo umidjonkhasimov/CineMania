@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import uz.john.domain.model.movie.movie_details.Genre
+import uz.john.domain.model.common.Genre
 
 @Composable
 fun MovieGenreItem(

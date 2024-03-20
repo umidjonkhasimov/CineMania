@@ -1,6 +1,13 @@
 package uz.john.domain.model.movie.movie_details
 
 import uz.john.data.remote.model.movie.movie_details.MovieDetailsData
+import uz.john.domain.model.common.Genre
+import uz.john.domain.model.common.ImagesResponse
+import uz.john.domain.model.common.ProductionCompany
+import uz.john.domain.model.common.ProductionCountry
+import uz.john.domain.model.common.SpokenLanguage
+import uz.john.domain.model.common.VideosResponse
+import uz.john.domain.model.common.toDomain
 import uz.john.util.formatDate
 import uz.john.util.roundToOneDecimal
 

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.Flow
 import uz.john.domain.model.movie.Movie
-import uz.john.domain.model.movie.movie_details.Genre
+import uz.john.domain.model.common.Genre
 import uz.john.home.R
 import uz.john.home.presentation.components.HomeCarouselItem
 import uz.john.home.presentation.components.HomeShimmerEffect

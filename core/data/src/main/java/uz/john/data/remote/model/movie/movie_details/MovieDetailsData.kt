@@ -1,6 +1,12 @@
 package uz.john.data.remote.model.movie.movie_details
 
 import com.google.gson.annotations.SerializedName
+import uz.john.data.remote.model.common.GenreData
+import uz.john.data.remote.model.common.ImagesResponseData
+import uz.john.data.remote.model.common.ProductionCompanyData
+import uz.john.data.remote.model.common.ProductionCountryData
+import uz.john.data.remote.model.common.SpokenLanguageData
+import uz.john.data.remote.model.common.VideosResponseData
 
 data class MovieDetailsData(
     val adult: Boolean,

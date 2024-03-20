@@ -1,6 +1,6 @@
-package uz.john.domain.model.movie.movie_details
+package uz.john.domain.model.common
 
-import uz.john.data.remote.model.movie.movie_details.VideoData
+import uz.john.data.remote.model.common.VideoData
 
 data class Video(
     val id: String,

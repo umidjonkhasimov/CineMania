@@ -1,4 +1,4 @@
-package uz.john.data.remote.model.movie.movie_details
+package uz.john.data.remote.model.common
 
 data class ImagesResponseData(
     val backdrops: List<ImageData>,

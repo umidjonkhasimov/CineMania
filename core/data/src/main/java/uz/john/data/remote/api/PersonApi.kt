@@ -4,7 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import uz.john.data.remote.ADD_TO_RESPONSE
+import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.LANGUAGE
@@ -19,7 +19,7 @@ interface PersonApi {
     @GET(PERSON_DETAILS_ENDPOINT)
     suspend fun getPersonDetails(
         @Path(value = PERSON_ID) personId: Int,
-        @Query(value = ADD_TO_RESPONSE) addToResponse: String = "$APPEND_CREDITS,$APPEND_IMAGES"
+        @Query(value = APPEND_TO_RESPONSE) addToResponse: String = "$APPEND_CREDITS,$APPEND_IMAGES"
     ): Response<PersonDetailsData>
 
     @GET(POPULAR_PEOPLE_ENDPOINT)
