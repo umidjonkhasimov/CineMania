@@ -69,6 +69,7 @@ import uz.john.domain.model.tv_show.TvShow
 import uz.john.domain.model.tv_show.tv_show_details.TvShowCast
 import uz.john.domain.model.tv_show.tv_show_details.TvShowCrew
 import uz.john.domain.model.tv_show.tv_show_details.TvShowDetails
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
@@ -94,6 +95,7 @@ fun TvShowDetailsScreen(
     onImageClick: (String) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     val viewModel: TvShowDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -106,6 +108,7 @@ fun TvShowDetailsScreen(
         onImageClick = onImageClick,
         onTvShowClick = onTvShowClick,
         onPersonClick = onPersonClick,
+        onSeeAllTvShowsClick = onSeeAllTvShowsClick
     )
 }
 
@@ -118,6 +121,7 @@ fun TvShowDetailsScreenContent(
     onImageClick: (String) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -208,7 +212,9 @@ fun TvShowDetailsScreenContent(
                             recommendedTvShows(
                                 recommendedTvShows = uiState.recommendedTvShows,
                                 onTvShowClick = onTvShowClick,
-                                onSeeAllSimilarClick = {} // TODO
+                                onSeeAllSimilarClick = {
+                                    onSeeAllTvShowsClick(AllTvShowsScreenParam.RecommendedTvShows(tvShowDetails.id))
+                                }
                             )
 
                             space()
@@ -216,7 +222,9 @@ fun TvShowDetailsScreenContent(
                             similarTvShows(
                                 similarTvShows = uiState.similarTvShows,
                                 onTvShowClick = onTvShowClick,
-                                onSeeAllSimilarClick = {} // TODO
+                                onSeeAllSimilarClick = {
+                                    onSeeAllTvShowsClick(AllTvShowsScreenParam.SimilarTvShows(tvShowDetails.id))
+                                }
                             )
                         }
                     } ?: run {

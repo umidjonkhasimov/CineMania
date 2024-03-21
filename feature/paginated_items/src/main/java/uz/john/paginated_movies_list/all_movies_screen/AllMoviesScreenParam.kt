@@ -1,7 +1,8 @@
-package uz.john.paginated_movies_list
+package uz.john.paginated_movies_list.all_movies_screen
 
 import android.content.Context
 import kotlinx.serialization.Serializable
+import uz.john.paginated_movies_list.R
 
 @Serializable
 sealed class AllMoviesScreenParam {

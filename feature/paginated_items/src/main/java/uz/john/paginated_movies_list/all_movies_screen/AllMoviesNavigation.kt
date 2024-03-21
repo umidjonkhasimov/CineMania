@@ -6,7 +6,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import uz.john.paginated_movies_list.AllMoviesScreenParam
 
 const val ALL_MOVIES_ARG = "ALL_MOVIES_ARG"
 const val ALL_MOVIES = "ALL_MOVIES"

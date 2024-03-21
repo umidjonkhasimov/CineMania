@@ -1,30 +1,28 @@
-package uz.john.data.pagination
+package uz.john.data.pagination.tv_shows
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import uz.john.data.remote.WITH_GENRES
-import uz.john.data.remote.api.MoviesApi
-import uz.john.data.remote.model.movie.MovieData
+import uz.john.data.remote.api.SearchApi
+import uz.john.data.remote.model.tv_show.TvShowData
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 
-class MoviesByGenrePagingSource(
-    private val moviesApi: MoviesApi,
+class TvShowsBySearchQueryPagingSource(
+    private val searchApi: SearchApi,
+    private val query: String,
+    private val includeAdult: Boolean,
     private val language: String,
-    private val region: String,
-    private val genreId: Int,
-) : PagingSource<Int, MovieData>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieData> {
+) : PagingSource<Int, TvShowData>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowData> {
         val page = params.key ?: 1
-        val queryParams = mutableMapOf<String, String>()
-        queryParams[WITH_GENRES] = genreId.toString()
 
         val response = invokeRequest {
-            moviesApi.discoverMovies(
-                page = page,
+            searchApi.searchTvShows(
+                query = query,
                 language = language,
-                region = region,
-                queryParams = queryParams
+                includeAdult = includeAdult,
+                page = page,
+                additionalParams = mapOf()
             )
         }
 
@@ -41,13 +39,13 @@ class MoviesByGenrePagingSource(
                 LoadResult.Page(
                     data = response.data.results,
                     prevKey = if (page == 1) null else page.minus(1),
-                    nextKey = if (response.data.results.isEmpty()) null else page.plus(1),
+                    nextKey = if (response.data.results.isEmpty()) null else page.plus(1)
                 )
             }
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, MovieData>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, TvShowData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

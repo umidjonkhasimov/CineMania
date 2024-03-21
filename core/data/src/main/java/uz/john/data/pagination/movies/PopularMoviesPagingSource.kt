@@ -1,4 +1,4 @@
-package uz.john.data.pagination
+package uz.john.data.pagination.movies
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.navigation)
+    implementation(libs.androidx.compose.runtime)
 
     // Hilt
     implementation(libs.hilt.android)

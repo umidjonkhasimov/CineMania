@@ -4,7 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 
 const val SEARCH_SCREEN = "SEARCH_SCREEN"
 
@@ -18,7 +19,7 @@ fun NavGraphBuilder.searchScreen(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: () -> Unit,
-    onSeeAllTvShowsClick: () -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     composable(route = SEARCH_SCREEN) {
         SearchScreen(

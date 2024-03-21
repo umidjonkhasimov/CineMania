@@ -34,6 +34,8 @@ import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
 import uz.john.paginated_movies_list.all_movies_screen.allMoviesScreen
 import uz.john.paginated_movies_list.all_movies_screen.navigateToAllMoviesScreen
+import uz.john.paginated_movies_list.all_tv_shows_screen.allTvShowsScreen
+import uz.john.paginated_movies_list.all_tv_shows_screen.navigateToAllTvShowsScreen
 
 private const val TMDB_SIGN_IN_PAGE = "https://www.themoviedb.org/signup"
 private const val NAVIGATION_ANIMATION_DURATION = 400
@@ -127,6 +129,9 @@ fun CineManiaNavHost(
             },
             onTvShowClick = { tvShowId ->
                 navController.navigateToTvShowsDetailsScreen(tvShowId)
+            },
+            onSeeAllTvShowsClick = { allTvShowsScreenParam ->
+                navController.navigateToAllTvShowsScreen(allTvShowsScreenParam)
             }
         )
         movieDetailsScreen(
@@ -158,6 +163,9 @@ fun CineManiaNavHost(
             },
             onPersonClick = { personId ->
                 navController.navigateToPersonDetailsScreen(personId)
+            },
+            onSeeAllTvShowsClick = { allTvShowsParam ->
+                navController.navigateToAllTvShowsScreen(allTvShowsParam)
             }
         )
         personDetailsScreen(
@@ -177,6 +185,12 @@ fun CineManiaNavHost(
             },
             onBackClick = {
                 navController.popBack()
+            }
+        )
+        allTvShowsScreen(
+            onBackClick = { navController.popBack() },
+            onTvShowClick = { seriesId ->
+                navController.navigateToTvShowsDetailsScreen(seriesId)
             }
         )
         imageViewerScreen(

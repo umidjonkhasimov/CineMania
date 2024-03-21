@@ -1,7 +1,10 @@
 package uz.john.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import uz.john.data.pagination.tv_shows.TvShowsBySearchQueryPagingSource
 import uz.john.data.remote.FIRST_AIR_DATE_YEAR
 import uz.john.data.remote.PRIMARY_RELEASE_YEAR
 import uz.john.data.remote.YEAR
@@ -78,4 +81,16 @@ class SearchRepository @Inject constructor(
             )
         }
     }
+
+    fun getPaginatedTvShowsBySearchQuery(query: String) = Pager(
+        config = PagingConfig(pageSize = 20),
+        pagingSourceFactory = {
+            TvShowsBySearchQueryPagingSource(
+                searchApi = searchApi,
+                query = query,
+                language = language,
+                includeAdult = true
+            )
+        }
+    ).flow
 }

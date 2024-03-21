@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
 
 const val MOVIE_ID_ARG = "MOVIE_ID_ARG"
 const val MOVIE_DETAILS = "MOVIE_DETAILS"

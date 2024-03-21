@@ -11,7 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import uz.john.cinemania.R
 import uz.john.for_you.presentation.for_you_screen.FOR_YOU_ROUTE
 import uz.john.home.presentation.home_screen.HOME_ROUTE
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.profile.presentation.profile_screen.PROFILE_SCREEN
 import uz.john.search.presentation.search_screen.SEARCH_SCREEN
 import uz.john.ui.theme.CineManiaIcons
@@ -26,7 +27,8 @@ fun NavGraphBuilder.mainScreen(
     onMovieItemClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
-    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     composable(MAIN_ROUTE) {
         val bottomNavController = rememberNavController()
@@ -35,7 +37,8 @@ fun NavGraphBuilder.mainScreen(
             onMovieItemClick = onMovieItemClick,
             onSeeAllMoviesClick = onSeeAllMoviesClick,
             onPersonClick = onPersonClick,
-            onTvShowClick = onTvShowClick
+            onTvShowClick = onTvShowClick,
+            onSeeAllTvShowsClick = onSeeAllTvShowsClick
         )
     }
 }

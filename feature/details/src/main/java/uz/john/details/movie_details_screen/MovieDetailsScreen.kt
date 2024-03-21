@@ -67,7 +67,7 @@ import uz.john.domain.model.movie.movie_details.Crew
 import uz.john.domain.model.common.ImagesResponse
 import uz.john.domain.model.movie.movie_details.MovieDetails
 import uz.john.domain.model.common.Video
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar

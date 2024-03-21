@@ -43,7 +43,8 @@ import kotlinx.coroutines.flow.Flow
 import uz.john.domain.model.movie.Movie
 import uz.john.domain.model.person.Person
 import uz.john.domain.model.tv_show.TvShow
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.search.R
 import uz.john.search.presentation.search_screen.SearchScreenContract.SideEffect
 import uz.john.search.presentation.search_screen.SearchScreenContract.UiAction
@@ -68,7 +69,7 @@ fun SearchScreen(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: () -> Unit,
-    onSeeAllTvShowsClick: () -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -96,7 +97,7 @@ fun SearchScreenContent(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: () -> Unit,
-    onSeeAllTvShowsClick: () -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -166,7 +167,9 @@ fun SearchScreenContent(
 
                 tvShows(
                     tvShows = uiState.trendingThisWeekTvShows,
-                    onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+                    onSeeAllTvShowsClick = {
+                        onSeeAllTvShowsClick(AllTvShowsScreenParam.TvShowsTrendingThisWeek)
+                    },
                     onTvShowClick = onTvShowClick,
                     titleRes = R.string.tv_shows_trending_this_week
                 )
@@ -185,7 +188,7 @@ fun SearchView(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: () -> Unit,
-    onSeeAllTvShowsClick: () -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var queryText by rememberSaveable { mutableStateOf("") }
@@ -282,7 +285,9 @@ fun SearchView(
                 tvShows(
                     tvShows = uiState.tvShowResult,
                     onTvShowClick = onTvShowClick,
-                    onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+                    onSeeAllTvShowsClick = {
+                        onSeeAllTvShowsClick(AllTvShowsScreenParam.TvShowsBySearchResult(queryText))
+                    },
                     titleRes = R.string.tv_shows
                 )
             }

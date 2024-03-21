@@ -42,7 +42,8 @@ import androidx.navigation.navOptions
 import uz.john.for_you.presentation.for_you_screen.forYouScreen
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.home.presentation.home_screen.homeScreen
-import uz.john.paginated_movies_list.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.profile.presentation.profile_screen.profileScreen
 import uz.john.search.presentation.search_screen.searchScreen
 
@@ -55,7 +56,8 @@ fun MainScreen(
     onMovieItemClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
-    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     val bottomNavigationItems = listOf(
         BottomNavigationItems.HOME_ITEM,
@@ -144,7 +146,7 @@ fun MainScreen(
                 onTvShowClick = onTvShowClick,
                 onSeeAllMoviesClick = onSeeAllMoviesClick,
                 onSeeAllPeopleClick = { },
-                onSeeAllTvShowsClick = { }
+                onSeeAllTvShowsClick = onSeeAllTvShowsClick
             )
         }
     }

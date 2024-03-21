@@ -39,7 +39,6 @@ internal const val YEAR = "year"
 internal const val QUERY = "query"
 internal const val FIRST_AIR_DATE_YEAR = "first_air_date_year"
 
-
 // Query Params
 internal const val LANGUAGE = "language"
 internal const val PAGE = "page"

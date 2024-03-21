@@ -18,7 +18,6 @@ import uz.john.domain.use_cases.movies.pagination.GetPaginatedPopularMoviesUseCa
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedRecommendedMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedSimilarMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedTopRatedMoviesUseCase
-import uz.john.paginated_movies_list.AllMoviesScreenParam
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.SideEffect
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
