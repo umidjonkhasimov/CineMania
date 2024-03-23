@@ -10,4 +10,5 @@
     <string name="search_for">Search: %s</string>
     <string name="similar_tv_shows">Similar Tv Shows</string>
     <string name="recommended_tv_shows">Recommended Tv Shows</string>
+    <string name="popular_people">Popular People</string>
 </resources>

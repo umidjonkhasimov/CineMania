@@ -36,7 +36,7 @@ import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.components.PagingErrorItem
 import uz.john.ui.components.TvShowItem
 
-private val MIN_TV_SHOW_WIDTH = 180.dp
+private val MIN_TV_SHOW_WIDTH = 150.dp
 private val SCREEN_PADDING = 16.dp
 
 @Composable

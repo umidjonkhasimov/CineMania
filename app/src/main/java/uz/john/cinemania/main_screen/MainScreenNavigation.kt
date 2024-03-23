@@ -12,6 +12,7 @@ import uz.john.cinemania.R
 import uz.john.for_you.presentation.for_you_screen.FOR_YOU_ROUTE
 import uz.john.home.presentation.home_screen.HOME_ROUTE
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenParam
 import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.profile.presentation.profile_screen.PROFILE_SCREEN
 import uz.john.search.presentation.search_screen.SEARCH_SCREEN
@@ -28,6 +29,7 @@ fun NavGraphBuilder.mainScreen(
     onPersonClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
+    onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
     onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     composable(MAIN_ROUTE) {
@@ -38,7 +40,8 @@ fun NavGraphBuilder.mainScreen(
             onSeeAllMoviesClick = onSeeAllMoviesClick,
             onPersonClick = onPersonClick,
             onTvShowClick = onTvShowClick,
-            onSeeAllTvShowsClick = onSeeAllTvShowsClick
+            onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+            onSeeAllPeopleClick = onSeeAllPeopleClick
         )
     }
 }

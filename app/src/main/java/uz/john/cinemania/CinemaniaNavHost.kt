@@ -34,6 +34,8 @@ import uz.john.onboarding.navigation.ONBOARDING_ROUTE
 import uz.john.onboarding.navigation.onboardingScreen
 import uz.john.paginated_movies_list.all_movies_screen.allMoviesScreen
 import uz.john.paginated_movies_list.all_movies_screen.navigateToAllMoviesScreen
+import uz.john.paginated_movies_list.all_people_screen.allPeopleScreen
+import uz.john.paginated_movies_list.all_people_screen.navigateToAllPeopleScreen
 import uz.john.paginated_movies_list.all_tv_shows_screen.allTvShowsScreen
 import uz.john.paginated_movies_list.all_tv_shows_screen.navigateToAllTvShowsScreen
 
@@ -132,6 +134,9 @@ fun CineManiaNavHost(
             },
             onSeeAllTvShowsClick = { allTvShowsScreenParam ->
                 navController.navigateToAllTvShowsScreen(allTvShowsScreenParam)
+            },
+            onSeeAllPeopleClick = { allPeopleScreenParam ->
+                navController.navigateToAllPeopleScreen(allPeopleScreenParam)
             }
         )
         movieDetailsScreen(
@@ -191,6 +196,14 @@ fun CineManiaNavHost(
             onBackClick = { navController.popBack() },
             onTvShowClick = { seriesId ->
                 navController.navigateToTvShowsDetailsScreen(seriesId)
+            }
+        )
+        allPeopleScreen(
+            onPersonClick = { personId ->
+                navController.navigateToPersonDetailsScreen(personId)
+            },
+            onBackClick = {
+                navController.popBack()
             }
         )
         imageViewerScreen(

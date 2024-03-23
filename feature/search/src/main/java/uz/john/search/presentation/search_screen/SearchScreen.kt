@@ -44,6 +44,7 @@ import uz.john.domain.model.movie.Movie
 import uz.john.domain.model.person.Person
 import uz.john.domain.model.tv_show.TvShow
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenParam
 import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.search.R
 import uz.john.search.presentation.search_screen.SearchScreenContract.SideEffect
@@ -67,7 +68,7 @@ fun SearchScreen(
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
-    onSeeAllPeopleClick: () -> Unit,
+    onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
     onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     val viewModel: SearchScreenViewModel = hiltViewModel()
@@ -95,7 +96,7 @@ fun SearchScreenContent(
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
-    onSeeAllPeopleClick: () -> Unit,
+    onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
     onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
@@ -146,7 +147,7 @@ fun SearchScreenContent(
             ) {
                 people(
                     people = uiState.popularPeople,
-                    onSeeAllPeopleClick = onSeeAllPeopleClick,
+                    onSeeAllPeopleClick = { onSeeAllPeopleClick(AllPeopleScreenParam.AllPopularPeople) },
                     onPersonClick = onPersonClick,
                     titleRes = R.string.popular_people
                 )
@@ -186,7 +187,7 @@ fun SearchView(
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
-    onSeeAllPeopleClick: () -> Unit,
+    onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
     onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -268,7 +269,7 @@ fun SearchView(
                 people(
                     people = uiState.peopleResult,
                     onPersonClick = onPersonClick,
-                    onSeeAllPeopleClick = onSeeAllPeopleClick,
+                    onSeeAllPeopleClick = { onSeeAllPeopleClick(AllPeopleScreenParam.AllPeopleBySearchQuery(queryText)) },
                     titleRes = R.string.people
                 )
 

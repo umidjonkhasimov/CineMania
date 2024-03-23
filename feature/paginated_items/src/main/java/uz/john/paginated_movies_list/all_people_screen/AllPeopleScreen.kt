@@ -1,4 +1,4 @@
-package uz.john.paginated_movies_list.all_movies_screen
+package uz.john.paginated_movies_list.all_people_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,50 +20,50 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
-import uz.john.domain.model.movie.Movie
-import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
-import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
+import uz.john.domain.model.person.Person
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenContract.*
 import uz.john.ui.components.AnimatedProgressIndicator
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
-import uz.john.ui.components.MovieCardItem
 import uz.john.ui.components.PagingErrorItem
+import uz.john.ui.components.PersonItem
 
-private val MIN_MOVIE_ITEM_WIDTH = 150.dp
+private val PERSON_ITEM_MIN_MIN_WIDTH = 150.dp
 private val SCREEN_PADDING = 16.dp
 
 @Composable
-fun AllMoviesScreen(
-    onMovieItemClick: (Int) -> Unit,
+fun AllPeopleScreen(
+    onPersonClick: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val viewModel: AllMoviesViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsState()
-    val pagingData = viewModel.paginatedMovies.collectAsLazyPagingItems()
+    val viewModel: AllPeopleViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val pagingData = viewModel.paginatedItems.collectAsLazyPagingItems()
 
-    AllMoviesScreenContent(
+    AllPeopleScreenContent(
         uiState = uiState,
-        pagingData = pagingData,
-        onUiAction = viewModel::onAction,
         sideEffect = viewModel.sideEffect,
-        onMovieItemClick = onMovieItemClick,
+        onUiAction = viewModel::onAction,
+        pagingData = pagingData,
+        onPersonClick = onPersonClick,
         onBackClick = onBackClick
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllMoviesScreenContent(
+fun AllPeopleScreenContent(
     uiState: UiState,
-    pagingData: LazyPagingItems<Movie>,
+    sideEffect: Flow<SideEffect>,
     onUiAction: (UiAction) -> Unit,
-    sideEffect: Flow<AllMoviesScreenContract.SideEffect>,
-    onMovieItemClick: (Int) -> Unit,
+    pagingData: LazyPagingItems<Person>,
+    onPersonClick: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
@@ -84,26 +83,23 @@ fun AllMoviesScreenContent(
 
     Scaffold(
         topBar = {
-            uiState.title?.let { title ->
-                CineManiaTopBar(
-                    title = title,
-                    leadingContent = {
-                        CineManiaBackButton(
-                            onClick = onBackClick
-                        )
-                    }
-                )
-            }
+            CineManiaTopBar(
+                title = uiState.title,
+                leadingContent = {
+                    CineManiaBackButton(
+                        onClick = onBackClick
+                    )
+                }
+            )
         }
     ) { paddingValues ->
         when (pagingData.loadState.refresh) {
             is LoadState.Error -> {
-                shouldShowErrorDialog = true
                 errorDialogMessage = (pagingData.loadState.refresh as LoadState.Error).error.message.toString()
             }
 
             LoadState.Loading -> {
-                AllMoviesShimmerEffect(
+                AllPeopleScreenShimmerEffect(
                     modifier = Modifier.padding(paddingValues)
                 )
             }
@@ -113,20 +109,20 @@ fun AllMoviesScreenContent(
 
         LazyVerticalGrid(
             modifier = Modifier.padding(paddingValues),
-            columns = GridCells.Adaptive(MIN_MOVIE_ITEM_WIDTH),
+            columns = GridCells.Adaptive(PERSON_ITEM_MIN_MIN_WIDTH),
             horizontalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
             verticalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
-            contentPadding = PaddingValues(horizontal = SCREEN_PADDING),
+            contentPadding = PaddingValues(horizontal = SCREEN_PADDING)
         ) {
             items(
                 count = pagingData.itemCount,
                 key = { it }
             ) { index ->
-                val movieData = pagingData[index]
-                movieData?.let {
-                    MovieCardItem(
-                        movieData = movieData,
-                        onMovieClick = onMovieItemClick
+                val person = pagingData[index]
+                person?.let {
+                    PersonItem(
+                        person = person,
+                        onPersonClick = onPersonClick
                     )
                 }
             }
