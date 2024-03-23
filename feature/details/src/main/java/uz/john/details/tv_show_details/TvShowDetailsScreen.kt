@@ -85,7 +85,6 @@ import uz.john.util.getYear
 private const val ANIMATED_CONTENT_DURATION = 200
 private val TV_SHOW_DETAILS_HEIGHT = 400.dp
 private val TV_SHOW_IMAGE_HEIGHT = 200.dp
-private val LAZY_ROW_HEIGHT = 230.dp
 private val TV_SHOW_IMAGE_WIDTH = 300.dp
 private val SCREEN_PADDING = 16.dp
 
@@ -552,7 +551,6 @@ private fun LazyListScope.recommendedTvShows(
         item {
             LazyRowItemsHolder(
                 modifier = Modifier
-                    .height(LAZY_ROW_HEIGHT)
                     .padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.recommended),
                 shouldShowSeeAllButton = true,
@@ -585,7 +583,6 @@ private fun LazyListScope.similarTvShows(
         item {
             LazyRowItemsHolder(
                 modifier = Modifier
-                    .height(LAZY_ROW_HEIGHT)
                     .padding(start = SCREEN_PADDING),
                 title = stringResource(R.string.similar_tv_shows),
                 shouldShowSeeAllButton = true,

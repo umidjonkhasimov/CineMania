@@ -35,7 +35,7 @@ import uz.john.ui.components.CineManiaTopBar
 import uz.john.ui.components.MovieCardItem
 import uz.john.ui.components.PagingErrorItem
 
-private const val GRID_CELL_COUNT = 2
+private val MIN_MOVIE_ITEM_WIDTH = 180.dp
 private val SCREEN_PADDING = 16.dp
 
 @Composable
@@ -113,7 +113,7 @@ fun AllMoviesScreenContent(
 
         LazyVerticalGrid(
             modifier = Modifier.padding(paddingValues),
-            columns = GridCells.Fixed(GRID_CELL_COUNT),
+            columns = GridCells.Adaptive(MIN_MOVIE_ITEM_WIDTH),
             horizontalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
             verticalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
             contentPadding = PaddingValues(horizontal = SCREEN_PADDING),
@@ -131,7 +131,7 @@ fun AllMoviesScreenContent(
                 }
             }
             item(
-                span = { GridItemSpan(GRID_CELL_COUNT) }
+                span = { GridItemSpan(maxLineSpan) }
             ) {
                 when (pagingData.loadState.append) {
                     is LoadState.Error -> {

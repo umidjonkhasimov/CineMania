@@ -59,7 +59,6 @@ import uz.john.ui.components.SeeAllItem
 import uz.john.ui.components.TvShowItem
 import uz.john.ui.theme.CineManiaIcons
 
-private val TV_SHOWS_HEIGHT = 230.dp
 private val PEOPLE_HEIGHT = 200.dp
 
 @Composable
@@ -375,7 +374,6 @@ fun LazyListScope.tvShows(
     if (!tvShows.isNullOrEmpty()) {
         item {
             LazyRowItemsHolder(
-                modifier = Modifier.height(TV_SHOWS_HEIGHT),
                 title = stringResource(titleRes),
                 shouldShowSeeAllButton = true,
                 onSeeAllClick = onSeeAllTvShowsClick

@@ -80,7 +80,9 @@ fun MovieDetailsShimmerEffect(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             repeat(10) {
                 Box(
                     modifier = Modifier
