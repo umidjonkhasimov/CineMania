@@ -7,13 +7,13 @@ import androidx.paging.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import uz.john.data.pagination.people.PeopleBySearchQueryPagingSource
-import uz.john.data.repository.SearchRepository
+import uz.john.data.repository.PersonRepository
 import uz.john.domain.model.person.Person
 import uz.john.domain.model.person.toDomain
 import javax.inject.Inject
 
 class GetPaginatedPeopleBySearchQueryUseCase @Inject constructor(
-    private val searchRepository: SearchRepository
+    private val personRepository: PersonRepository
 ) {
     operator fun invoke(query: String): Flow<PagingData<Person>> {
         return Pager(
@@ -21,7 +21,7 @@ class GetPaginatedPeopleBySearchQueryUseCase @Inject constructor(
                 pageSize = 20
             ),
             pagingSourceFactory = {
-                PeopleBySearchQueryPagingSource(searchRepository = searchRepository, query = query)
+                PeopleBySearchQueryPagingSource(personRepository = personRepository, query = query)
             }
         ).flow.map { pagingData ->
             pagingData.map {

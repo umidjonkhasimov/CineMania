@@ -45,6 +45,7 @@ import uz.john.details.person_details.PersonDetailsScreenContract.UiAction
 import uz.john.details.person_details.PersonDetailsScreenContract.UiState
 import uz.john.details.person_details.components.PersonImageItem
 import uz.john.domain.model.NetworkImageSizes
+import uz.john.domain.model.person.details.PersonMovieCredits
 import uz.john.domain.model.person.details.PersonDetails
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
@@ -143,15 +144,15 @@ fun PersonDetailsScreenContent(
 
                         space()
 
-                        cast(
-                            personDetails = uiState.personDetails,
+                        movieCast(
+                            personMovieCredits = uiState.personDetails.movieCredits,
                             onMovieItemClick = onMovieItemClick
                         )
 
                         space()
 
-                        crew(
-                            personDetails = uiState.personDetails,
+                        movieCrew(
+                            personMovieCredits = uiState.personDetails.movieCredits,
                             onMovieItemClick = onMovieItemClick
                         )
 
@@ -305,11 +306,11 @@ private fun LazyListScope.images(
     }
 }
 
-private fun LazyListScope.cast(
-    personDetails: PersonDetails,
+private fun LazyListScope.movieCast(
+    personMovieCredits: PersonMovieCredits,
     onMovieItemClick: (Int) -> Unit
 ) {
-    if (personDetails.credits.cast.isNotEmpty()) {
+    if (personMovieCredits.cast.isNotEmpty()) {
         item {
             LazyRowItemsHolder(
                 modifier = Modifier.padding(start = SCREEN_PADDING),
@@ -318,7 +319,7 @@ private fun LazyListScope.cast(
             ) {
                 LazyRow {
                     items(
-                        items = personDetails.credits.cast,
+                        items = personMovieCredits.cast,
                         key = { it.creditId }
                     ) { castCredit ->
                         PersonCastCreditItem(
@@ -333,11 +334,11 @@ private fun LazyListScope.cast(
     }
 }
 
-private fun LazyListScope.crew(
-    personDetails: PersonDetails,
+private fun LazyListScope.movieCrew(
+    personMovieCredits: PersonMovieCredits,
     onMovieItemClick: (Int) -> Unit
 ) {
-    if (personDetails.credits.crew.isNotEmpty()) {
+    if (personMovieCredits.crew.isNotEmpty()) {
         item {
             LazyRowItemsHolder(
                 modifier = Modifier.padding(start = SCREEN_PADDING),
@@ -346,7 +347,7 @@ private fun LazyListScope.crew(
             ) {
                 LazyRow {
                     items(
-                        items = personDetails.credits.crew,
+                        items = personMovieCredits.crew,
                         key = { it.creditId }
                     ) { crewData ->
                         PersonCrewCreditItem(

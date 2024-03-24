@@ -1,9 +1,12 @@
 package uz.john.domain.use_cases.tv_shows.pagination
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import uz.john.data.pagination.tv_shows.SimilarTvShowsPagingSource
 import uz.john.data.repository.TvShowsRepository
 import uz.john.domain.model.tv_show.TvShow
 import uz.john.domain.model.tv_show.toDomain
@@ -12,11 +15,17 @@ import javax.inject.Inject
 class GetPaginatedSimilarTvShowsUseCase @Inject constructor(
     private val tvShowsRepository: TvShowsRepository
 ) {
-    operator fun invoke(seriesId: Int): Flow<PagingData<TvShow>> {
-        return tvShowsRepository.getPaginatedSimilarTvShows(seriesId).map { pagingData ->
-            pagingData.map {
-                it.toDomain()
-            }
+    operator fun invoke(seriesId: Int): Flow<PagingData<TvShow>> = Pager(
+        config = PagingConfig(pageSize = 20),
+        pagingSourceFactory = {
+            SimilarTvShowsPagingSource(
+                tvShowsRepository = tvShowsRepository,
+                seriesId = seriesId
+            )
+        }
+    ).flow.map { pagingData ->
+        pagingData.map {
+            it.toDomain()
         }
     }
 }

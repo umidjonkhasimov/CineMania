@@ -1,15 +1,7 @@
 package uz.john.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import uz.john.data.pagination.movies.MoviesByGenrePagingSource
-import uz.john.data.pagination.movies.NowPlayingMoviesPagingSource
-import uz.john.data.pagination.movies.PopularMoviesPagingSource
-import uz.john.data.pagination.movies.RecommendedMoviesPagingSource
-import uz.john.data.pagination.movies.SimilarMoviesPagingSource
-import uz.john.data.pagination.movies.TopRatedMoviesPagingSource
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.INCLUDE_VIDEO
 import uz.john.data.remote.PRIMARY_RELEASE_DATE_GTE
@@ -25,6 +17,7 @@ import uz.john.data.remote.WITH_COMPANIES
 import uz.john.data.remote.WITH_CREW
 import uz.john.data.remote.WITH_GENRES
 import uz.john.data.remote.WITH_PEOPLE
+import uz.john.data.remote.YEAR
 import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.MoviesResponseData
@@ -105,84 +98,28 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun getPaginatedPopularMovies() = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            PopularMoviesPagingSource(
-                moviesApi = moviesApi,
-                language = language,
-                region = region
-            )
-        }
-    ).flow
+    suspend fun searchMovies(
+        query: String,
+        page: Int,
+        includeAdult: Boolean = true,
+        primaryReleaseYear: String? = null,
+        year: String? = null
+    ): ResultModel<MoviesResponseData> = invokeRequest {
+        val additionalQueries = mutableMapOf<String, String>()
+        primaryReleaseYear?.let { additionalQueries[PRIMARY_RELEASE_YEAR] = primaryReleaseYear }
+        year?.let { additionalQueries[YEAR] = year }
 
-    fun getPaginatedTopRatedMovies() = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            TopRatedMoviesPagingSource(
-                moviesApi = moviesApi,
-                language = language,
-                region = region
-            )
-        }
-    ).flow
-
-    fun getPaginatedRecommendedMovies(movieId: Int) = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            RecommendedMoviesPagingSource(
-                moviesApi = moviesApi,
-                movieId = movieId,
-                language = language
-            )
-        }
-    ).flow
-
-    fun getPaginatedSimilarMovies(movieId: Int) = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            SimilarMoviesPagingSource(
-                moviesApi = moviesApi,
-                movieId = movieId,
-                language = language
-            )
-        }
-    ).flow
-
-    fun getPaginatedNowPlayingMovies() = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            NowPlayingMoviesPagingSource(
-                moviesApi = moviesApi,
-                language = language,
-                region = region
-            )
-        }
-    ).flow
-
-    fun getPaginatedMoviesByGenre(genreId: Int) = Pager(
-        config = PagingConfig(
-            pageSize = 20
-        ),
-        pagingSourceFactory = {
-            MoviesByGenrePagingSource(
-                moviesApi = moviesApi,
+        return@invokeRequest withContext(Dispatchers.IO) {
+            moviesApi.searchMovies(
+                query = query,
+                page = page,
+                includeAdult = includeAdult,
                 language = language,
                 region = region,
-                genreId = genreId
+                additionalParams = additionalQueries,
             )
         }
-    ).flow
+    }
 
     suspend fun discoverMovies(
         page: Int,

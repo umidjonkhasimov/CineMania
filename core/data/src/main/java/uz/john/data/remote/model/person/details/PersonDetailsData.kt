@@ -23,6 +23,7 @@ data class PersonDetailsData(
     val popularity: Double,
     @SerializedName(value = "profile_path")
     val profilePath: String?,
-    val credits: PersonCreditsResponseData,
+    @SerializedName(value = "movie_credits")
+    val movieCredits: PersonMovieCreditsResponseData,
     val images: PersonImagesResponseData
 )

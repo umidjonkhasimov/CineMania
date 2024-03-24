@@ -2,24 +2,19 @@ package uz.john.data.pagination.tv_shows
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import uz.john.data.remote.api.TvShowsApi
 import uz.john.data.remote.model.tv_show.TvShowData
+import uz.john.data.repository.TvShowsRepository
 import uz.john.util.ResultModel
-import uz.john.util.invokeRequest
 
 class TvShowsTrendingThisWeekPagingSource(
-    private val tvShowsApi: TvShowsApi,
-    private val language: String
+    private val tvShowsRepository: TvShowsRepository
 ) : PagingSource<Int, TvShowData>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowData> {
         val page = params.key ?: 1
 
-        val result = invokeRequest {
-            tvShowsApi.getTrendingThisWeekTvShows(
-                page = page,
-                language = language
-            )
-        }
+        val result = tvShowsRepository.getTrendingThisWeekTvShows(
+            page = page
+        )
 
         return when (result) {
             is ResultModel.Error -> {

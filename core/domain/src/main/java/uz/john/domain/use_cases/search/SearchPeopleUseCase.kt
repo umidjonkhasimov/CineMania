@@ -1,16 +1,16 @@
 package uz.john.domain.use_cases.search
 
-import uz.john.data.repository.SearchRepository
+import uz.john.data.repository.PersonRepository
 import uz.john.domain.model.person.Person
 import uz.john.domain.model.person.toDomain
 import uz.john.util.ResultModel
 import javax.inject.Inject
 
 class SearchPeopleUseCase @Inject constructor(
-    private val searchRepository: SearchRepository
+    private val personRepository: PersonRepository
 ) {
     suspend operator fun invoke(query: String, page: Int): ResultModel<List<Person>> {
-        val response = searchRepository.searchPeople(query = query, page = page)
+        val response = personRepository.searchPeople(query = query, page = page)
         return when (response) {
             is ResultModel.Error -> {
                 ResultModel.Error(response.error)

@@ -3,17 +3,17 @@ package uz.john.data.pagination.people
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import uz.john.data.remote.model.person.PersonData
-import uz.john.data.repository.SearchRepository
+import uz.john.data.repository.PersonRepository
 import uz.john.util.ResultModel
 
 class PeopleBySearchQueryPagingSource(
-    private val searchRepository: SearchRepository,
+    private val personRepository: PersonRepository,
     private val query: String
 ) : PagingSource<Int, PersonData>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PersonData> {
         val page = params.key ?: 1
 
-        val result = searchRepository.searchPeople(query = query, page = page)
+        val result = personRepository.searchPeople(query = query, page = page)
         return when (result) {
             is ResultModel.Error -> {
                 LoadResult.Error(result.error)

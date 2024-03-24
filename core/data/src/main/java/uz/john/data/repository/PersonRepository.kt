@@ -30,4 +30,19 @@ class PersonRepository @Inject constructor(
             )
         }
     }
+
+    suspend fun searchPeople(
+        query: String,
+        page: Int,
+        includeAdult: Boolean = true
+    ): ResultModel<PeopleResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            personApi.searchPeople(
+                query = query,
+                includeAdult = includeAdult,
+                language = language,
+                page = page,
+            )
+        }
+    }
 }

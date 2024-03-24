@@ -14,7 +14,6 @@ import uz.john.data.BuildConfig
 import uz.john.data.remote.api.AuthenticationApi
 import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.api.PersonApi
-import uz.john.data.remote.api.SearchApi
 import uz.john.data.remote.api.TvShowsApi
 import uz.john.data.remote.interceptors.ApiKeyInterceptor
 import uz.john.data.remote.interceptors.InternetConnectionInterceptor
@@ -39,12 +38,6 @@ object NetworkModule {
     @Singleton
     fun providePersonApiService(retrofit: Retrofit): PersonApi {
         return retrofit.create(PersonApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSearchApiService(retrofit: Retrofit): SearchApi {
-        return retrofit.create(SearchApi::class.java)
     }
 
     @Provides

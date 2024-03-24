@@ -11,12 +11,15 @@ import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.APPEND_VIDEOS
 import uz.john.data.remote.DISCOVER_MOVIES
+import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.LANGUAGE
 import uz.john.data.remote.MOVIE_DETAILS_ENDPOINT
 import uz.john.data.remote.MOVIE_ID
 import uz.john.data.remote.PAGE
+import uz.john.data.remote.QUERY
 import uz.john.data.remote.RECOMMENDED_MOVIES_ENDPOINT
 import uz.john.data.remote.REGION
+import uz.john.data.remote.SEARCH_MOVIE_ENDPOINT
 import uz.john.data.remote.SIMILAR_MOVIES_ENDPOINT
 import uz.john.data.remote.TOP_RATED_MOVIES_ENDPOINT
 import uz.john.data.remote.TRENDING_ENDPOINT
@@ -82,4 +85,14 @@ interface MoviesApi {
     suspend fun getAllGenres(
         @Query(LANGUAGE) language: String,
     ): Response<GenresResponseData>
+
+    @GET(SEARCH_MOVIE_ENDPOINT)
+    suspend fun searchMovies(
+        @Query(QUERY) query: String,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean,
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int,
+        @Query(REGION) region: String,
+        @QueryMap additionalParams: Map<String, String>,
+    ): Response<MoviesResponseData>
 }

@@ -2,29 +2,21 @@ package uz.john.data.pagination.tv_shows
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import uz.john.data.remote.api.SearchApi
 import uz.john.data.remote.model.tv_show.TvShowData
+import uz.john.data.repository.TvShowsRepository
 import uz.john.util.ResultModel
-import uz.john.util.invokeRequest
 
 class TvShowsBySearchQueryPagingSource(
-    private val searchApi: SearchApi,
-    private val query: String,
-    private val includeAdult: Boolean,
-    private val language: String,
+    private val tvShowsRepository: TvShowsRepository,
+    private val query: String
 ) : PagingSource<Int, TvShowData>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowData> {
         val page = params.key ?: 1
 
-        val response = invokeRequest {
-            searchApi.searchTvShows(
-                query = query,
-                language = language,
-                includeAdult = includeAdult,
-                page = page,
-                additionalParams = mapOf()
-            )
-        }
+        val response = tvShowsRepository.searchTvShows(
+            query = query,
+            page = page
+        )
 
         return when (response) {
             is ResultModel.Error -> {

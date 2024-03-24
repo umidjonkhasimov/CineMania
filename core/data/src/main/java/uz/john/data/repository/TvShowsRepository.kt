@@ -1,12 +1,9 @@
 package uz.john.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import uz.john.data.pagination.tv_shows.RecommendedTvShowsPagingSource
-import uz.john.data.pagination.tv_shows.SimilarTvShowsPagingSource
-import uz.john.data.pagination.tv_shows.TvShowsTrendingThisWeekPagingSource
+import uz.john.data.remote.FIRST_AIR_DATE_YEAR
+import uz.john.data.remote.YEAR
 import uz.john.data.remote.api.TvShowsApi
 import uz.john.data.remote.model.tv_show.TvShowsResponseData
 import uz.john.data.remote.model.tv_show.tv_show_details.TvShowDetailsData
@@ -59,35 +56,24 @@ class TvShowsRepository @Inject constructor(
         }
     }
 
-    fun getPaginatedRecommendedTvShows(seriesId: Int) = Pager(
-        config = PagingConfig(pageSize = 20),
-        pagingSourceFactory = {
-            RecommendedTvShowsPagingSource(
-                tvShowsApi = tvShowsApi,
-                seriesId = seriesId,
-                language = language
+    suspend fun searchTvShows(
+        query: String,
+        page: Int,
+        includeAdult: Boolean = true,
+        firstAirDateYear: Int? = null,
+        year: String? = null
+    ): ResultModel<TvShowsResponseData> = invokeRequest {
+        val additionalParams = mutableMapOf<String, String>()
+        firstAirDateYear?.let { additionalParams[FIRST_AIR_DATE_YEAR] = firstAirDateYear.toString() }
+        year?.let { additionalParams[YEAR] = year }
+        return@invokeRequest withContext(Dispatchers.IO) {
+            tvShowsApi.searchTvShows(
+                query = query,
+                includeAdult = includeAdult,
+                language = language,
+                page = page,
+                additionalParams = additionalParams
             )
         }
-    ).flow
-
-    fun getPaginatedSimilarTvShows(seriesId: Int) = Pager(
-        config = PagingConfig(pageSize = 20),
-        pagingSourceFactory = {
-            SimilarTvShowsPagingSource(
-                tvShowsApi = tvShowsApi,
-                seriesId = seriesId,
-                language = language
-            )
-        }
-    ).flow
-
-    fun getPaginatedTrendingThisWeekTvShows() = Pager(
-        config = PagingConfig(pageSize = 20),
-        pagingSourceFactory = {
-            TvShowsTrendingThisWeekPagingSource(
-                tvShowsApi = tvShowsApi,
-                language = language
-            )
-        }
-    ).flow
+    }
 }

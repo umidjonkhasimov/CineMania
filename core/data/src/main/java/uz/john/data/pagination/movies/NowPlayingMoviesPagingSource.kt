@@ -2,33 +2,23 @@ package uz.john.data.pagination.movies
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import uz.john.data.remote.PRIMARY_RELEASE_DATE_GTE
-import uz.john.data.remote.PRIMARY_RELEASE_DATE_LTE
-import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.model.movie.MovieData
+import uz.john.data.repository.MoviesRepository
 import uz.john.util.ResultModel
 import uz.john.util.calculateDateXMonthsAgo
-import uz.john.util.invokeRequest
 
 class NowPlayingMoviesPagingSource(
-    private val moviesApi: MoviesApi,
-    private val language: String,
-    private val region: String,
+    private val moviesRepository: MoviesRepository,
 ) : PagingSource<Int, MovieData>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieData> {
         val page = params.key ?: 1
-        val queryParams = mutableMapOf<String, String>()
-        queryParams[PRIMARY_RELEASE_DATE_GTE] = calculateDateXMonthsAgo(2)
-        queryParams[PRIMARY_RELEASE_DATE_LTE] = calculateDateXMonthsAgo(0)
 
-        val response = invokeRequest {
-            moviesApi.discoverMovies(
+        val response =
+            moviesRepository.discoverMovies(
                 page = page,
-                language = language,
-                region = region,
-                queryParams = queryParams
+                primaryReleaseDateGte = calculateDateXMonthsAgo(2),
+                primaryReleaseDateLte = calculateDateXMonthsAgo(0)
             )
-        }
 
         return when (response) {
             is ResultModel.Error -> {

@@ -2,31 +2,21 @@ package uz.john.data.pagination.movies
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import uz.john.data.remote.WITH_GENRES
-import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.model.movie.MovieData
+import uz.john.data.repository.MoviesRepository
 import uz.john.util.ResultModel
-import uz.john.util.invokeRequest
 
 class MoviesByGenrePagingSource(
-    private val moviesApi: MoviesApi,
-    private val language: String,
-    private val region: String,
+    private val moviesRepository: MoviesRepository,
     private val genreId: Int,
 ) : PagingSource<Int, MovieData>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieData> {
         val page = params.key ?: 1
-        val queryParams = mutableMapOf<String, String>()
-        queryParams[WITH_GENRES] = genreId.toString()
 
-        val response = invokeRequest {
-            moviesApi.discoverMovies(
-                page = page,
-                language = language,
-                region = region,
-                queryParams = queryParams
-            )
-        }
+        val response = moviesRepository.discoverMovies(
+            page = page,
+            withGenres = genreId.toString()
+        )
 
         return when (response) {
             is ResultModel.Error -> {
