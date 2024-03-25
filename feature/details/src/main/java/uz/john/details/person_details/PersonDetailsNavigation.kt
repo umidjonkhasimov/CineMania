@@ -19,13 +19,15 @@ fun NavController.navigateToPersonDetailsScreen(personId: Int, navOptions: NavOp
 fun NavGraphBuilder.personDetailsScreen(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onTvShowItemClick: (Int) -> Unit
 ) {
     composable(route = PERSON_DETAILS_ROUTE) {
         PersonDetailsScreen(
             onBackClick = onBackClick,
             onImageClick = onImageClick,
-            onMovieItemClick = onMovieItemClick
+            onMovieItemClick = onMovieItemClick,
+            onTvShowItemClick = onTvShowItemClick
         )
     }
 }

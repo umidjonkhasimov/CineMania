@@ -25,5 +25,7 @@ data class PersonDetailsData(
     val profilePath: String?,
     @SerializedName(value = "movie_credits")
     val movieCredits: PersonMovieCreditsResponseData,
+    @SerializedName(value = "tv_credits")
+    val tvShowCredits: PersonTvShowCreditsResponseData,
     val images: PersonImagesResponseData
 )

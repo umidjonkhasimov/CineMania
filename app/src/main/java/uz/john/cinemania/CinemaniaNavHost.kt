@@ -182,6 +182,9 @@ fun CineManiaNavHost(
             },
             onMovieItemClick = { movieId ->
                 navController.navigateToMovieDetailsScreen(movieId)
+            },
+            onTvShowItemClick = { seriesId ->
+                navController.navigateToTvShowsDetailsScreen(seriesId)
             }
         )
         allMoviesScreen(

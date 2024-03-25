@@ -1,10 +1,10 @@
 package uz.john.domain.model.person.details
 
-import uz.john.data.remote.model.person.details.CrewCreditData
+import uz.john.data.remote.model.person.details.MovieCastCreditData
 import uz.john.util.formatDate
 import uz.john.util.roundToOneDecimal
 
-data class CrewCredit(
+data class MovieCastCredit(
     val adult: Boolean,
     val backdropPath: String?,
     val genreIds: List<Int>,
@@ -20,13 +20,13 @@ data class CrewCredit(
     val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int,
+    val character: String,
     val creditId: String,
-    val department: String,
-    val job: String
+    val order: Int
 )
 
-fun CrewCreditData.toDomain(): CrewCredit {
-    return CrewCredit(
+fun MovieCastCreditData.toDomain(): MovieCastCredit {
+    return MovieCastCredit(
         adult = adult,
         backdropPath = backdropPath,
         genreIds = genreIds,
@@ -42,8 +42,8 @@ fun CrewCreditData.toDomain(): CrewCredit {
         video = video,
         voteAverage = voteAverage.roundToOneDecimal(),
         voteCount = voteCount,
+        character = character,
         creditId = creditId,
-        department = department,
-        job = job
+        order = order
     )
 }

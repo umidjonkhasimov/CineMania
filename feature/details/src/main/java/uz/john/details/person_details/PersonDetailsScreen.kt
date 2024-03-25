@@ -38,8 +38,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import uz.john.details.R
-import uz.john.details.movie_details_screen.components.PersonCastCreditItem
-import uz.john.details.movie_details_screen.components.PersonCrewCreditItem
+import uz.john.details.movie_details_screen.components.PersonMovieCastCreditItem
+import uz.john.details.movie_details_screen.components.PersonMovieCrewCreditItem
+import uz.john.details.movie_details_screen.components.PersonTvShowCastCreditItem
+import uz.john.details.movie_details_screen.components.PersonTvShowCrewCreditItem
 import uz.john.details.person_details.PersonDetailsScreenContract.SideEffect
 import uz.john.details.person_details.PersonDetailsScreenContract.UiAction
 import uz.john.details.person_details.PersonDetailsScreenContract.UiState
@@ -47,6 +49,7 @@ import uz.john.details.person_details.components.PersonImageItem
 import uz.john.domain.model.NetworkImageSizes
 import uz.john.domain.model.person.details.PersonMovieCredits
 import uz.john.domain.model.person.details.PersonDetails
+import uz.john.domain.model.person.details.PersonTvShowCredits
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
 import uz.john.ui.components.CineManiaTopBar
@@ -62,7 +65,8 @@ private val SCREEN_PADDING = 16.dp
 fun PersonDetailsScreen(
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onTvShowItemClick: (Int) -> Unit
 ) {
     val viewModel: PersonDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -73,7 +77,8 @@ fun PersonDetailsScreen(
         sideEffect = viewModel.sideEffect,
         onBackClick = onBackClick,
         onImageClick = onImageClick,
-        onMovieItemClick = onMovieItemClick
+        onMovieItemClick = onMovieItemClick,
+        onTvShowItemClick = onTvShowItemClick
     )
 }
 
@@ -85,7 +90,8 @@ fun PersonDetailsScreenContent(
     sideEffect: Flow<SideEffect>,
     onBackClick: () -> Unit,
     onImageClick: (String) -> Unit,
-    onMovieItemClick: (Int) -> Unit
+    onMovieItemClick: (Int) -> Unit,
+    onTvShowItemClick: (Int) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
@@ -157,6 +163,18 @@ fun PersonDetailsScreenContent(
                         )
 
                         space()
+
+                        tvShowCast(
+                            personTvShowCredits = uiState.personDetails.tvShowCredits,
+                            onTvShowItemClick = onTvShowItemClick
+                        )
+
+                        space()
+
+                        tvShowCrew(
+                            personTvShowCredits = uiState.personDetails.tvShowCredits,
+                            onTvShowItemClick = onTvShowItemClick
+                        )
                     }
                 }
             } ?: run {
@@ -322,7 +340,7 @@ private fun LazyListScope.movieCast(
                         items = personMovieCredits.cast,
                         key = { it.creditId }
                     ) { castCredit ->
-                        PersonCastCreditItem(
+                        PersonMovieCastCreditItem(
                             movieData = castCredit,
                             onMovieItemClick = onMovieItemClick
                         )
@@ -350,9 +368,65 @@ private fun LazyListScope.movieCrew(
                         items = personMovieCredits.crew,
                         key = { it.creditId }
                     ) { crewData ->
-                        PersonCrewCreditItem(
+                        PersonMovieCrewCreditItem(
                             movieData = crewData,
                             onMovieItemClick = onMovieItemClick
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun LazyListScope.tvShowCast(
+    personTvShowCredits: PersonTvShowCredits,
+    onTvShowItemClick: (Int) -> Unit
+) {
+    if (personTvShowCredits.cast.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier.padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.tv_shows_as_an_actor),
+                shouldShowSeeAllButton = false
+            ) {
+                LazyRow {
+                    items(
+                        items = personTvShowCredits.cast,
+                        key = { it.creditId }
+                    ) { castCredit ->
+                        PersonTvShowCastCreditItem(
+                            tvShowCastCredit = castCredit,
+                            onTvShowItemClick = onTvShowItemClick
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun LazyListScope.tvShowCrew(
+    personTvShowCredits: PersonTvShowCredits,
+    onTvShowItemClick: (Int) -> Unit
+) {
+    if (personTvShowCredits.crew.isNotEmpty()) {
+        item {
+            LazyRowItemsHolder(
+                modifier = Modifier.padding(start = SCREEN_PADDING),
+                title = stringResource(R.string.tv_shows_as_a_crew_member),
+                shouldShowSeeAllButton = false
+            ) {
+                LazyRow {
+                    items(
+                        items = personTvShowCredits.crew,
+                        key = { it.creditId }
+                    ) { crewData ->
+                        PersonTvShowCrewCreditItem(
+                            tvShowCrewCredit = crewData,
+                            onTvShowItemClick = onTvShowItemClick
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                     }

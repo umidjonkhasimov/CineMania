@@ -7,4 +7,6 @@
     <string name="born">Born:</string>
     <string name="passed_away">Passed away:</string>
     <string name="recommended">Recommended</string>
+    <string name="tv_shows_as_an_actor">Tv Shows as an Actor</string>
+    <string name="tv_shows_as_a_crew_member">Tv Shows as a Crew Member</string>
 </resources>

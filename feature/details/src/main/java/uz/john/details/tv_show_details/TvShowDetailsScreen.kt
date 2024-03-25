@@ -304,12 +304,22 @@ private fun LazyListScope.tvShowDetails(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+                    val firstAirYear = tvShowDetails.firstAirDate.getYear()
+                    val lastAirYear = tvShowDetails.lastAirDate?.getYear()
+
                     Icon(
                         painter = painterResource(CineManiaIcons.Calendar),
                         contentDescription = null
                     )
                     Text(
-                        text = tvShowDetails.firstAirDate.getYear(),
+                        text = if (tvShowDetails.inProduction) {
+                            firstAirYear
+                        } else {
+                            if (lastAirYear == null || firstAirYear == lastAirYear)
+                                tvShowDetails.firstAirDate.getYear()
+                            else
+                                "${tvShowDetails.firstAirDate.getYear()}-${tvShowDetails.lastAirDate?.getYear()}"
+                        },
                         style = MaterialTheme.typography.titleSmall
                     )
 

@@ -19,6 +19,7 @@ data class PersonDetails(
     val popularity: Double,
     val profilePath: String?,
     val movieCredits: PersonMovieCredits,
+    val tvShowCredits: PersonTvShowCredits,
     val images: PersonImagesResponse
 )
 
@@ -39,6 +40,7 @@ fun PersonDetailsData.toDomain(): PersonDetails {
         popularity = popularity,
         profilePath = profilePath,
         movieCredits = movieCredits.toDomain(),
+        tvShowCredits = tvShowCredits.toDomain(),
         images = images.toDomain()
     )
 }

@@ -2,33 +2,34 @@ package uz.john.data.remote.model.person.details
 
 import com.google.gson.annotations.SerializedName
 
-data class CastCreditData(
+data class TvShowCrewCreditData(
     val adult: Boolean,
     @SerializedName(value = "backdrop_path")
     val backdropPath: String?,
+    @SerializedName(value = "credit_id")
+    val creditId: String,
+    val department: String,
+    @SerializedName(value = "episode_count")
+    val episodeCount: Int,
+    @SerializedName(value = "first_air_date")
+    val firstAirDate: String,
     @SerializedName(value = "genre_ids")
     val genreIds: List<Int>,
     val id: Int,
-    @SerializedName(value = "media_type")
-    val mediaType: String?,
+    val job: String,
+    val name: String,
+    @SerializedName(value = "origin_country")
+    val originCountry: List<String>,
     @SerializedName(value = "original_language")
     val originalLanguage: String,
-    @SerializedName(value = "original_title")
-    val originalTitle: String,
+    @SerializedName(value = "original_name")
+    val originalName: String,
     val overview: String,
     val popularity: Double,
     @SerializedName(value = "poster_path")
     val posterPath: String?,
-    @SerializedName(value = "release_date")
-    val releaseDate: String,
-    val title: String,
-    val video: Boolean,
     @SerializedName(value = "vote_average")
     val voteAverage: Double,
     @SerializedName(value = "vote_count")
-    val voteCount: Int,
-    val character: String,
-    @SerializedName(value = "credit_id")
-    val creditId: String,
-    val order: Int
+    val voteCount: Int
 )
