@@ -7,7 +7,6 @@ import uz.john.data.remote.model.authentication.get.CreateSessionResponse
 import uz.john.data.remote.model.authentication.get.RequestTokenResponse
 import uz.john.data.remote.model.authentication.post.CreateSessionRequest
 import uz.john.data.remote.model.authentication.post.ValidateTokenRequest
-import uz.john.datastore.repository.DataStoreRepository
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 import javax.inject.Inject

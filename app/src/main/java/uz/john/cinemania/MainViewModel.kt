@@ -7,15 +7,17 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import uz.john.domain.model.UserData
-import uz.john.domain.repository.UserDataRepository
+import uz.john.domain.model.UserPreferences
+import uz.john.domain.use_cases.user_data.GetUserPreferencesUseCase
+import uz.john.domain.use_cases.user_data.SetUserOnboardedUseCase
 import uz.john.util.NetworkMonitor
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     networkMonitor: NetworkMonitor,
-    private val userDataRepository: UserDataRepository
+    getUserPreferencesUseCase: GetUserPreferencesUseCase,
+    private val setUserOnboardedUseCase: SetUserOnboardedUseCase
 ) : ViewModel() {
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
@@ -25,7 +27,7 @@ class MainViewModel @Inject constructor(
             initialValue = false
         )
 
-    val userData = userDataRepository.userData.map {
+    val userData = getUserPreferencesUseCase.invoke().map {
         UiState.Success(it)
     }.stateIn(
         scope = viewModelScope,
@@ -35,12 +37,12 @@ class MainViewModel @Inject constructor(
 
     fun setIsOnboarded(isOnboarded: Boolean) {
         viewModelScope.launch {
-            userDataRepository.setIsOnboarded(isOnboarded)
+            setUserOnboardedUseCase.invoke(isOnboarded)
         }
     }
 }
 
 sealed class UiState {
     data object Loading : UiState()
-    data class Success(val userData: UserData) : UiState()
+    data class Success(val userData: UserPreferences) : UiState()
 }

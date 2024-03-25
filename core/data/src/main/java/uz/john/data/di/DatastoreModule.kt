@@ -1,4 +1,4 @@
-package uz.john.datastore.di
+package uz.john.data.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,8 +12,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import uz.john.datastore.UserPreferences
-import uz.john.datastore.UserPreferencesSerializer
+import uz.john.data.local.datastore.UserPreferencesData
+import uz.john.data.local.datastore.UserPreferencesSerializer
 import javax.inject.Singleton
 
 const val USER_PREFERENCES = "user_prefs.pb"
@@ -25,7 +25,7 @@ class DatastoreModule {
     @Singleton
     fun provideDataStorePreferences(
         @ApplicationContext context: Context,
-    ): DataStore<UserPreferences> {
+    ): DataStore<UserPreferencesData> {
         return DataStoreFactory.create(
             serializer = UserPreferencesSerializer,
             corruptionHandler = null,

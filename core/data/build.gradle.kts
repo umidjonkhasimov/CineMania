@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -46,9 +47,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:datastore"))
     implementation(project(":core:util"))
     implementation(libs.androidx.core.ktx)
+
+    // Proto DataStore
+    implementation(libs.androidx.dataStore)
+    implementation(libs.kotlinx.serialization)
 
     // Retrofit
     implementation(libs.squareup.retrofit2)

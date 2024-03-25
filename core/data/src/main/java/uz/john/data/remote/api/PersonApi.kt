@@ -4,9 +4,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.APPEND_MOVIE_CREDITS
+import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_TV_SHOW_CREDITS
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.LANGUAGE

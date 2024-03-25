@@ -33,7 +33,6 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
-    implementation(project(":core:datastore"))
     implementation(project(":core:util"))
     implementation(libs.androidx.core.ktx)
 

@@ -26,7 +26,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
 import uz.john.domain.model.person.Person
-import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenContract.*
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenContract.SideEffect
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenContract.UiAction
+import uz.john.paginated_movies_list.all_people_screen.AllPeopleScreenContract.UiState
 import uz.john.ui.components.AnimatedProgressIndicator
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog

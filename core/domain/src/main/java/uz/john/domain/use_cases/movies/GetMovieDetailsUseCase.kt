@@ -2,7 +2,6 @@ package uz.john.domain.use_cases.movies
 
 import uz.john.data.repository.MoviesRepository
 import uz.john.domain.model.movie.movie_details.MovieDetails
-import uz.john.domain.model.common.toDomain
 import uz.john.domain.model.movie.movie_details.toDomain
 import uz.john.util.ResultModel
 import javax.inject.Inject

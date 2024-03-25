@@ -1,9 +1,9 @@
-package uz.john.datastore
+package uz.john.data.local.datastore
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserPreferences(
+data class UserPreferencesData(
     val isOnboarded: Boolean = false,
     val isLoggedIn: Boolean = false,
     val sessionId: String = "",

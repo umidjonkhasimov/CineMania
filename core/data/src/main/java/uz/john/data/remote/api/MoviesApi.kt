@@ -5,10 +5,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
-import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.ALL_GENRES_ENDPOINT
 import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
+import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_VIDEOS
 import uz.john.data.remote.DISCOVER_MOVIES
 import uz.john.data.remote.INCLUDE_ADULT

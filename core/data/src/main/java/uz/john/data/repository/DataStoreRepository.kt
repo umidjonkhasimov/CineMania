@@ -1,12 +1,12 @@
-package uz.john.datastore.repository
+package uz.john.data.repository
 
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.distinctUntilChanged
-import uz.john.datastore.UserPreferences
+import uz.john.data.local.datastore.UserPreferencesData
 import javax.inject.Inject
 
 class DataStoreRepository @Inject constructor(
-    private val dataStore: DataStore<UserPreferences>
+    private val dataStore: DataStore<UserPreferencesData>
 ) {
     val userData = dataStore.data.distinctUntilChanged()
 

@@ -47,8 +47,8 @@ import uz.john.details.person_details.PersonDetailsScreenContract.UiAction
 import uz.john.details.person_details.PersonDetailsScreenContract.UiState
 import uz.john.details.person_details.components.PersonImageItem
 import uz.john.domain.model.NetworkImageSizes
-import uz.john.domain.model.person.details.PersonMovieCredits
 import uz.john.domain.model.person.details.PersonDetails
+import uz.john.domain.model.person.details.PersonMovieCredits
 import uz.john.domain.model.person.details.PersonTvShowCredits
 import uz.john.ui.components.CineManiaBackButton
 import uz.john.ui.components.CineManiaErrorDialog
