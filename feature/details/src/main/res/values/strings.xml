@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Person Details -->
     <string name="person_details_are_not_available">Person Details are not available</string>
-    <string name="movies_as_an_actor">Movies as an actor</string>
-    <string name="movies_as_a_crew_member">Movies as a crew member</string>
     <string name="known_for">Known for:</string>
     <string name="born">Born:</string>
     <string name="passed_away">Passed away:</string>
-    <string name="recommended">Recommended</string>
+    <string name="movies_as_an_actor">Movies as an actor</string>
+    <string name="movies_as_a_crew_member">Movies as a crew member</string>
     <string name="tv_shows_as_an_actor">Tv Shows as an Actor</string>
     <string name="tv_shows_as_a_crew_member">Tv Shows as a Crew Member</string>
+
+    <!-- Movie details -->
+    <string name="movie_details_are_not_available">Movie Details are not available</string>
+    <string name="duration">%1$s Minutes</string>
+    <string name="reviews">%1$s (%2$s reviews)</string>
+    <string name="less">Less</string>
+    <string name="more">More</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="trailers_teasers">Trailers &amp; Teasers</string>
+    <string name="images">Images</string>
+    <string name="similar_movies">Similar Movies</string>
+    <string name="recommended">Recommended</string>
+
+    <!-- Tv Show Details -->
+    <string name="season_and_episodes_count">%1$s Seasons, %2$s episodes</string>
+    <string name="similar_tv_shows">Similar Tv Shows</string>
 </resources>

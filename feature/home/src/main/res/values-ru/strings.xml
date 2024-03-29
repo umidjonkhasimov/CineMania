@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="see_all">Все</string>
+    <string name="popular_movies">Популярные фильмы</string>
+    <string name="top_rated">Высокий рейтинг</string>
+    <string name="similar_movies">Похожие фильмы</string>
+    <string name="now_playing">Смотрят сейчас</string>
+    <string name="trending_today">В тренде сегодня</string>
+    <string name="genres">Жанры</string>
+</resources>

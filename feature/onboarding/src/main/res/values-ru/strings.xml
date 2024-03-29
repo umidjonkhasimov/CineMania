@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_text_title_page_1">Добро пожаловать в CineMania</string>
+    <string name="onboarding_text_title_page_2">Откройте для себя бесконечные развлечения</string>
+    <string name="onboarding_text_title_page_3">Создано специально для вас</string>
+    <string name="onboarding_text_title_page_4">Исследуйте каждый аспект</string>
+
+    <string name="onboarding_text_subtitle_page_1">Найдите миллионы фильмов, найдите скрытые сокровища и погрузитесь в мир развлечений..</string>
+    <string name="onboarding_text_subtitle_page_2">Погрузитесь в мир хитов-блокбастеров, скрытых драгоценностей и всего, что между ними. Откройте для себя следующий любимый фильм без особых усилий.</string>
+    <string name="onboarding_text_subtitle_page_3">Получайте персональные рекомендации фильмов на основе ваших предпочтений, рейтингов и истории просмотров. Каждый раз находите именно то, что вам нравится.</string>
+    <string name="onboarding_text_subtitle_page_4">Погрузитесь глубже в фильмы с подробной информацией об актерах, съемочной группе, рейтингах, обзорах и многом другом.</string>
+
+    <string name="start">Начать</string>
+</resources>

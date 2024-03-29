@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="people">Знаменитости</string>
+    <string name="movies">Фильмы</string>
+    <string name="tv_shows">Сериалы</string>
+    <string name="search_for_movies_tv_shows_people">Поиск фильмов, телепередач, людей и т.д.</string>
+    <string name="popular_people">Популярные знаменитости</string>
+    <string name="movies_trending_this_week">Фильмы в тренде этой недели</string>
+    <string name="tv_shows_trending_this_week">Сериалы в тренде этой недели</string>
+    <string name="nothing_found">Ничего не найдено :(</string>
+</resources>

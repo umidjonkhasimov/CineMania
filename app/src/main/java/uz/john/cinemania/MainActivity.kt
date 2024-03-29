@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
             splashScreen.setKeepOnScreenCondition { uiState.isLoading }
 
             LaunchedEffect(uiState.userData?.language) {
-                updateResources(uiState.userData?.language?.locale ?: "ru")
+                updateResources(uiState.userData?.language?.locale ?: "en")
             }
 
             uiState.userData?.let { userData ->

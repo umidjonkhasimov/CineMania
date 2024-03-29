@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system">Система</string>
+    <string name="light">Светлый</string>
+    <string name="dark">Темный</string>
+    <string name="sign_out">Выход</string>
+    <string name="do_you_want_to_sign_out">Вы действительно хотите выйти?</string>
+    <string name="sign_in_to_get_account_details">Войдите, чтобы получить данные!</string>
+    <string name="sign_in">Войти</string>
+    <string name="settings">Настройки</string>
+    <string name="ui_mode">Тема</string>
+    <string name="language">Язык</string>
+    <string name="include_adult_content">Включить контент для взрослых</string>
+    <string name="others">Другие</string>
+    <string name="github_page">Страница GitHub</string>
+    <string name="developer_contact">Контакт с разработчиком</string>
+    <string name="contact_us">Мы ценим ваши отзывы и стремимся предоставить вам наилучшие впечатления. Если у вас есть какие-либо вопросы, предложения или сомнения относительно нашего клиентского приложения TMDB, не стесняйтесь обращаться к нам. Вы можете связаться с нами через:</string>
+</resources>

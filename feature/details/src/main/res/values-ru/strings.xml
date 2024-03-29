@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Person Details -->
+    <string name="person_details_are_not_available">Информация о знаменитости недоступна</string>
+    <string name="known_for">Известный как:</string>
+    <string name="born">Родился:</string>
+    <string name="passed_away">Скончался:</string>
+    <string name="movies_as_an_actor">Фильмы как актер</string>
+    <string name="movies_as_a_crew_member">Фильмы как член съемочной группы</string>
+    <string name="tv_shows_as_an_actor">Телесериалы как актер</string>
+    <string name="tv_shows_as_a_crew_member">Телесериалы как член съемочной группы</string>
+
+    <!-- Movie details -->
+    <string name="movie_details_are_not_available">Подробности о фильме недоступны.</string>
+    <string name="duration">%1$s Минуты</string>
+    <string name="reviews">%1$s (%2$s Отзывы)</string>
+    <string name="less">Меньше</string>
+    <string name="more">Подробнее</string>
+    <string name="cast">Актёры</string>
+    <string name="crew">Съёмочная группа</string>
+    <string name="trailers_teasers">Трейлеры &amp; Тизеры</string>
+    <string name="images">Изображения</string>
+    <string name="similar_movies">Похожие фильмы</string>
+    <string name="recommended">Рекомендуемые</string>
+
+    <!-- Tv Show Details -->
+    <string name="season_and_episodes_count">%1$s Сезона, %2$s эпизоды</string>
+    <string name="similar_tv_shows">Похожие сериалы</string>
+</resources>

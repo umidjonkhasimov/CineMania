@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="popular_movies">Популярные фильмы</string>
+    <string name="top_rated">Высокий рейтинг</string>
+    <string name="similar_movies">Похожие фильмы</string>
+    <string name="recommended">Рекомендуемые</string>
+    <string name="now_playing">Смотрят сейчас</string>
+    <string name="genre">Жанр: %s</string>
+    <string name="trending_this_week">Тренды этой недели</string>
+    <string name="search_for">Поиск: %s</string>
+    <string name="similar_tv_shows">Похожие сериалы</string>
+    <string name="recommended_tv_shows">Рекомендуемые сериалы</string>
+    <string name="popular_people">Популярные знаменитости</string>
+</resources>
