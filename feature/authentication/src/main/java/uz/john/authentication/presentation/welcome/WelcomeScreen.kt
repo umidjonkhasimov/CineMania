@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -45,6 +47,20 @@ internal fun WelcomeScreen(
     onContinueWithoutAccountClick: () -> Unit,
     onLoginClick: () -> Unit
 ) {
+
+    WelcomeScreenContent(
+        onSignUpClick = onSignUpClick,
+        onContinueWithoutAccountClick = onContinueWithoutAccountClick,
+        onLoginClick = onLoginClick
+    )
+}
+
+@Composable
+fun WelcomeScreenContent(
+    onSignUpClick: () -> Unit,
+    onContinueWithoutAccountClick: () -> Unit,
+    onLoginClick: () -> Unit
+) {
     val alertDialogTitleRes = stringResource(R.string.attention)
     val alertDialogTextRes = stringResource(R.string.you_will_be_redirected)
     var shouldShowAlertDialog by remember { mutableStateOf(false) }
@@ -65,7 +81,8 @@ internal fun WelcomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .verticalScroll(state = rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

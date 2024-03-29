@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -48,10 +50,10 @@ fun SignInScreen(
     onNavigateToMainScreen: () -> Unit
 ) {
     val viewModel: SignInScreenViewModel = hiltViewModel()
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
-    SignInScreen(
-        uiState = uiState.value,
+    SignInScreenContent(
+        uiState = uiState,
         sideEffect = viewModel.sideEffect,
         onUiAction = viewModel::onAction,
         onBackClick = onBackClick,
@@ -61,7 +63,7 @@ fun SignInScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SignInScreen(
+private fun SignInScreenContent(
     uiState: UiState,
     sideEffect: Flow<SideEffect>,
     onUiAction: (UiAction) -> Unit,
@@ -113,7 +115,8 @@ private fun SignInScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = SCREEN_PADDING),
+                .padding(horizontal = SCREEN_PADDING)
+                .verticalScroll(state = rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))
@@ -188,7 +191,7 @@ private fun SignInScreen(
 @Composable
 private fun SignInScreenPreview() {
     CineManiaTheme {
-        SignInScreen(
+        SignInScreenContent(
             uiState = UiState(true),
             sideEffect = flow { },
             onUiAction = {},
