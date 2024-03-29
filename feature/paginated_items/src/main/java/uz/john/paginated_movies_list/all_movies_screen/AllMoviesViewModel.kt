@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 import uz.john.domain.model.movie.Movie
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesByGenreUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesBySearchQueryUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesTrendingThisWeekUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedNowPlayingMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedPopularMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedRecommendedMoviesUseCase
@@ -33,6 +35,8 @@ class AllMoviesViewModel @Inject constructor(
     getPaginatedSimilarMoviesUseCase: GetPaginatedSimilarMoviesUseCase,
     getPaginatedRecommendedMoviesUseCase: GetPaginatedRecommendedMoviesUseCase,
     getPaginatedMoviesByGenreUseCase: GetPaginatedMoviesByGenreUseCase,
+    getPaginatedMoviesBySearchQueryUseCase: GetPaginatedMoviesBySearchQueryUseCase,
+    getPaginatedMoviesTrendingThisWeekUseCase: GetPaginatedMoviesTrendingThisWeekUseCase,
     @ApplicationContext context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
@@ -77,11 +81,11 @@ class AllMoviesViewModel @Inject constructor(
             }
 
             is AllMoviesScreenParam.AllMoviesBySearchQuery -> {
-                flowOf()
+                getPaginatedMoviesBySearchQueryUseCase(allMoviesScreenParam.query).cachedIn(viewModelScope)
             }
 
             AllMoviesScreenParam.MoviesTrendingThisWeek -> {
-                flowOf()
+                getPaginatedMoviesTrendingThisWeekUseCase().cachedIn(viewModelScope)
             }
 
             null -> {
