@@ -45,7 +45,7 @@ import uz.john.ui.components.SeeAllItem
 private val GENRES_HEIGHT = 120.dp
 private val SCREEN_PADDING = 16.dp
 private val SPACE_BETWEEN_MOVIES = 8.dp
-private const val FADE_ANIMATION_DURATION = 200
+private const val FADE_ANIMATION_DURATION = 300
 
 @Composable
 fun HomeScreen(

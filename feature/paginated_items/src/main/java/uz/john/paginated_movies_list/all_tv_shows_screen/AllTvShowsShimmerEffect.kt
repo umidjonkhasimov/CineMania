@@ -18,7 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import uz.john.ui.components.shimmerEffect
 
-private val MIN_TV_SHOW_WIDTH = 180.dp
+private val MIN_TV_SHOW_WIDTH = 150.dp
+private const val ITEM_RATIO = 2f / 3f
 
 @Composable
 fun AllTvShowsShimmerEffect(
@@ -37,7 +38,7 @@ fun AllTvShowsShimmerEffect(
                 Column {
                     Box(
                         modifier = Modifier
-                            .aspectRatio(ratio = 3f / 2f)
+                            .aspectRatio(ratio = ITEM_RATIO)
                             .clip(MaterialTheme.shapes.small)
                             .shimmerEffect()
                     )

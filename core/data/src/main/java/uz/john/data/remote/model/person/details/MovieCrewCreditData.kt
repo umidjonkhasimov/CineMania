@@ -20,7 +20,7 @@ data class MovieCrewCreditData(
     @SerializedName(value = "poster_path")
     val posterPath: String?,
     @SerializedName(value = "release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     val title: String,
     val video: Boolean,
     @SerializedName(value = "vote_average")

@@ -123,56 +123,66 @@ fun SearchScreenContent(
     }
 
     Scaffold { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            SearchView(
-                uiState = uiState,
-                onUiAction = onUiAction,
-                onPersonClick = onPersonClick,
-                onMovieClick = onMovieClick,
-                onTvShowClick = onTvShowClick,
-                onSeeAllMoviesClick = onSeeAllMoviesClick,
-                onSeeAllPeopleClick = onSeeAllPeopleClick,
-                onSeeAllTvShowsClick = onSeeAllTvShowsClick
-            )
-
-            LazyColumn(
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    top = 72.dp
+        when (uiState.isLoading) {
+            true -> {
+                SearchScreenShimmerEffect(
+                    modifier = Modifier.padding(paddingValues)
                 )
-            ) {
-                people(
-                    people = uiState.popularPeople,
-                    onSeeAllPeopleClick = { onSeeAllPeopleClick(AllPeopleScreenParam.AllPopularPeople) },
-                    onPersonClick = onPersonClick,
-                    titleRes = R.string.popular_people
-                )
+            }
 
-                space()
+            false -> {
+                Box(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                ) {
+                    SearchView(
+                        uiState = uiState,
+                        onUiAction = onUiAction,
+                        onPersonClick = onPersonClick,
+                        onMovieClick = onMovieClick,
+                        onTvShowClick = onTvShowClick,
+                        onSeeAllMoviesClick = onSeeAllMoviesClick,
+                        onSeeAllPeopleClick = onSeeAllPeopleClick,
+                        onSeeAllTvShowsClick = onSeeAllTvShowsClick
+                    )
 
-                movies(
-                    movies = uiState.trendingThisWeekMovies,
-                    onSeeAllMoviesClick = {
-                        onSeeAllMoviesClick(AllMoviesScreenParam.MoviesTrendingThisWeek)
-                    },
-                    onMovieClick = onMovieClick,
-                    titleRes = R.string.movies_trending_this_week
-                )
+                    LazyColumn(
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            top = 72.dp
+                        )
+                    ) {
+                        people(
+                            people = uiState.popularPeople,
+                            onSeeAllPeopleClick = { onSeeAllPeopleClick(AllPeopleScreenParam.AllPopularPeople) },
+                            onPersonClick = onPersonClick,
+                            titleRes = R.string.popular_people
+                        )
 
-                space()
+                        space()
 
-                tvShows(
-                    tvShows = uiState.trendingThisWeekTvShows,
-                    onSeeAllTvShowsClick = {
-                        onSeeAllTvShowsClick(AllTvShowsScreenParam.TvShowsTrendingThisWeek)
-                    },
-                    onTvShowClick = onTvShowClick,
-                    titleRes = R.string.tv_shows_trending_this_week
-                )
+                        movies(
+                            movies = uiState.trendingThisWeekMovies,
+                            onSeeAllMoviesClick = {
+                                onSeeAllMoviesClick(AllMoviesScreenParam.MoviesTrendingThisWeek)
+                            },
+                            onMovieClick = onMovieClick,
+                            titleRes = R.string.movies_trending_this_week
+                        )
+
+                        space()
+
+                        tvShows(
+                            tvShows = uiState.trendingThisWeekTvShows,
+                            onSeeAllTvShowsClick = {
+                                onSeeAllTvShowsClick(AllTvShowsScreenParam.TvShowsTrendingThisWeek)
+                            },
+                            onTvShowClick = onTvShowClick,
+                            titleRes = R.string.tv_shows_trending_this_week
+                        )
+                    }
+                }
             }
         }
     }
