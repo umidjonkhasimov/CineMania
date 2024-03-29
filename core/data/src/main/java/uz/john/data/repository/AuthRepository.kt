@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import uz.john.data.remote.api.AuthenticationApi
 import uz.john.data.remote.model.authentication.get.CreateSessionResponse
 import uz.john.data.remote.model.authentication.get.RequestTokenResponse
+import uz.john.data.remote.model.authentication.get.UserAccountDetailsData
 import uz.john.data.remote.model.authentication.post.CreateSessionRequest
 import uz.john.data.remote.model.authentication.post.ValidateTokenRequest
 import uz.john.util.ResultModel
@@ -15,7 +16,10 @@ class AuthRepository @Inject constructor(
     private val authenticationApi: AuthenticationApi,
     private val dataStoreRepository: DataStoreRepository
 ) {
-    suspend fun signIn(username: String, password: String): ResultModel<Unit> = withContext(Dispatchers.IO) {
+    suspend fun signIn(
+        username: String,
+        password: String
+    ): ResultModel<Unit> = withContext(Dispatchers.IO) {
         val result = createRequestToken()
 
         return@withContext when (result) {
@@ -71,16 +75,35 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    private suspend fun createRequestToken(): ResultModel<RequestTokenResponse> = invokeRequest {
-        authenticationApi.createRequestToken()
-    }
-
-    private suspend fun validateRequestToken(validateTokenRequest: ValidateTokenRequest): ResultModel<Unit> = invokeRequest {
-        authenticationApi.validateRequestToken(validateTokenRequest)
-    }
-
-    private suspend fun createSession(createSessionRequest: CreateSessionRequest): ResultModel<CreateSessionResponse> =
+    suspend fun getAccountDetails(
+        accountId: Int = 1,
+        sessionId: String = ""
+    ): ResultModel<UserAccountDetailsData> =
         invokeRequest {
+            return@invokeRequest withContext(Dispatchers.IO) {
+                authenticationApi.getAccountDetails(accountId = accountId, sessionId = sessionId)
+            }
+        }
+
+    private suspend fun createRequestToken(): ResultModel<RequestTokenResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            authenticationApi.createRequestToken()
+        }
+    }
+
+    private suspend fun validateRequestToken(
+        validateTokenRequest: ValidateTokenRequest
+    ): ResultModel<Unit> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            authenticationApi.validateRequestToken(validateTokenRequest)
+        }
+    }
+
+    private suspend fun createSession(
+        createSessionRequest: CreateSessionRequest
+    ): ResultModel<CreateSessionResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
             authenticationApi.createSession(createSessionRequest)
         }
+    }
 }

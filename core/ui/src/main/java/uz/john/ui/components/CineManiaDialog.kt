@@ -204,7 +204,40 @@ fun CineManiaAlertDialog(
             }
         }
     }
+}
 
+@Composable
+fun CineManiaDialog(
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    var visible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        launch {
+            delay(DIALOG_INFLATION_DELAY)
+            visible = true
+        }
+    }
+
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        AnimatedVisibility(
+            visible = visible,
+            enter = scaleIn(),
+            exit = scaleOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.colorScheme.background),
+            ) {
+                content()
+            }
+        }
+    }
 }
 
 @Preview

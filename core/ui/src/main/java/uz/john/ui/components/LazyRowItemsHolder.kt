@@ -14,10 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import uz.john.ui.R
 
-private val HOLDER_HEIGHT = 300.dp
+private val HOLDER_HEIGHT = 250.dp
 
 @Composable
 fun LazyRowItemsHolder(
@@ -35,12 +36,17 @@ fun LazyRowItemsHolder(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = title, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.weight(1f))
             if (shouldShowSeeAllButton) {
                 Text(
                     text = stringResource(R.string.see_all),
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .clip(MaterialTheme.shapes.small)

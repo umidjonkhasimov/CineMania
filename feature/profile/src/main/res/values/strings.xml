@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="sign_out">Sign out</string>
+    <string name="do_you_want_to_sign_out">Do you want to sign out?</string>
+    <string name="sign_in_to_get_account_details">Sign In to get account details!</string>
+    <string name="sign_in">Sign In</string>
+    <string name="settings">Settings</string>
+    <string name="ui_mode">Ui Mode</string>
+    <string name="language">Language</string>
+    <string name="include_adult_content">Include adult content</string>
+    <string name="others">Others</string>
+    <string name="github_page">GitHub Page</string>
+    <string name="developer_contact">Developer Contact</string>
+    <string name="contact_us">We value your feedback and are committed to providing you with the best experience possible. If you have any questions, suggestions, or concerns regarding our TMDB client app, please don\'t hesitate to reach out to us. You can contact us via:</string>
+</resources>

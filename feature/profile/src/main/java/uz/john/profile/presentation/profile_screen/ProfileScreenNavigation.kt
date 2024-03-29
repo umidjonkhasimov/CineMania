@@ -11,8 +11,12 @@ fun NavController.navigateToProfileScreen(navOptions: NavOptions? = null) {
     navigate(PROFILE_SCREEN, navOptions)
 }
 
-fun NavGraphBuilder.profileScreen() {
+fun NavGraphBuilder.profileScreen(
+    onSignInClick: () -> Unit
+) {
     composable(route = PROFILE_SCREEN) {
-        ProfileScreen()
+        ProfileScreen(
+            onSignInClick = onSignInClick
+        )
     }
 }

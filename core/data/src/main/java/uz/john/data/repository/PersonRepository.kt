@@ -1,6 +1,7 @@
 package uz.john.data.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import uz.john.data.remote.api.PersonApi
 import uz.john.data.remote.model.person.PeopleResponseData
@@ -11,7 +12,8 @@ import java.util.Locale
 import javax.inject.Inject
 
 class PersonRepository @Inject constructor(
-    private val personApi: PersonApi
+    private val personApi: PersonApi,
+    private val dataStoreRepository: DataStoreRepository
 ) {
     private val region = Locale.getDefault().country
     private val language = Locale.getDefault().language
@@ -34,9 +36,10 @@ class PersonRepository @Inject constructor(
     suspend fun searchPeople(
         query: String,
         page: Int,
-        includeAdult: Boolean = true
     ): ResultModel<PeopleResponseData> = invokeRequest {
         return@invokeRequest withContext(Dispatchers.IO) {
+            val includeAdult = dataStoreRepository.userData.first().includeAdult
+
             personApi.searchPeople(
                 query = query,
                 includeAdult = includeAdult,

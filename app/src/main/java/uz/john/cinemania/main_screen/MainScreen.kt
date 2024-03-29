@@ -59,7 +59,8 @@ fun MainScreen(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
-    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     val bottomNavigationItems = listOf(
         BottomNavigationItems.HOME_ITEM,
@@ -141,7 +142,9 @@ fun MainScreen(
                 onSeeAllClick = onSeeAllMoviesClick
             )
             forYouScreen()
-            profileScreen()
+            profileScreen(
+                onSignInClick = onSignInClick
+            )
             searchScreen(
                 onPersonClick = onPersonClick,
                 onMovieClick = onMovieItemClick,

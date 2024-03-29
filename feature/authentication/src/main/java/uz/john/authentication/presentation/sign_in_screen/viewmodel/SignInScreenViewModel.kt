@@ -8,6 +8,7 @@ import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.S
 import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.UiAction
 import uz.john.authentication.presentation.sign_in_screen.SignInScreenContract.UiState
 import uz.john.domain.use_cases.authentication.SignInUseCase
+import uz.john.domain.use_cases.user_data.SetUserLoggedInUseCase
 import uz.john.ui.delegations.MVI
 import uz.john.ui.delegations.mvi
 import uz.john.util.ResultModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInScreenViewModel @Inject constructor(
-    private val signInUserCase: SignInUseCase
+    private val signInUserCase: SignInUseCase,
+    private val setUserLoggedInUseCase: SetUserLoggedInUseCase
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(initialUiState()) {
     override fun onAction(uiAction: UiAction) {
         when (uiAction) {
@@ -40,6 +42,7 @@ class SignInScreenViewModel @Inject constructor(
                 }
 
                 is ResultModel.Success -> {
+                    setUserLoggedInUseCase(true)
                     emitSideEffect(SideEffect.NavigateToMainScreen)
                     updateUiState {
                         copy(isLoading = false)

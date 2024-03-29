@@ -137,6 +137,9 @@ fun CineManiaNavHost(
             },
             onSeeAllPeopleClick = { allPeopleScreenParam ->
                 navController.navigateToAllPeopleScreen(allPeopleScreenParam)
+            },
+            onSignInClick = {
+                navController.navigateToSignIn()
             }
         )
         movieDetailsScreen(

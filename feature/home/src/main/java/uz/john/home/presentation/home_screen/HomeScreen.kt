@@ -30,8 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.Flow
-import uz.john.domain.model.movie.Movie
 import uz.john.domain.model.common.Genre
+import uz.john.domain.model.movie.Movie
 import uz.john.home.R
 import uz.john.home.presentation.components.HomeCarouselItem
 import uz.john.home.presentation.components.HomeShimmerEffect
@@ -42,7 +42,7 @@ import uz.john.ui.components.MovieCardItem
 import uz.john.ui.components.MovieGenreItem
 import uz.john.ui.components.SeeAllItem
 
-private val GENRES_HEIGHT = 130.dp
+private val GENRES_HEIGHT = 120.dp
 private val SCREEN_PADDING = 16.dp
 private val SPACE_BETWEEN_MOVIES = 8.dp
 private const val FADE_ANIMATION_DURATION = 200

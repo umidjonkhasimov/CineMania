@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="not_connected">⚠️ Вы не подключены к Интернету!</string>
+    <string name="home">Главная</string>
+    <string name="for_you">Для Вас</string>
+    <string name="search">Поиск</string>
+    <string name="profile">Профиль</string>
+</resources>

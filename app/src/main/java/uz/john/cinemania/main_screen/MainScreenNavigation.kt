@@ -30,7 +30,8 @@ fun NavGraphBuilder.mainScreen(
     onTvShowClick: (Int) -> Unit,
     onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
     onSeeAllPeopleClick: (AllPeopleScreenParam) -> Unit,
-    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     composable(MAIN_ROUTE) {
         val bottomNavController = rememberNavController()
@@ -41,7 +42,8 @@ fun NavGraphBuilder.mainScreen(
             onPersonClick = onPersonClick,
             onTvShowClick = onTvShowClick,
             onSeeAllTvShowsClick = onSeeAllTvShowsClick,
-            onSeeAllPeopleClick = onSeeAllPeopleClick
+            onSeeAllPeopleClick = onSeeAllPeopleClick,
+            onSignInClick = onSignInClick
         )
     }
 }

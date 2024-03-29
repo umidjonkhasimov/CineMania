@@ -66,7 +66,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(genres = allGenresresponse.data.take(10).shuffled())
+                    copy(genres = allGenresresponse.data)
                 }
             }
         }

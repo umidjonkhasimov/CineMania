@@ -1,6 +1,7 @@
 package uz.john.data.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.INCLUDE_VIDEO
@@ -29,6 +30,7 @@ import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
     private val moviesApi: MoviesApi,
+    private val dataStoreRepository: DataStoreRepository
 ) {
     private val region = Locale.getDefault().country
     private val language = Locale.getDefault().language
@@ -101,13 +103,13 @@ class MoviesRepository @Inject constructor(
     suspend fun searchMovies(
         query: String,
         page: Int,
-        includeAdult: Boolean = true,
         primaryReleaseYear: String? = null,
         year: String? = null
     ): ResultModel<MoviesResponseData> = invokeRequest {
         val additionalQueries = mutableMapOf<String, String>()
         primaryReleaseYear?.let { additionalQueries[PRIMARY_RELEASE_YEAR] = primaryReleaseYear }
         year?.let { additionalQueries[YEAR] = year }
+        val includeAdult = dataStoreRepository.userData.first().includeAdult
 
         return@invokeRequest withContext(Dispatchers.IO) {
             moviesApi.searchMovies(
@@ -123,7 +125,6 @@ class MoviesRepository @Inject constructor(
 
     suspend fun discoverMovies(
         page: Int,
-        includeAdult: Boolean? = null,
         includeVideo: Boolean? = null,
         primaryReleaseYear: String? = null,
         primaryReleaseDateGte: String? = null,
@@ -139,24 +140,24 @@ class MoviesRepository @Inject constructor(
         withGenres: String? = null,
         withPeople: String? = null,
     ): ResultModel<MoviesResponseData> = invokeRequest {
-        val queryParams = mutableMapOf<String, String>()
-        includeAdult?.let { queryParams[INCLUDE_ADULT] = includeAdult.toString() }
-        includeVideo?.let { queryParams[INCLUDE_VIDEO] = includeVideo.toString() }
-        primaryReleaseYear?.let { queryParams[PRIMARY_RELEASE_YEAR] = primaryReleaseYear.toString() }
-        primaryReleaseDateGte?.let { queryParams[PRIMARY_RELEASE_DATE_GTE] = primaryReleaseDateGte.toString() }
-        primaryReleaseDateLte?.let { queryParams[PRIMARY_RELEASE_DATE_LTE] = primaryReleaseDateLte.toString() }
-        sortBy?.let { queryParams[SORT_BY] = sortBy.toString() }
-        voteAverageGte?.let { queryParams[VOTE_AVERAGE_GTE] = voteAverageGte.toString() }
-        voteAverageLte?.let { queryParams[VOTE_AVERAGE_LTE] = voteAverageLte.toString() }
-        voteCountGte?.let { queryParams[VOTE_COUNT_GTE] = voteCountGte.toString() }
-        voteCountLte?.let { queryParams[VOTE_COUNT_LTE] = voteCountLte.toString() }
-        withCast?.let { queryParams[WITH_CAST] = withCast.toString() }
-        withCrew?.let { queryParams[WITH_CREW] = withCrew.toString() }
-        withCompanies?.let { queryParams[WITH_COMPANIES] = withCompanies.toString() }
-        withGenres?.let { queryParams[WITH_GENRES] = withGenres.toString() }
-        withPeople?.let { queryParams[WITH_PEOPLE] = withPeople.toString() }
-
         return@invokeRequest withContext(Dispatchers.IO) {
+            val queryParams = mutableMapOf<String, String>()
+            queryParams[INCLUDE_ADULT] = dataStoreRepository.userData.first().includeAdult.toString()
+
+            includeVideo?.let { queryParams[INCLUDE_VIDEO] = includeVideo.toString() }
+            primaryReleaseYear?.let { queryParams[PRIMARY_RELEASE_YEAR] = primaryReleaseYear.toString() }
+            primaryReleaseDateGte?.let { queryParams[PRIMARY_RELEASE_DATE_GTE] = primaryReleaseDateGte.toString() }
+            primaryReleaseDateLte?.let { queryParams[PRIMARY_RELEASE_DATE_LTE] = primaryReleaseDateLte.toString() }
+            sortBy?.let { queryParams[SORT_BY] = sortBy.toString() }
+            voteAverageGte?.let { queryParams[VOTE_AVERAGE_GTE] = voteAverageGte.toString() }
+            voteAverageLte?.let { queryParams[VOTE_AVERAGE_LTE] = voteAverageLte.toString() }
+            voteCountGte?.let { queryParams[VOTE_COUNT_GTE] = voteCountGte.toString() }
+            voteCountLte?.let { queryParams[VOTE_COUNT_LTE] = voteCountLte.toString() }
+            withCast?.let { queryParams[WITH_CAST] = withCast.toString() }
+            withCrew?.let { queryParams[WITH_CREW] = withCrew.toString() }
+            withCompanies?.let { queryParams[WITH_COMPANIES] = withCompanies.toString() }
+            withGenres?.let { queryParams[WITH_GENRES] = withGenres.toString() }
+            withPeople?.let { queryParams[WITH_PEOPLE] = withPeople.toString() }
             moviesApi.discoverMovies(
                 page = page,
                 language = language,

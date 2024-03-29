@@ -28,11 +28,14 @@ class MainViewModel @Inject constructor(
         )
 
     val userData = getUserPreferencesUseCase.invoke().map {
-        UiState.Success(it)
+        UiState(
+            isLoading = false,
+            userData = it
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = UiState.Loading
+        initialValue = UiState()
     )
 
     fun setIsOnboarded(isOnboarded: Boolean) {
@@ -42,7 +45,7 @@ class MainViewModel @Inject constructor(
     }
 }
 
-sealed class UiState {
-    data object Loading : UiState()
-    data class Success(val userData: UserPreferences) : UiState()
-}
+data class UiState(
+    val isLoading: Boolean = true,
+    val userData: UserPreferences? = null
+)

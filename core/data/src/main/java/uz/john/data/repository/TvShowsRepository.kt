@@ -1,6 +1,7 @@
 package uz.john.data.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import uz.john.data.remote.FIRST_AIR_DATE_YEAR
 import uz.john.data.remote.YEAR
@@ -13,7 +14,8 @@ import java.util.Locale
 import javax.inject.Inject
 
 class TvShowsRepository @Inject constructor(
-    private val tvShowsApi: TvShowsApi
+    private val tvShowsApi: TvShowsApi,
+    private val dataStoreRepository: DataStoreRepository
 ) {
     private val region = Locale.getDefault().country
     private val language = Locale.getDefault().language
@@ -59,7 +61,6 @@ class TvShowsRepository @Inject constructor(
     suspend fun searchTvShows(
         query: String,
         page: Int,
-        includeAdult: Boolean = true,
         firstAirDateYear: Int? = null,
         year: String? = null
     ): ResultModel<TvShowsResponseData> = invokeRequest {
@@ -67,6 +68,8 @@ class TvShowsRepository @Inject constructor(
         firstAirDateYear?.let { additionalParams[FIRST_AIR_DATE_YEAR] = firstAirDateYear.toString() }
         year?.let { additionalParams[YEAR] = year }
         return@invokeRequest withContext(Dispatchers.IO) {
+            val includeAdult = dataStoreRepository.userData.first().includeAdult
+
             tvShowsApi.searchTvShows(
                 query = query,
                 includeAdult = includeAdult,
