@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,11 +36,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,6 +64,7 @@ private val SCREEN_PADDING = 16.dp
 private val SPACE_HEIGHT = 32.dp
 private val ITEM_HEIGHT = 56.dp
 private val IMAGE_SIZE = 100.dp
+private val ICON_SIZE = 48.dp
 
 @Composable
 fun ProfileScreen(
@@ -457,12 +456,13 @@ fun Others(
             }
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.padding(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.contact_us),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -472,47 +472,56 @@ fun Others(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(
+                    Box(
                         modifier = Modifier
-                            .size(32.dp)
-                            .clickable(
-                                indication = rememberRipple(bounded = false),
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
+                            .size(ICON_SIZE)
+                            .clip(MaterialTheme.shapes.extraLarge)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clickable {
                                 emailDeveloper(context = context)
                             },
-                        painter = painterResource(CineManiaIcons.GoogleLogo),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(CineManiaIcons.GoogleLogo),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     Spacer(modifier = Modifier.width(32.dp))
-                    Icon(
+                    Box(
                         modifier = Modifier
-                            .size(32.dp)
-                            .clickable(
-                                indication = rememberRipple(bounded = false),
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
+                            .size(ICON_SIZE)
+                            .clip(MaterialTheme.shapes.extraLarge)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clickable {
                                 openDevelopersTelegram(context = context)
                             },
-                        painter = painterResource(CineManiaIcons.Telegram),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(CineManiaIcons.Telegram),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     Spacer(modifier = Modifier.width(32.dp))
-                    Icon(
+                    Box(
                         modifier = Modifier
-                            .size(32.dp)
-                            .clickable(
-                                indication = rememberRipple(bounded = false),
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
+                            .size(ICON_SIZE)
+                            .clip(MaterialTheme.shapes.extraLarge)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clickable {
                                 openDevelopersInstagram(context = context)
                             },
-                        painter = painterResource(CineManiaIcons.Instagram),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(CineManiaIcons.Instagram),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
         }

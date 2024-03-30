@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +28,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -47,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -93,7 +102,8 @@ fun MovieDetailsScreen(
     onImageClick: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
+    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     val viewModel: MovieDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -106,10 +116,12 @@ fun MovieDetailsScreen(
         onImageClick = onImageClick,
         onMovieClick = onMovieClick,
         onPersonClick = onPersonClick,
-        onSeeAllSimilarClick = onSeeAllSimilarClick
+        onSeeAllSimilarClick = onSeeAllSimilarClick,
+        onSignInClick = onSignInClick
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MovieDetailsScreenContent(
     uiState: UiState,
@@ -119,10 +131,12 @@ private fun MovieDetailsScreenContent(
     onImageClick: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
+    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
+    var shouldShowBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(sideEffect) {
         sideEffect.collect { sideEffect ->
@@ -142,6 +156,112 @@ private fun MovieDetailsScreenContent(
             onRetry = { onUiAction(UiAction.GetMovieDetails) },
             onDismissRequest = { shouldShowErrorDialog = false }
         )
+    }
+
+    if (shouldShowBottomSheet) {
+        uiState.movieDetails?.let {
+            ModalBottomSheet(
+                onDismissRequest = { shouldShowBottomSheet = false },
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            ) {
+                if (uiState.isLoggedIn) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable {
+                                    onUiAction(UiAction.SetMovieFavorite(movieId = uiState.movieDetails.id))
+                                }
+                                .padding(horizontal = SCREEN_PADDING),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.movieDetails.isFavorite) {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Filled.Favorite),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Favorite),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = stringResource(R.string.add_to_favorite)
+                            )
+                        }
+
+                        HorizontalDivider(
+                            modifier = Modifier
+                                .padding(start = SCREEN_PADDING),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.surfaceVariant
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable {
+                                    onUiAction(UiAction.SetMovieWatchLater(movieId = uiState.movieDetails.id))
+                                }
+                                .padding(horizontal = SCREEN_PADDING),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.movieDetails.isWatchLater) {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Filled.Clock),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Clock),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = stringResource(R.string.add_to_watch_later)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier.padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.sign_in_to_your_account),
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(32.dp))
+
+                        Button(
+                            onClick = {
+                                onSignInClick()
+                                shouldShowBottomSheet = false
+                            }
+                        ) {
+                            Text(
+                                text = stringResource(R.string.sign_in),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Scaffold { paddingValues ->
@@ -172,7 +292,10 @@ private fun MovieDetailsScreenContent(
                             movieDetails(
                                 movieDetails = movieDetails,
                                 onBackClick = onBackClick,
-                                onImageClick = onImageClick
+                                onImageClick = onImageClick,
+                                onMoreClick = {
+                                    shouldShowBottomSheet = true
+                                }
                             )
 
                             space()
@@ -243,7 +366,8 @@ private fun MovieDetailsScreenContent(
 private fun LazyListScope.movieDetails(
     movieDetails: MovieDetails,
     onBackClick: () -> Unit,
-    onImageClick: (String) -> Unit
+    onImageClick: (String) -> Unit,
+    onMoreClick: () -> Unit
 ) {
     val ratingColor = if (movieDetails.voteAverage >= 8) CineManiaColors.Orange.primary
     else if (movieDetails.voteAverage >= 7) CineManiaColors.Green.primary
@@ -279,6 +403,19 @@ private fun LazyListScope.movieDetails(
                     leadingContent = {
                         CineManiaBackButton(
                             onClick = onBackClick
+                        )
+                    },
+                    trailingContent = {
+                        Icon(
+                            modifier = Modifier
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = rememberRipple(bounded = false)
+                                ) {
+                                    onMoreClick()
+                                },
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = null
                         )
                     }
                 )

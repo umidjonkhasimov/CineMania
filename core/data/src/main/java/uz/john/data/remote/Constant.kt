@@ -8,6 +8,10 @@ internal const val SIMILAR_MOVIES_ENDPOINT = "movie/{movie_id}/similar"
 internal const val RECOMMENDED_MOVIES_ENDPOINT = "movie/{movie_id}/recommendations"
 internal const val DISCOVER_MOVIES = "discover/movie"
 internal const val ALL_GENRES_ENDPOINT = "genre/movie/list"
+internal const val ACCOUNT_STATE_ENDPOINT = "movie/{movie_id}/account_states"
+internal const val FAVORITE_ENDPOINT = "account/{account_id}/favorite"
+internal const val WATCH_LIST_ENDPOINT = "account/{account_id}/watchlist"
+internal const val MOVIE_MEDIA_TYPE = "movie"
 
 // Person
 internal const val PERSON_DETAILS_ENDPOINT = "person/{person_id}"
@@ -20,6 +24,7 @@ internal const val TRENDING_TV_SHOWS_ENDPOINT = "trending/tv/{time_window}"
 internal const val TV_SHOW_DETAILS_ENDPOINT = "tv/{series_id}"
 internal const val SIMILAR_TV_SHOWS_ENDPOINT = "tv/{series_id}/similar"
 internal const val RECOMMENDED_TV_SHOWS_ENDPOINT = "tv/{series_id}/recommendations"
+internal const val TV_SHOW_MEDIA_TYPE = "tv"
 
 // Search
 internal const val SEARCH_MOVIE_ENDPOINT = "search/movie"

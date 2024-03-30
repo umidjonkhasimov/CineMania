@@ -1,16 +1,20 @@
 package uz.john.data.remote.api
 
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
+import uz.john.data.remote.ACCOUNT_STATE_ENDPOINT
 import uz.john.data.remote.ALL_GENRES_ENDPOINT
 import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_VIDEOS
 import uz.john.data.remote.DISCOVER_MOVIES
+import uz.john.data.remote.FAVORITE_ENDPOINT
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.LANGUAGE
 import uz.john.data.remote.MOVIE_DETAILS_ENDPOINT
@@ -26,9 +30,14 @@ import uz.john.data.remote.TRENDING_ENDPOINT
 import uz.john.data.remote.TRENDING_TIME_WINDOW
 import uz.john.data.remote.TRENDING_TIME_WINDOW_DAY
 import uz.john.data.remote.TRENDING_TIME_WINDOW_WEEK
+import uz.john.data.remote.WATCH_LIST_ENDPOINT
+import uz.john.data.remote.model.movie.AccountStateOfMovieData
 import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.MoviesResponseData
 import uz.john.data.remote.model.movie.movie_details.MovieDetailsData
+import uz.john.data.remote.model.movie.post.AddToFavoriteRequest
+import uz.john.data.remote.model.movie.post.AddToWatchLaterRequest
+import uz.john.util.ApiResponse
 
 interface MoviesApi {
     @GET(TRENDING_ENDPOINT)
@@ -95,4 +104,22 @@ interface MoviesApi {
         @Query(REGION) region: String,
         @QueryMap additionalParams: Map<String, String>,
     ): Response<MoviesResponseData>
+
+    @GET(ACCOUNT_STATE_ENDPOINT)
+    suspend fun getAccountStateOfMovie(
+        @Path(MOVIE_ID) movieId: Int,
+        @Query("session_id") sessionId: String
+    ): Response<AccountStateOfMovieData>
+
+    @POST(FAVORITE_ENDPOINT)
+    suspend fun setMovieFavorite(
+        @Query("session_id") sessionId: String,
+        @Body addToFavoriteRequest: AddToFavoriteRequest
+    ): Response<ApiResponse>
+
+    @POST(WATCH_LIST_ENDPOINT)
+    suspend fun setMovieWatchLater(
+        @Query("session_id") sessionId: String,
+        @Body addToWatchLaterRequest: AddToWatchLaterRequest
+    ): Response<ApiResponse>
 }

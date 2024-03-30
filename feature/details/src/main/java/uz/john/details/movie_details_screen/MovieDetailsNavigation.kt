@@ -22,7 +22,8 @@ fun NavGraphBuilder.movieDetailsScreen(
     onImageClick: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit
+    onSeeAllSimilarClick: (AllMoviesScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     composable(MOVIE_DETAILS_ROUTE) {
         MovieDetailsScreen(
@@ -30,7 +31,8 @@ fun NavGraphBuilder.movieDetailsScreen(
             onImageClick = onImageClick,
             onMovieClick = onMovieClick,
             onPersonClick = onPersonClick,
-            onSeeAllSimilarClick = onSeeAllSimilarClick
+            onSeeAllSimilarClick = onSeeAllSimilarClick,
+            onSignInClick = onSignInClick
         )
     }
 }

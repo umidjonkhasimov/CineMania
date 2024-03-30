@@ -26,4 +26,8 @@
     <!-- Tv Show Details -->
     <string name="season_and_episodes_count">%1$s Seasons, %2$s episodes</string>
     <string name="similar_tv_shows">Similar Tv Shows</string>
+    <string name="add_to_favorite">Add to Favorites</string>
+    <string name="add_to_watch_later">Watch later</string>
+    <string name="sign_in_to_your_account">Sign in to your account to be able save movies!</string>
+    <string name="sign_in">Sign In</string>
 </resources>

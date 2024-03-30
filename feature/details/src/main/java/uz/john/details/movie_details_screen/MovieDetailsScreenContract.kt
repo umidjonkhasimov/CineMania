@@ -6,6 +6,7 @@ import uz.john.domain.model.movie.movie_details.MovieDetails
 sealed interface MovieDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
+        val isLoggedIn: Boolean = true,
         val movieDetails: MovieDetails? = null,
         val similarMovies: List<Movie> = emptyList(),
         val recommendedMovies: List<Movie> = emptyList()
@@ -17,5 +18,7 @@ sealed interface MovieDetailsScreenContract {
 
     sealed interface UiAction : MovieDetailsScreenContract {
         data object GetMovieDetails : UiAction
+        data class SetMovieFavorite(val movieId: Int) : UiAction
+        data class SetMovieWatchLater(val movieId: Int) : UiAction
     }
 }

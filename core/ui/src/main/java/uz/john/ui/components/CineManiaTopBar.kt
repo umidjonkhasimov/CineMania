@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -54,5 +55,14 @@ fun CineManiaTopBar(
             colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
             scrollBehavior = scrollBehavior
         )
+
+        if (trailingContent != null)
+            Box(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .align(Alignment.CenterEnd)
+            ) {
+                trailingContent()
+            }
     }
 }

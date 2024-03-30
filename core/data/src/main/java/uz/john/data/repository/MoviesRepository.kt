@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.INCLUDE_VIDEO
+import uz.john.data.remote.MOVIE_MEDIA_TYPE
 import uz.john.data.remote.PRIMARY_RELEASE_DATE_GTE
 import uz.john.data.remote.PRIMARY_RELEASE_DATE_LTE
 import uz.john.data.remote.PRIMARY_RELEASE_YEAR
@@ -20,9 +21,13 @@ import uz.john.data.remote.WITH_GENRES
 import uz.john.data.remote.WITH_PEOPLE
 import uz.john.data.remote.YEAR
 import uz.john.data.remote.api.MoviesApi
+import uz.john.data.remote.model.movie.AccountStateOfMovieData
 import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.MoviesResponseData
 import uz.john.data.remote.model.movie.movie_details.MovieDetailsData
+import uz.john.data.remote.model.movie.post.AddToFavoriteRequest
+import uz.john.data.remote.model.movie.post.AddToWatchLaterRequest
+import uz.john.util.ApiResponse
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 import java.util.Locale
@@ -163,6 +168,44 @@ class MoviesRepository @Inject constructor(
                 language = language,
                 region = region,
                 queryParams = queryParams,
+            )
+        }
+    }
+
+    suspend fun getAccountStatesOfMovie(movieId: Int): ResultModel<AccountStateOfMovieData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            moviesApi.getAccountStateOfMovie(movieId = movieId, sessionId = sessionId)
+        }
+    }
+
+    suspend fun setMovieFavorite(movieId: Int, setFavorite: Boolean): ResultModel<ApiResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            moviesApi.setMovieFavorite(
+                sessionId = sessionId,
+                addToFavoriteRequest = AddToFavoriteRequest(
+                    mediaType = MOVIE_MEDIA_TYPE,
+                    mediaId = movieId,
+                    favorite = setFavorite
+                )
+            )
+        }
+    }
+
+    suspend fun setMovieWatchLater(movieId: Int, setWatchLater: Boolean): ResultModel<ApiResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            moviesApi.setMovieWatchLater(
+                sessionId = sessionId,
+                addToWatchLaterRequest = AddToWatchLaterRequest(
+                    mediaType = MOVIE_MEDIA_TYPE,
+                    mediaId = movieId,
+                    watchlist = setWatchLater
+                )
             )
         }
     }

@@ -26,4 +26,8 @@
     <!-- Tv Show Details -->
     <string name="season_and_episodes_count">%1$s Сезона, %2$s эпизоды</string>
     <string name="similar_tv_shows">Похожие сериалы</string>
+    <string name="add_to_favorite">Добавить в избранное</string>
+    <string name="add_to_watch_later">Посмотреть позже</string>
+    <string name="sign_in_to_your_account">Войдите в свой аккаунт, чтобы иметь возможность сохранять фильмы!</string>
+    <string name="sign_in">Войти</string>
 </resources>

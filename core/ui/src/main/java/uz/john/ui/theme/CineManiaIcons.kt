@@ -4,7 +4,7 @@ import uz.john.ui.R
 
 object CineManiaIcons {
     val Home = R.drawable.ic_home
-    val ForYou = R.drawable.ic_favorite
+    val Favorite = R.drawable.ic_favorite
     val Search = R.drawable.ic_search
     val Profile = R.drawable.ic_profile
     val Calendar = R.drawable.ic_calendar
@@ -44,11 +44,13 @@ object CineManiaIcons {
     val Thriller = R.drawable.ic_thriller
     val War = R.drawable.ic_war
     val Western = R.drawable.ic_western
+    val Clock = R.drawable.ic_clock
 
     object Filled {
         val Home = R.drawable.ic_home_filled
-        val ForYou = R.drawable.ic_favorite_filled
+        val Favorite = R.drawable.ic_favorite_filled
         val Search = R.drawable.ic_search_filled
         val Profile = R.drawable.ic_profile_filled
+        val Clock = R.drawable.ic_clock_filled
     }
 }

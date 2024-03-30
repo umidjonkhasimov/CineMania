@@ -157,6 +157,9 @@ fun CineManiaNavHost(
             },
             onSeeAllSimilarClick = { mediaType ->
                 navController.navigateToAllMoviesScreen(mediaType)
+            },
+            onSignInClick = {
+                navController.navigateToSignIn()
             }
         )
         tvShowDetailsScreen(

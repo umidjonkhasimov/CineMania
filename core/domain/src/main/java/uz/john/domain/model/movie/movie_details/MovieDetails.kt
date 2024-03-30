@@ -39,7 +39,9 @@ data class MovieDetails(
     val voteCount: Int,
     val credits: Credits,
     val videos: VideosResponse,
-    val images: ImagesResponse
+    val images: ImagesResponse,
+    val isFavorite: Boolean = false,
+    val isWatchLater: Boolean = false,
 )
 
 fun MovieDetailsData.toDomain(): MovieDetails {

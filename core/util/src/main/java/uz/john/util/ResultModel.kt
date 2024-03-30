@@ -25,7 +25,7 @@ suspend fun <T : Any> invokeRequest(
             val gson = Gson()
             val errorBody = result.errorBody()?.string()
             val errorCode = result.code()
-            val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
+            val errorResponse = gson.fromJson(errorBody, ApiResponse::class.java)
 
             ResultModel.Error(
                 error = NetworkError(
@@ -46,7 +46,7 @@ data class NetworkError(
     val code: Int
 ) : IOException()
 
-data class ErrorResponse(
+data class ApiResponse(
     val success: Boolean,
     @SerializedName(value = "status_code")
     val statusCode: Int,

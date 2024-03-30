@@ -67,8 +67,8 @@ enum class BottomNavigationItems(
     FOR_YOU_ITEM(
         route = FOR_YOU_ROUTE,
         title = R.string.for_you,
-        icon = CineManiaIcons.ForYou,
-        selectedIcon = CineManiaIcons.Filled.ForYou
+        icon = CineManiaIcons.Favorite,
+        selectedIcon = CineManiaIcons.Filled.Favorite
     ),
 
     SEARCH_ITEM(
