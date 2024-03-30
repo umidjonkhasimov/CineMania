@@ -7,6 +7,7 @@ import uz.john.domain.model.tv_show.TvShow
 sealed interface SearchScreenContract {
     data class UiState(
         val isLoading: Boolean = false,
+        val isSearching: Boolean = false,
         val popularPeople: List<Person>? = null,
         val trendingThisWeekMovies: List<Movie>? = null,
         val trendingThisWeekTvShows: List<TvShow>? = null,

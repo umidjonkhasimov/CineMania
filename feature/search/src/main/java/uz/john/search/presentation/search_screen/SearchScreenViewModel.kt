@@ -42,6 +42,35 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(uiAction: UiAction) {
+        when (uiAction) {
+            is UiAction.SearchForItems -> {
+                searchJob = viewModelScope.launch {
+                    searchJob.cancel()
+                    delay(500)
+
+                    updateUiState { copy(isSearching = true) }
+
+                    searchForMovies(uiAction.query)
+                    searchForPeople(uiAction.query)
+                    searchForTvShows(uiAction.query)
+
+                    updateUiState { copy(isSearching = false) }
+                }
+            }
+
+            UiAction.ClearSearchResults -> {
+                updateUiState {
+                    copy(
+                        moviesResult = null,
+                        peopleResult = null,
+                        tvShowResult = null
+                    )
+                }
+            }
+        }
+    }
+
     private suspend fun getPopularPeople() = coroutineScope {
         val popularPeopleResponse = getPopularPeopleUseCase.invoke(1)
         when (popularPeopleResponse) {
@@ -98,35 +127,6 @@ class SearchScreenViewModel @Inject constructor(
             is ResultModel.Success -> {
                 val list = trendingThisWeekResponse.data.take(10)
                 updateUiState { copy(trendingThisWeekTvShows = list) }
-            }
-        }
-    }
-
-    override fun onAction(uiAction: UiAction) {
-        when (uiAction) {
-            is UiAction.SearchForItems -> {
-                searchJob = viewModelScope.launch {
-                    searchJob.cancel()
-                    delay(500)
-
-                    updateUiState { copy(isLoading = true) }
-
-                    searchForMovies(uiAction.query)
-                    searchForPeople(uiAction.query)
-                    searchForTvShows(uiAction.query)
-
-                    updateUiState { copy(isLoading = false) }
-                }
-            }
-
-            UiAction.ClearSearchResults -> {
-                updateUiState {
-                    copy(
-                        moviesResult = null,
-                        peopleResult = null,
-                        tvShowResult = null
-                    )
-                }
             }
         }
     }

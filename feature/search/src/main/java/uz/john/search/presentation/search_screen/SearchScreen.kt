@@ -260,7 +260,7 @@ fun SearchView(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         ) {
-            if (uiState.isLoading) {
+            if (uiState.isSearching) {
                 AnimatedProgressIndicator(visible = true)
             }
 
