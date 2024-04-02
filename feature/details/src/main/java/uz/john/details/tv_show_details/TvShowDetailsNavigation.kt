@@ -22,7 +22,8 @@ fun NavGraphBuilder.tvShowDetailsScreen(
     onImageClick: (String) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     composable(route = TV_SHOW_DETAILS_ROUTE) {
         TvShowDetailsScreen(
@@ -30,7 +31,8 @@ fun NavGraphBuilder.tvShowDetailsScreen(
             onImageClick = onImageClick,
             onTvShowClick = onTvShowClick,
             onPersonClick = onPersonClick,
-            onSeeAllTvShowsClick = onSeeAllTvShowsClick
+            onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+            onSignInClick = onSignInClick
         )
     }
 }

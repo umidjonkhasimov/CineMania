@@ -6,6 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import uz.john.data.remote.ACCOUNT_ID_PATH
+import uz.john.data.remote.SESSION_ID_PATH
 import uz.john.data.remote.model.authentication.get.CreateSessionResponse
 import uz.john.data.remote.model.authentication.get.RequestTokenResponse
 import uz.john.data.remote.model.authentication.get.UserAccountDetailsData
@@ -16,8 +18,7 @@ internal const val REQUEST_TOKEN_ENDPOINT = "authentication/token/new"
 internal const val VALIDATE_REQUEST_TOKEN_ENDPOINT = "authentication/token/validate_with_login"
 internal const val CREATE_SESSION_ENDPOINT = "authentication/session/new"
 internal const val GET_ACCOUNT_DETAILS_ENDPOINT = "account/{account_id}"
-internal const val ACCOUNT_ID_PATH = "account_id"
-internal const val SESSION_ID_PATH = "session_id"
+
 
 interface AuthenticationApi {
     @GET(REQUEST_TOKEN_ENDPOINT)

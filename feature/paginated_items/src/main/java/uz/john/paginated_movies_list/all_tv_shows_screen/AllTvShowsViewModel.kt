@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 import uz.john.domain.model.tv_show.TvShow
+import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedFavoriteTvShowsUseCase
 import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedRecommendedTvShowsUseCase
 import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedSimilarTvShowsUseCase
 import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedTrendingThisWeekTvShowsUseCase
 import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedTvShowsBySearchQueryUseCase
+import uz.john.domain.use_cases.tv_shows.pagination.GetPaginatedWatchLaterTvShowsUseCase
 import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenContract.SideEffect
 import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenContract.UiAction
 import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenContract.UiState
@@ -29,6 +31,8 @@ class AllTvShowsViewModel @Inject constructor(
     getPaginatedSimilarTvShowsUseCase: GetPaginatedSimilarTvShowsUseCase,
     getPaginatedTvShowsBySearchQueryUseCase: GetPaginatedTvShowsBySearchQueryUseCase,
     getPaginatedTrendingThisWeekTvShowsUseCase: GetPaginatedTrendingThisWeekTvShowsUseCase,
+    getPaginatedFavoriteTvShowsUseCase: GetPaginatedFavoriteTvShowsUseCase,
+    getPaginatedWatchLaterTvShowsUseCase: GetPaginatedWatchLaterTvShowsUseCase,
     @ApplicationContext context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
@@ -59,6 +63,14 @@ class AllTvShowsViewModel @Inject constructor(
 
         AllTvShowsScreenParam.TvShowsTrendingThisWeek -> {
             getPaginatedTrendingThisWeekTvShowsUseCase().cachedIn(viewModelScope)
+        }
+
+        AllTvShowsScreenParam.AllFavoriteTvShows -> {
+            getPaginatedFavoriteTvShowsUseCase().cachedIn(viewModelScope)
+        }
+
+        AllTvShowsScreenParam.AllWatchLaterTvShows -> {
+            getPaginatedWatchLaterTvShowsUseCase().cachedIn(viewModelScope)
         }
 
         null -> flowOf()

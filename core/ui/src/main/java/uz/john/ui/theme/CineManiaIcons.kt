@@ -45,6 +45,7 @@ object CineManiaIcons {
     val War = R.drawable.ic_war
     val Western = R.drawable.ic_western
     val Clock = R.drawable.ic_clock
+    val EmptyFolder = R.drawable.ic_empty_folder
 
     object Filled {
         val Home = R.drawable.ic_home_filled

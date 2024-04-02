@@ -11,4 +11,7 @@
     <string name="similar_tv_shows">Similar Tv Shows</string>
     <string name="recommended_tv_shows">Recommended Tv Shows</string>
     <string name="popular_people">Popular People</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="watch_later">Watch Later</string>
+    <string name="favorite_tv_shows">Favorite Tv shows</string>
 </resources>

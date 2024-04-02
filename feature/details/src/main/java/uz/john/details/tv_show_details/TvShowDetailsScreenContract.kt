@@ -6,6 +6,7 @@ import uz.john.domain.model.tv_show.tv_show_details.TvShowDetails
 sealed interface TvShowDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
+        val isLoggedIn: Boolean = false,
         val tvShowDetails: TvShowDetails? = null,
         val recommendedTvShows: List<TvShow>? = null,
         val similarTvShows: List<TvShow>? = null
@@ -17,5 +18,7 @@ sealed interface TvShowDetailsScreenContract {
 
     sealed interface UiAction : TvShowDetailsScreenContract {
         data object InitializeScreen : UiAction
+        data class SetTvShowFavorite(val tvShowId: Int) : UiAction
+        data class SetTvShowWatchLater(val tvShowId: Int) : UiAction
     }
 }

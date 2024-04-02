@@ -141,7 +141,13 @@ fun MainScreen(
                 onMovieItemClick = onMovieItemClick,
                 onSeeAllClick = onSeeAllMoviesClick
             )
-            forYouScreen()
+            forYouScreen(
+                onMovieClick = onMovieItemClick,
+                onTvShowClick = onTvShowClick,
+                onSignInClick = onSignInClick,
+                onSeeAllMoviesClick = onSeeAllMoviesClick,
+                onSeeAllTvShowsClick = onSeeAllTvShowsClick
+            )
             profileScreen(
                 onSignInClick = onSignInClick
             )

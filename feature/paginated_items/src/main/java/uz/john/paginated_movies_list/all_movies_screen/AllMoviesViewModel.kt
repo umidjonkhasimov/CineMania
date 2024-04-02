@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 import uz.john.domain.model.movie.Movie
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedFavoriteMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesByGenreUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesBySearchQueryUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedMoviesTrendingThisWeekUseCase
@@ -20,6 +21,7 @@ import uz.john.domain.use_cases.movies.pagination.GetPaginatedPopularMoviesUseCa
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedRecommendedMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedSimilarMoviesUseCase
 import uz.john.domain.use_cases.movies.pagination.GetPaginatedTopRatedMoviesUseCase
+import uz.john.domain.use_cases.movies.pagination.GetPaginatedWatchLaterMoviesUseCase
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.SideEffect
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiAction
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenContract.UiState
@@ -37,6 +39,8 @@ class AllMoviesViewModel @Inject constructor(
     getPaginatedMoviesByGenreUseCase: GetPaginatedMoviesByGenreUseCase,
     getPaginatedMoviesBySearchQueryUseCase: GetPaginatedMoviesBySearchQueryUseCase,
     getPaginatedMoviesTrendingThisWeekUseCase: GetPaginatedMoviesTrendingThisWeekUseCase,
+    getPaginatedFavoriteMoviesUseCase: GetPaginatedFavoriteMoviesUseCase,
+    getPaginatedWatchLaterMoviesUseCase: GetPaginatedWatchLaterMoviesUseCase,
     @ApplicationContext context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
@@ -86,6 +90,14 @@ class AllMoviesViewModel @Inject constructor(
 
             AllMoviesScreenParam.MoviesTrendingThisWeek -> {
                 getPaginatedMoviesTrendingThisWeekUseCase().cachedIn(viewModelScope)
+            }
+
+            AllMoviesScreenParam.AllFavoriteMovies -> {
+                getPaginatedFavoriteMoviesUseCase().cachedIn(viewModelScope)
+            }
+
+            AllMoviesScreenParam.AllWatchLaterMovies -> {
+                getPaginatedWatchLaterMoviesUseCase().cachedIn(viewModelScope)
             }
 
             null -> {

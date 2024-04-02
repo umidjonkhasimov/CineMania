@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -35,25 +36,28 @@ fun HomeShimmerEffect(
             .padding(16.dp)
     ) {
         item {
-            Box(
-                modifier = Modifier
-                    .height(PAGER_HEIGHT)
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.small)
-                    .shimmerEffect(),
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .height(PAGER_HEIGHT)
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.small)
+                        .shimmerEffect(),
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(.5f)
+                        .height(DOTS_INDICATOR_HEIGHT)
+                        .clip(MaterialTheme.shapes.extraSmall)
+                        .shimmerEffect()
+                )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(.5f)
-                    .height(DOTS_INDICATOR_HEIGHT)
-                    .clip(MaterialTheme.shapes.extraSmall)
-                    .shimmerEffect()
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
 
         items(5) {

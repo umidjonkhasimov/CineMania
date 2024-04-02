@@ -21,7 +21,27 @@ class GetTvShowDetailsUseCase @Inject constructor(
             }
 
             is ResultModel.Success -> {
-                ResultModel.Success(response.data.toDomain())
+                val tvShowDetails = response.data.toDomain()
+                val accountStateResponse = tvShowsRepository.getAccountStatesOfTvShow(tvShowDetails.id)
+
+                when (accountStateResponse) {
+                    is ResultModel.Error -> {
+                        ResultModel.Error(accountStateResponse.error)
+                    }
+
+                    is ResultModel.Exception -> {
+                        ResultModel.Exception(accountStateResponse.throwable)
+                    }
+
+                    is ResultModel.Success -> {
+                        ResultModel.Success(
+                            tvShowDetails.copy(
+                                isFavorite = accountStateResponse.data.favorite,
+                                isWatchLater = accountStateResponse.data.watchlist
+                            )
+                        )
+                    }
+                }
             }
         }
     }

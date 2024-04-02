@@ -35,4 +35,18 @@ sealed class AllTvShowsScreenParam {
             return context.getString(R.string.search_for, query)
         }
     }
+
+    @Serializable
+    data object AllFavoriteTvShows : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.favorite_tv_shows)
+        }
+    }
+
+    @Serializable
+    data object AllWatchLaterTvShows : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.watch_later)
+        }
+    }
 }

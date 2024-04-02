@@ -46,7 +46,9 @@ data class TvShowDetails(
     val voteCount: Int,
     val images: ImagesResponse,
     val videos: VideosResponse,
-    val credits: TvShowCredits
+    val credits: TvShowCredits,
+    val isFavorite: Boolean = false,
+    val isWatchLater: Boolean = false
 )
 
 fun TvShowDetailsData.toDomain(): TvShowDetails {

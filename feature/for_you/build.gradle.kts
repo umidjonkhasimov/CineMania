@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":core:domain"))
+    implementation(project(":feature:paginated_items"))
     implementation(libs.androidx.core.ktx)
 
     // Compose
@@ -49,6 +50,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.navigation)
 

@@ -21,7 +21,7 @@ import uz.john.data.remote.WITH_GENRES
 import uz.john.data.remote.WITH_PEOPLE
 import uz.john.data.remote.YEAR
 import uz.john.data.remote.api.MoviesApi
-import uz.john.data.remote.model.movie.AccountStateOfMovieData
+import uz.john.data.remote.model.movie.AccountStateOfMediaData
 import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.MoviesResponseData
 import uz.john.data.remote.model.movie.movie_details.MovieDetailsData
@@ -172,11 +172,43 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    suspend fun getAccountStatesOfMovie(movieId: Int): ResultModel<AccountStateOfMovieData> = invokeRequest {
+    suspend fun getAccountStatesOfMovie(movieId: Int): ResultModel<AccountStateOfMediaData> = invokeRequest {
         return@invokeRequest withContext(Dispatchers.IO) {
             val sessionId = dataStoreRepository.userData.first().sessionId
 
             moviesApi.getAccountStateOfMovie(movieId = movieId, sessionId = sessionId)
+        }
+    }
+
+    suspend fun getFavoriteMovies(
+        page: Int,
+        accountId: Int = 1
+    ): ResultModel<MoviesResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            moviesApi.getFavoriteMovies(
+                accountId = accountId,
+                page = page,
+                sessionId = sessionId,
+                language = language
+            )
+        }
+    }
+
+    suspend fun getWatchLaterMovies(
+        page: Int,
+        accountId: Int = 1
+    ): ResultModel<MoviesResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            moviesApi.getWatchLaterMovies(
+                accountId = accountId,
+                page = page,
+                sessionId = sessionId,
+                language = language
+            )
         }
     }
 

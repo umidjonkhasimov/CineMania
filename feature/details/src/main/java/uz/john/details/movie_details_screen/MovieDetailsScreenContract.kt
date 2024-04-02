@@ -6,7 +6,7 @@ import uz.john.domain.model.movie.movie_details.MovieDetails
 sealed interface MovieDetailsScreenContract {
     data class UiState(
         val isLoading: Boolean = true,
-        val isLoggedIn: Boolean = true,
+        val isLoggedIn: Boolean = false,
         val movieDetails: MovieDetails? = null,
         val similarMovies: List<Movie> = emptyList(),
         val recommendedMovies: List<Movie> = emptyList()

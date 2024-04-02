@@ -4,10 +4,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import uz.john.data.remote.FIRST_AIR_DATE_YEAR
+import uz.john.data.remote.TV_SHOW_MEDIA_TYPE
 import uz.john.data.remote.YEAR
 import uz.john.data.remote.api.TvShowsApi
+import uz.john.data.remote.model.movie.AccountStateOfMediaData
+import uz.john.data.remote.model.movie.post.AddToFavoriteRequest
+import uz.john.data.remote.model.movie.post.AddToWatchLaterRequest
 import uz.john.data.remote.model.tv_show.TvShowsResponseData
 import uz.john.data.remote.model.tv_show.tv_show_details.TvShowDetailsData
+import uz.john.util.ApiResponse
 import uz.john.util.ResultModel
 import uz.john.util.invokeRequest
 import java.util.Locale
@@ -55,6 +60,76 @@ class TvShowsRepository @Inject constructor(
                 language = language,
                 page = page
             )
+        }
+    }
+
+    suspend fun getFavoriteTvShows(
+        page: Int,
+        accountId: Int = 1
+    ): ResultModel<TvShowsResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            tvShowsApi.getFavoriteTvShows(
+                accountId = accountId,
+                page = page,
+                sessionId = sessionId,
+                language = language
+            )
+        }
+    }
+
+    suspend fun getWatchLaterTvShows(
+        page: Int,
+        accountId: Int = 1
+    ): ResultModel<TvShowsResponseData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            tvShowsApi.getWatchLaterTvShows(
+                accountId = accountId,
+                page = page,
+                sessionId = sessionId,
+                language = language
+            )
+        }
+    }
+
+    suspend fun setTvShowFavorite(tvShowId: Int, setFavorite: Boolean): ResultModel<ApiResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            tvShowsApi.setTvShowFavorite(
+                sessionId = sessionId,
+                addToFavoriteRequest = AddToFavoriteRequest(
+                    mediaType = TV_SHOW_MEDIA_TYPE,
+                    mediaId = tvShowId,
+                    favorite = setFavorite
+                )
+            )
+        }
+    }
+
+    suspend fun setTvShowWatchLater(tvShowId: Int, setWatchLater: Boolean): ResultModel<ApiResponse> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            tvShowsApi.setTvShowWatchLater(
+                sessionId = sessionId,
+                addToWatchLaterRequest = AddToWatchLaterRequest(
+                    mediaType = TV_SHOW_MEDIA_TYPE,
+                    mediaId = tvShowId,
+                    watchlist = setWatchLater
+                )
+            )
+        }
+    }
+
+    suspend fun getAccountStatesOfTvShow(tvShowId: Int): ResultModel<AccountStateOfMediaData> = invokeRequest {
+        return@invokeRequest withContext(Dispatchers.IO) {
+            val sessionId = dataStoreRepository.userData.first().sessionId
+
+            tvShowsApi.getAccountStateOfTvShow(tvShowId = tvShowId, sessionId = sessionId)
         }
     }
 

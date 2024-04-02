@@ -1,5 +1,9 @@
 package uz.john.data.remote
 
+// Account
+internal const val ADD_TO_FAVORITE_ENDPOINT = "account/{account_id}/favorite"
+internal const val ADD_TO_WATCH_LIST_ENDPOINT = "account/{account_id}/watchlist"
+
 // Movies
 internal const val TRENDING_ENDPOINT = "trending/movie/{time_window}"
 internal const val TOP_RATED_MOVIES_ENDPOINT = "movie/top_rated"
@@ -8,9 +12,9 @@ internal const val SIMILAR_MOVIES_ENDPOINT = "movie/{movie_id}/similar"
 internal const val RECOMMENDED_MOVIES_ENDPOINT = "movie/{movie_id}/recommendations"
 internal const val DISCOVER_MOVIES = "discover/movie"
 internal const val ALL_GENRES_ENDPOINT = "genre/movie/list"
-internal const val ACCOUNT_STATE_ENDPOINT = "movie/{movie_id}/account_states"
-internal const val FAVORITE_ENDPOINT = "account/{account_id}/favorite"
-internal const val WATCH_LIST_ENDPOINT = "account/{account_id}/watchlist"
+internal const val MOVIE_ACCOUNT_STATE_ENDPOINT = "movie/{movie_id}/account_states"
+internal const val FAVORITE_MOVIES_ENDPOINT = "account/{account_id}/favorite/movies"
+internal const val WATCH_LATER_MOVIES_ENDPOINT = "account/{account_id}/watchlist/movies"
 internal const val MOVIE_MEDIA_TYPE = "movie"
 
 // Person
@@ -24,7 +28,10 @@ internal const val TRENDING_TV_SHOWS_ENDPOINT = "trending/tv/{time_window}"
 internal const val TV_SHOW_DETAILS_ENDPOINT = "tv/{series_id}"
 internal const val SIMILAR_TV_SHOWS_ENDPOINT = "tv/{series_id}/similar"
 internal const val RECOMMENDED_TV_SHOWS_ENDPOINT = "tv/{series_id}/recommendations"
+internal const val FAVORITE_TV_SHOWS_ENDPOINT = "account/{account_id}/favorite/tv"
+internal const val WATCH_LATER_TV_SHOWS_ENDPOINT = "account/{account_id}/watchlist/tv"
 internal const val TV_SHOW_MEDIA_TYPE = "tv"
+internal const val TV_SHOW_ACCOUNT_STATE_ENDPOINT = "tv/{series_id}/account_states"
 
 // Search
 internal const val SEARCH_MOVIE_ENDPOINT = "search/movie"
@@ -62,7 +69,10 @@ internal const val WITH_PEOPLE = "with_people"
 
 // Path
 internal const val MOVIE_ID = "movie_id"
+internal const val TV_SHOW_ID = "series_id"
 internal const val SERIES_ID = "series_id"
+internal const val ACCOUNT_ID_PATH = "account_id"
+internal const val SESSION_ID_PATH = "session_id"
 internal const val PERSON_ID = "person_id"
 internal const val TRENDING_TIME_WINDOW = "time_window"
 internal const val TRENDING_TIME_WINDOW_DAY = "day"

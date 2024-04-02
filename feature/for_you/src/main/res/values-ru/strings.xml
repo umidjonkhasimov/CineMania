@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_to_your_account">Войдите в свой аккаунт, чтобы иметь возможность сохранять фильмы и сериалы!</string>
+    <string name="sign_in">Войти</string>
+    <string name="you_haven_t_marked_anything_as_favorites">Вы еще ничего не отметили как избранное или как посмотреть позже!</string>
+    <string name="favorite_movies">Избранные фильмы</string>
+    <string name="watch_later_movies">Фильмы, для просмотра позже</string>
+    <string name="favorite_tv_shows">Избранные сериалы</string>
+    <string name="watch_later_tv_shows">Сериалы, для просмотра позже</string>
+    <string name="for_you">Для вас</string>
+</resources>

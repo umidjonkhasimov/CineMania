@@ -20,7 +20,15 @@ class DataStoreRepository @Inject constructor(
 
     suspend fun setIsLoggedIn(isLoggedIn: Boolean) {
         dataStore.updateData {
-            it.copy(isLoggedIn = isLoggedIn)
+            if (isLoggedIn)
+                it.copy(
+                    isLoggedIn = isLoggedIn,
+                )
+            else
+                it.copy(
+                    isLoggedIn = isLoggedIn,
+                    sessionId = ""
+                )
         }
     }
 

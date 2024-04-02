@@ -63,4 +63,18 @@ sealed class AllMoviesScreenParam {
             return context.getString(R.string.search_for, query)
         }
     }
+
+    @Serializable
+    data object AllFavoriteMovies : AllMoviesScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.favorite_movies)
+        }
+    }
+
+    @Serializable
+    data object AllWatchLaterMovies : AllMoviesScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.watch_later)
+        }
+    }
 }

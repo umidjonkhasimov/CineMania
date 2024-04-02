@@ -11,4 +11,7 @@
     <string name="similar_tv_shows">Похожие сериалы</string>
     <string name="recommended_tv_shows">Рекомендуемые сериалы</string>
     <string name="popular_people">Популярные знаменитости</string>
+    <string name="favorite_movies">Избранные фильмы</string>
+    <string name="watch_later">Посмотреть позже</string>
+    <string name="favorite_tv_shows">Избранные сериалы</string>
 </resources>

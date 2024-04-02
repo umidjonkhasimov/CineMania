@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_to_your_account">Sign in to your account to be able to save Movies and Tv Shows!</string>
+    <string name="sign_in">Sign In</string>
+    <string name="you_haven_t_marked_anything_as_favorites">You haven\'t marked anything as favorites or as watch later yet!</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="watch_later_movies">Movies to Watch Later</string>
+    <string name="favorite_tv_shows">Favorite Tv Shows</string>
+    <string name="watch_later_tv_shows">Tv Shows Watch Later</string>
+    <string name="for_you">For You</string>
+</resources>

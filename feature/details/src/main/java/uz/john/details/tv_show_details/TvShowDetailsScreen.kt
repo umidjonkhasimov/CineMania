@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,9 +29,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -48,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -94,7 +103,8 @@ fun TvShowDetailsScreen(
     onImageClick: (String) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     val viewModel: TvShowDetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -107,10 +117,12 @@ fun TvShowDetailsScreen(
         onImageClick = onImageClick,
         onTvShowClick = onTvShowClick,
         onPersonClick = onPersonClick,
-        onSeeAllTvShowsClick = onSeeAllTvShowsClick
+        onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+        onSignInClick = onSignInClick
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TvShowDetailsScreenContent(
     uiState: UiState,
@@ -120,10 +132,12 @@ fun TvShowDetailsScreenContent(
     onImageClick: (String) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit,
-    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit,
+    onSignInClick: () -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var errorDialogMessage by remember { mutableStateOf("") }
+    var shouldShowBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(sideEffect) {
         sideEffect.collect {
@@ -143,6 +157,112 @@ fun TvShowDetailsScreenContent(
             onRetry = { onUiAction(UiAction.InitializeScreen) },
             onDismissRequest = { shouldShowErrorDialog = false }
         )
+    }
+
+    if (shouldShowBottomSheet) {
+        uiState.tvShowDetails?.let {
+            ModalBottomSheet(
+                onDismissRequest = { shouldShowBottomSheet = false },
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            ) {
+                if (uiState.isLoggedIn) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable {
+                                    onUiAction(UiAction.SetTvShowFavorite(tvShowId = uiState.tvShowDetails.id))
+                                }
+                                .padding(horizontal = SCREEN_PADDING),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.tvShowDetails.isFavorite) {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Filled.Favorite),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Favorite),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = stringResource(R.string.add_to_favorite)
+                            )
+                        }
+
+                        HorizontalDivider(
+                            modifier = Modifier
+                                .padding(start = SCREEN_PADDING),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.surfaceVariant
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable {
+                                    onUiAction(UiAction.SetTvShowWatchLater(tvShowId = uiState.tvShowDetails.id))
+                                }
+                                .padding(horizontal = SCREEN_PADDING),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.tvShowDetails.isWatchLater) {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Filled.Clock),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(CineManiaIcons.Clock),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = stringResource(R.string.add_to_watch_later)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier.padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.sign_in_to_your_account),
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(32.dp))
+
+                        Button(
+                            onClick = {
+                                onSignInClick()
+                                shouldShowBottomSheet = false
+                            }
+                        ) {
+                            Text(
+                                text = stringResource(R.string.sign_in),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Scaffold { paddingValues ->
@@ -173,7 +293,10 @@ fun TvShowDetailsScreenContent(
                             tvShowDetails(
                                 tvShowDetails = tvShowDetails,
                                 onBackClick = onBackClick,
-                                onImageClick = onImageClick
+                                onImageClick = onImageClick,
+                                onMoreClick = {
+                                    shouldShowBottomSheet = true
+                                }
                             )
 
                             space()
@@ -245,7 +368,8 @@ fun TvShowDetailsScreenContent(
 private fun LazyListScope.tvShowDetails(
     tvShowDetails: TvShowDetails,
     onBackClick: () -> Unit,
-    onImageClick: (String) -> Unit
+    onImageClick: (String) -> Unit,
+    onMoreClick: () -> Unit
 ) {
     val ratingColor = if (tvShowDetails.voteAverage >= 8) CineManiaColors.Orange.primary
     else if (tvShowDetails.voteAverage >= 7) CineManiaColors.Green.primary
@@ -281,6 +405,19 @@ private fun LazyListScope.tvShowDetails(
                     leadingContent = {
                         CineManiaBackButton(
                             onClick = onBackClick
+                        )
+                    },
+                    trailingContent = {
+                        Icon(
+                            modifier = Modifier
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = rememberRipple(bounded = false)
+                                ) {
+                                    onMoreClick()
+                                },
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = null
                         )
                     }
                 )
