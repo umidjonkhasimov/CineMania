@@ -7,4 +7,7 @@
     <string name="now_playing">Смотрят сейчас</string>
     <string name="trending_today">В тренде сегодня</string>
     <string name="genres">Жанры</string>
+    <string name="movies">Фильмы</string>
+    <string name="tv_shows">Сериалы</string>
+    <string name="popular_tv_shows">Популярные сериалы</string>
 </resources>

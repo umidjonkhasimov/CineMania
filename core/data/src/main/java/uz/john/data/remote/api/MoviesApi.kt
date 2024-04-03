@@ -10,7 +10,7 @@ import retrofit2.http.QueryMap
 import uz.john.data.remote.MOVIE_ACCOUNT_STATE_ENDPOINT
 import uz.john.data.remote.ADD_TO_FAVORITE_ENDPOINT
 import uz.john.data.remote.ADD_TO_WATCH_LIST_ENDPOINT
-import uz.john.data.remote.ALL_GENRES_ENDPOINT
+import uz.john.data.remote.ALL_MOVIE_GENRES_ENDPOINT
 import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.APPEND_TO_RESPONSE
@@ -93,7 +93,7 @@ interface MoviesApi {
         @QueryMap queryParams: Map<String, String>,
     ): Response<MoviesResponseData>
 
-    @GET(ALL_GENRES_ENDPOINT)
+    @GET(ALL_MOVIE_GENRES_ENDPOINT)
     suspend fun getAllGenres(
         @Query(LANGUAGE) language: String,
     ): Response<GenresResponseData>

@@ -5,11 +5,16 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import uz.john.domain.use_cases.movies.GetAllGenresUseCase
+import uz.john.domain.use_cases.movies.GetAllMovieGenresUseCase
 import uz.john.domain.use_cases.movies.GetNowPlayingMoviesUseCase
 import uz.john.domain.use_cases.movies.GetPopularMoviesUseCase
 import uz.john.domain.use_cases.movies.GetTopRatedMoviesUseCase
 import uz.john.domain.use_cases.movies.GetTrendingTodayMoviesUseCase
+import uz.john.domain.use_cases.tv_shows.GetAllTvShowGenresUseCase
+import uz.john.domain.use_cases.tv_shows.GetNowPlayingTvShowsUseCase
+import uz.john.domain.use_cases.tv_shows.GetPopularTvShowsUseCase
+import uz.john.domain.use_cases.tv_shows.GetTopRatedTvShowsUseCase
+import uz.john.domain.use_cases.tv_shows.GetTrendingTodayTvShowsUseCase
 import uz.john.home.presentation.home_screen.HomeScreenContract.SideEffect
 import uz.john.home.presentation.home_screen.HomeScreenContract.UiAction
 import uz.john.home.presentation.home_screen.HomeScreenContract.UiState
@@ -20,38 +25,63 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
+    // Movies
     private val getTrendingTodayMoviesUseCase: GetTrendingTodayMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getAllGenresUseCase: GetAllGenresUseCase,
+    private val getAllMovieGenresUseCase: GetAllMovieGenresUseCase,
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
+
+    // TvShows
+    private val getTrendingTodayTvShowsUseCase: GetTrendingTodayTvShowsUseCase,
+    private val getNowPlayingTvShowsUseCase: GetNowPlayingTvShowsUseCase,
+    private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
+    private val getAllTvShowGenresUseCase: GetAllTvShowGenresUseCase,
+    private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase
 ) : ViewModel(), MVI<UiState, UiAction, SideEffect> by mvi(UiState()) {
     init {
-        initializeScreen()
-    }
-
-    override fun onAction(uiAction: UiAction) {
-        when (uiAction) {
-            UiAction.InitializeScreen -> {
-                initializeScreen()
-            }
-        }
-    }
-
-    private fun initializeScreen() {
         viewModelScope.launch {
             updateUiState { copy(isLoading = true) }
-            getTrendingMovies()
-            getNowPlayingMovies()
-            getPopularMovies()
-            getAllGenres()
-            getTopRatedMovies()
+
+            initializeMoviesScreen()
+            initializeTvShowsScreen()
+
             updateUiState { copy(isLoading = false) }
         }
     }
 
-    private suspend fun getAllGenres() = coroutineScope {
-        val allGenresresponse = getAllGenresUseCase.invoke()
+    override fun onAction(uiAction: UiAction) {
+        viewModelScope.launch {
+            when (uiAction) {
+                UiAction.InitializeMoviesScreen -> {
+                    initializeMoviesScreen()
+                }
+
+                UiAction.InitializeTvShowsScreen -> {
+                    initializeTvShowsScreen()
+                }
+            }
+        }
+    }
+
+    private suspend fun initializeMoviesScreen() {
+        getTrendingMovies()
+        getNowPlayingMovies()
+        getPopularMovies()
+        getAllMoviesGenres()
+        getTopRatedMovies()
+    }
+
+    private suspend fun initializeTvShowsScreen() {
+        getTrendingTodayTvShows()
+        getNowPlayingTvShows()
+        getPopularTvShows()
+        getAllTvShowGenres()
+        getTopRatedTvShows()
+    }
+
+    private suspend fun getAllMoviesGenres() = coroutineScope {
+        val allGenresresponse = getAllMovieGenresUseCase.invoke()
 
         when (allGenresresponse) {
             is ResultModel.Error -> {
@@ -66,7 +96,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(genres = allGenresresponse.data)
+                    copy(movieGenres = allGenresresponse.data)
                 }
             }
         }
@@ -158,7 +188,117 @@ class HomeScreenViewModel @Inject constructor(
 
             is ResultModel.Success -> {
                 updateUiState {
-                    copy(topRated = topRatedMoviesResponse.data.take(10).shuffled())
+                    copy(topRatedMovies = topRatedMoviesResponse.data.take(10).shuffled())
+                }
+            }
+        }
+    }
+
+    private suspend fun getTrendingTodayTvShows() = coroutineScope {
+        val response = getTrendingTodayTvShowsUseCase.invoke(1)
+
+        when (response) {
+            is ResultModel.Error -> {
+                emitSideEffect(SideEffect.ShowErrorDialog(response.error.errorMessage))
+            }
+
+            is ResultModel.Exception -> {
+                response.throwable.message?.let {
+                    emitSideEffect(SideEffect.ShowErrorDialog(it))
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(trendingTodayTvShows = response.data.take(10).shuffled())
+                }
+            }
+        }
+    }
+
+    private suspend fun getNowPlayingTvShows() = coroutineScope {
+        val response = getNowPlayingTvShowsUseCase.invoke(1)
+
+        when (response) {
+            is ResultModel.Error -> {
+                emitSideEffect(SideEffect.ShowErrorDialog(response.error.errorMessage))
+            }
+
+            is ResultModel.Exception -> {
+                response.throwable.message?.let {
+                    emitSideEffect(SideEffect.ShowErrorDialog(it))
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(nowPlayingTvShows = response.data.take(10).shuffled())
+                }
+            }
+        }
+    }
+
+    private suspend fun getPopularTvShows() = coroutineScope {
+        val response = getPopularTvShowsUseCase.invoke(1)
+
+        when (response) {
+            is ResultModel.Error -> {
+                emitSideEffect(SideEffect.ShowErrorDialog(response.error.errorMessage))
+            }
+
+            is ResultModel.Exception -> {
+                response.throwable.message?.let {
+                    emitSideEffect(SideEffect.ShowErrorDialog(it))
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(popularTvShows = response.data.take(10).shuffled())
+                }
+            }
+        }
+    }
+
+    private suspend fun getAllTvShowGenres() = coroutineScope {
+        val allGenresresponse = getAllTvShowGenresUseCase.invoke()
+
+        when (allGenresresponse) {
+            is ResultModel.Error -> {
+                emitSideEffect(SideEffect.ShowErrorDialog(allGenresresponse.error.errorMessage))
+            }
+
+            is ResultModel.Exception -> {
+                allGenresresponse.throwable.message?.let {
+                    emitSideEffect(SideEffect.ShowErrorDialog(it))
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(tvShowGenres = allGenresresponse.data)
+                }
+            }
+        }
+    }
+
+    private suspend fun getTopRatedTvShows() = coroutineScope {
+        val topRatedTvShowsResponse = getTopRatedTvShowsUseCase.invoke(1)
+
+        when (topRatedTvShowsResponse) {
+            is ResultModel.Error -> {
+                emitSideEffect(SideEffect.ShowErrorDialog(topRatedTvShowsResponse.error.errorMessage))
+            }
+
+            is ResultModel.Exception -> {
+                topRatedTvShowsResponse.throwable.message?.let {
+                    emitSideEffect(SideEffect.ShowErrorDialog(it))
+                }
+            }
+
+            is ResultModel.Success -> {
+                updateUiState {
+                    copy(topRatedTvShows = topRatedTvShowsResponse.data.take(10).shuffled())
                 }
             }
         }

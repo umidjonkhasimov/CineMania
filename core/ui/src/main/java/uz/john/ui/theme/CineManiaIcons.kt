@@ -44,6 +44,11 @@ object CineManiaIcons {
     val Thriller = R.drawable.ic_thriller
     val War = R.drawable.ic_war
     val Western = R.drawable.ic_western
+    val Kid = R.drawable.ic_kid
+    val News = R.drawable.ic_news
+    val Talk = R.drawable.ic_talk
+    val Soap = R.drawable.ic_soap
+    val Reality = R.drawable.ic_popcorn
     val Clock = R.drawable.ic_clock
     val EmptyFolder = R.drawable.ic_empty_folder
 

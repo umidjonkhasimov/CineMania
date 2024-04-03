@@ -7,4 +7,7 @@
     <string name="now_playing">Now Playing</string>
     <string name="trending_today">Trending Today</string>
     <string name="genres">Genres</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">Tv shows</string>
+    <string name="popular_tv_shows">Popular Tv Shows</string>
 </resources>

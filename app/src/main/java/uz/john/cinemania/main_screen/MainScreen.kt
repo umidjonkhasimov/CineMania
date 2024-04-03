@@ -139,7 +139,9 @@ fun MainScreen(
         ) {
             homeScreen(
                 onMovieItemClick = onMovieItemClick,
-                onSeeAllClick = onSeeAllMoviesClick
+                onTvShowItemClick = onTvShowClick,
+                onSeeAllMoviesClick = onSeeAllMoviesClick,
+                onSeeAllTvShowsClick = onSeeAllTvShowsClick
             )
             forYouScreen(
                 onMovieClick = onMovieItemClick,

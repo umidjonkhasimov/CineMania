@@ -49,4 +49,32 @@ sealed class AllTvShowsScreenParam {
             return context.getString(R.string.watch_later)
         }
     }
+
+    @Serializable
+    data object AllNowPlayingTvShows : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.now_playing)
+        }
+    }
+
+    @Serializable
+    data object AllPopularTvShows : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.popular_tv_shows)
+        }
+    }
+
+    @Serializable
+    data class AllTvShowsByGenre(val genreId: Int, val name: String) : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.genre, name)
+        }
+    }
+
+    @Serializable
+    data object TopRated : AllTvShowsScreenParam() {
+        override fun getTitle(context: Context): String {
+            return context.getString(R.string.top_rated)
+        }
+    }
 }

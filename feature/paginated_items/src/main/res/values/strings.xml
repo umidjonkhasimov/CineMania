@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Movies -->
     <string name="popular_movies">Popular Movies</string>
     <string name="top_rated">Top Rated</string>
     <string name="similar_movies">Similar Movies</string>
@@ -8,10 +9,15 @@
     <string name="genre">Genre: %s</string>
     <string name="trending_this_week">Trending this week</string>
     <string name="search_for">Search: %s</string>
+    <string name="favorite_movies">Favorite Movies</string>
+
+    <!-- People -->
+    <string name="popular_people">Popular People</string>
+
+    <!-- TvShows -->
     <string name="similar_tv_shows">Similar Tv Shows</string>
     <string name="recommended_tv_shows">Recommended Tv Shows</string>
-    <string name="popular_people">Popular People</string>
-    <string name="favorite_movies">Favorite Movies</string>
     <string name="watch_later">Watch Later</string>
     <string name="favorite_tv_shows">Favorite Tv shows</string>
+    <string name="popular_tv_shows">Popular Tv Shows</string>
 </resources>

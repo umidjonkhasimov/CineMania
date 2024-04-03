@@ -10,10 +10,12 @@ import retrofit2.http.QueryMap
 import uz.john.data.remote.ACCOUNT_ID_PATH
 import uz.john.data.remote.ADD_TO_FAVORITE_ENDPOINT
 import uz.john.data.remote.ADD_TO_WATCH_LIST_ENDPOINT
+import uz.john.data.remote.ALL_TV_SHOW_GENRES_ENDPOINT
 import uz.john.data.remote.APPEND_CREDITS
 import uz.john.data.remote.APPEND_IMAGES
 import uz.john.data.remote.APPEND_TO_RESPONSE
 import uz.john.data.remote.APPEND_VIDEOS
+import uz.john.data.remote.DISCOVER_TV_SHOWS
 import uz.john.data.remote.FAVORITE_TV_SHOWS_ENDPOINT
 import uz.john.data.remote.INCLUDE_ADULT
 import uz.john.data.remote.LANGUAGE
@@ -25,7 +27,9 @@ import uz.john.data.remote.SERIES_ID
 import uz.john.data.remote.SESSION_ID_PATH
 import uz.john.data.remote.SIMILAR_TV_SHOWS_ENDPOINT
 import uz.john.data.remote.SORT_BY
+import uz.john.data.remote.TOP_RATED_TV_SHOWS_ENDPOINT
 import uz.john.data.remote.TRENDING_TIME_WINDOW
+import uz.john.data.remote.TRENDING_TIME_WINDOW_DAY
 import uz.john.data.remote.TRENDING_TIME_WINDOW_WEEK
 import uz.john.data.remote.TRENDING_TV_SHOWS_ENDPOINT
 import uz.john.data.remote.TV_SHOW_ACCOUNT_STATE_ENDPOINT
@@ -33,6 +37,7 @@ import uz.john.data.remote.TV_SHOW_DETAILS_ENDPOINT
 import uz.john.data.remote.TV_SHOW_ID
 import uz.john.data.remote.WATCH_LATER_TV_SHOWS_ENDPOINT
 import uz.john.data.remote.model.movie.AccountStateOfMediaData
+import uz.john.data.remote.model.movie.GenresResponseData
 import uz.john.data.remote.model.movie.post.AddToFavoriteRequest
 import uz.john.data.remote.model.movie.post.AddToWatchLaterRequest
 import uz.john.data.remote.model.tv_show.TvShowsResponseData
@@ -41,10 +46,23 @@ import uz.john.util.ApiResponse
 
 interface TvShowsApi {
     @GET(TRENDING_TV_SHOWS_ENDPOINT)
+    suspend fun getTrendingTodayTvShows(
+        @Path(TRENDING_TIME_WINDOW) timeWindow: String = TRENDING_TIME_WINDOW_DAY,
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int,
+    ): Response<TvShowsResponseData>
+
+    @GET(TRENDING_TV_SHOWS_ENDPOINT)
     suspend fun getTrendingThisWeekTvShows(
         @Path(TRENDING_TIME_WINDOW) timeWindow: String = TRENDING_TIME_WINDOW_WEEK,
         @Query(LANGUAGE) language: String,
         @Query(PAGE) page: Int,
+    ): Response<TvShowsResponseData>
+
+    @GET(TOP_RATED_TV_SHOWS_ENDPOINT)
+    suspend fun getTopRatedTvShows(
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int
     ): Response<TvShowsResponseData>
 
     @GET(TV_SHOW_DETAILS_ENDPOINT)
@@ -112,4 +130,16 @@ interface TvShowsApi {
         @Path(TV_SHOW_ID) tvShowId: Int,
         @Query(SESSION_ID_PATH) sessionId: String
     ): Response<AccountStateOfMediaData>
+
+    @GET(ALL_TV_SHOW_GENRES_ENDPOINT)
+    suspend fun getAllGenres(
+        @Query(LANGUAGE) language: String,
+    ): Response<GenresResponseData>
+
+    @GET(DISCOVER_TV_SHOWS)
+    suspend fun discoverTvShows(
+        @Query(PAGE) page: Int,
+        @Query(LANGUAGE) language: String,
+        @QueryMap queryParams: Map<String, String>,
+    ): Response<TvShowsResponseData>
 }

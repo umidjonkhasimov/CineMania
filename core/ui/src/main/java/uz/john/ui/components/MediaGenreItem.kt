@@ -28,7 +28,7 @@ import uz.john.ui.R
 import uz.john.ui.theme.CineManiaIcons
 
 @Composable
-fun MovieGenreItem(
+fun MediaGenreItem(
     genre: Genre,
     onGenreClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -72,6 +72,7 @@ fun MovieGenreItem(
 
 fun getIconByGenreId(id: Int): Int {
     return when (id) {
+        // Movie
         28 -> CineManiaIcons.Action
         12 -> CineManiaIcons.Adventure
         16 -> CineManiaIcons.Animation
@@ -91,6 +92,17 @@ fun getIconByGenreId(id: Int): Int {
         53 -> CineManiaIcons.Thriller
         10752 -> CineManiaIcons.War
         37 -> CineManiaIcons.Western
+
+        // Tv Show
+        10759 -> CineManiaIcons.Action
+        10762 -> CineManiaIcons.Kid
+        10763 -> CineManiaIcons.News
+        10764 -> CineManiaIcons.Reality
+        10765 -> CineManiaIcons.SciFi
+        10766 -> CineManiaIcons.Soap
+        10767 -> CineManiaIcons.Talk
+        10768 -> CineManiaIcons.War
+
         else -> CineManiaIcons.Action
     }
 }

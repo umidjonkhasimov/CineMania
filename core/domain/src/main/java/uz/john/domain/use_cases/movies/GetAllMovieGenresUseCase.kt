@@ -6,7 +6,7 @@ import uz.john.domain.model.common.toDomain
 import uz.john.util.ResultModel
 import javax.inject.Inject
 
-class GetAllGenresUseCase @Inject constructor(
+class GetAllMovieGenresUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) {
     suspend operator fun invoke(): ResultModel<List<Genre>> {

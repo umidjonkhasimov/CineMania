@@ -1,6 +1,7 @@
 package uz.john.domain.model.tv_show
 
 import uz.john.data.remote.model.tv_show.TvShowData
+import uz.john.util.formatDate
 import uz.john.util.roundToOneDecimal
 
 data class TvShow(
@@ -24,7 +25,7 @@ fun TvShowData.toDomain(): TvShow {
     return TvShow(
         adult = adult,
         backdropPath = backdropPath,
-        firstAirDate = firstAirDate,
+        firstAirDate = firstAirDate.formatDate(),
         genreIds = genreIds,
         id = id,
         name = name,

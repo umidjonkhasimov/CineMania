@@ -1,56 +1,51 @@
 package uz.john.home.presentation.home_screen
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import uz.john.domain.model.common.Genre
-import uz.john.domain.model.movie.Movie
+import kotlinx.coroutines.launch
 import uz.john.home.R
-import uz.john.home.presentation.components.HomeCarouselItem
 import uz.john.home.presentation.components.HomeShimmerEffect
+import uz.john.home.presentation.components.MoviesTabContent
+import uz.john.home.presentation.components.TabIndicator
+import uz.john.home.presentation.components.TvShowsTabContent
+import uz.john.home.presentation.home_screen.HomeScreenContract.SideEffect
+import uz.john.home.presentation.home_screen.HomeScreenContract.UiAction
+import uz.john.home.presentation.home_screen.HomeScreenContract.UiState
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
+import uz.john.paginated_movies_list.all_tv_shows_screen.AllTvShowsScreenParam
 import uz.john.ui.components.CineManiaErrorDialog
-import uz.john.ui.components.LazyRowItemsHolder
-import uz.john.ui.components.MovieCardItem
-import uz.john.ui.components.MovieGenreItem
-import uz.john.ui.components.SeeAllItem
-
-private val GENRES_HEIGHT = 120.dp
-private val SCREEN_PADDING = 16.dp
-private val SPACE_BETWEEN_MOVIES = 8.dp
-private const val FADE_ANIMATION_DURATION = 300
 
 @Composable
 fun HomeScreen(
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit
+    onTvShowItemClick: (Int) -> Unit,
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     val viewModel: HomeScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -60,18 +55,22 @@ fun HomeScreen(
         onUiAction = viewModel::onAction,
         sideEffect = viewModel.sideEffect,
         onMovieItemClick = onMovieItemClick,
-        onSeeAllClick = onSeeAllClick
+        onTvShowItemClick = onTvShowItemClick,
+        onSeeAllMoviesClick = onSeeAllMoviesClick,
+        onSeeAllTvShowsClick = onSeeAllTvShowsClick
     )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreenContent(
-    uiState: HomeScreenContract.UiState,
-    onUiAction: (HomeScreenContract.UiAction) -> Unit,
-    sideEffect: Flow<HomeScreenContract.SideEffect>,
+    uiState: UiState,
+    onUiAction: (UiAction) -> Unit,
+    sideEffect: Flow<SideEffect>,
     onMovieItemClick: (Int) -> Unit,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit
+    onTvShowItemClick: (Int) -> Unit,
+    onSeeAllMoviesClick: (AllMoviesScreenParam) -> Unit,
+    onSeeAllTvShowsClick: (AllTvShowsScreenParam) -> Unit
 ) {
     var shouldShowErrorDialog by remember { mutableStateOf(false) }
     var dialogErrorMessage by remember { mutableStateOf("") }
@@ -79,7 +78,7 @@ private fun HomeScreenContent(
     LaunchedEffect(sideEffect) {
         sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is HomeScreenContract.SideEffect.ShowErrorDialog -> {
+                is SideEffect.ShowErrorDialog -> {
                     shouldShowErrorDialog = true
                     dialogErrorMessage = sideEffect.errorMessage
                 }
@@ -95,7 +94,7 @@ private fun HomeScreenContent(
             },
             onRetry = {
                 shouldShowErrorDialog = false
-                onUiAction(HomeScreenContract.UiAction.InitializeScreen)
+                onUiAction(UiAction.InitializeMoviesScreen)
             },
             onDismissRequest = {
                 shouldShowErrorDialog = false
@@ -104,190 +103,69 @@ private fun HomeScreenContent(
     }
 
     Scaffold { paddingValues ->
-        AnimatedContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            targetState = uiState.isLoading,
-            label = "AnimatedContent",
-            transitionSpec = {
-                (fadeIn(
-                    animationSpec = tween(FADE_ANIMATION_DURATION)
-                )).togetherWith(
-                    fadeOut(animationSpec = tween(FADE_ANIMATION_DURATION))
-                )
-            }
-        ) { targetState ->
-            if (targetState)
-                HomeShimmerEffect()
-            else {
-                val pagerState = rememberPagerState { uiState.nowPlayingMovies?.size ?: 0 }
+        val tabs = listOf(
+            HomeTabs.MoviesTab,
+            HomeTabs.TvShowsTab
+        )
+        val tabPagerState = rememberPagerState { tabs.size }
+        val scope = rememberCoroutineScope()
 
-                LazyColumn(
-                    modifier = Modifier.padding(top = SCREEN_PADDING)
-                ) {
-                    trendingTodayPager(
-                        pagerState = pagerState,
-                        trendingTodayMovies = uiState.trendingTodayMovies,
-                        onMovieItemClick = { movieId ->
-                            onMovieItemClick(movieId)
-                        }
-                    )
-
-                    space()
-
-                    nowPlayingMovies(
-                        nowPlayingMovies = uiState.nowPlayingMovies,
-                        onSeeAllClick = onSeeAllClick,
-                        onMovieItemClick = { movieId ->
-                            onMovieItemClick(movieId)
-                        }
-                    )
-
-                    space()
-
-                    popularMovies(
-                        popularMovies = uiState.popularMovies,
-                        onSeeAllClick = onSeeAllClick,
-                        onMovieItemClick = onMovieItemClick
-                    )
-
-                    space()
-
-                    allGenres(
-                        allGenres = uiState.genres,
-                        onGenreClick = onSeeAllClick
-                    )
-
-                    space()
-
-                    topRatedMovies(
-                        topRatedMovies = uiState.topRated,
-                        onSeeAllClick = onSeeAllClick,
-                        onMovieItemClick = onMovieItemClick
-                    )
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-fun LazyListScope.trendingTodayPager(
-    pagerState: PagerState,
-    trendingTodayMovies: List<Movie>?,
-    onMovieItemClick: (Int) -> Unit
-) {
-    trendingTodayMovies?.let {
-        item {
-            HomeCarouselItem(
-                pagerState = pagerState,
-                moviesList = trendingTodayMovies,
-                title = stringResource(R.string.trending_today),
-                modifier = Modifier,
-                onItemClick = { movieId ->
-                    onMovieItemClick(movieId)
-                }
-            )
-        }
-    }
-}
-
-fun LazyListScope.nowPlayingMovies(
-    nowPlayingMovies: List<Movie>?,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
-    onMovieItemClick: (Int) -> Unit
-) {
-    nowPlayingMovies?.let {
-        item {
-            LazyRowItemsHolder(
-                modifier = Modifier.padding(start = SCREEN_PADDING),
-                title = stringResource(R.string.now_playing),
-                shouldShowSeeAllButton = true,
-                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.NowPlayingMovies) }
-            ) {
-                LazyRow {
-                    items(
-                        items = nowPlayingMovies,
-                        key = { it.id }
-                    ) { movieData ->
-                        MovieCardItem(
-                            movieData = movieData,
-                            onMovieClick = { movieId ->
-                                onMovieItemClick(movieId)
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
-                    }
-                    item {
-                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.NowPlayingMovies) })
-                    }
-                }
-            }
-        }
-    }
-}
-
-fun LazyListScope.popularMovies(
-    popularMovies: List<Movie>?,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
-    onMovieItemClick: (Int) -> Unit
-) {
-    popularMovies?.let {
-        item {
-            LazyRowItemsHolder(
-                modifier = Modifier.padding(start = SCREEN_PADDING),
-                title = stringResource(R.string.popular_movies),
-                shouldShowSeeAllButton = true,
-                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.PopularMovies) }
-            ) {
-                LazyRow {
-                    items(
-                        items = popularMovies,
-                        key = { it.id }
-                    ) { movieData ->
-                        MovieCardItem(
-                            movieData = movieData,
-                            onMovieClick = { movieId ->
-                                onMovieItemClick(movieId)
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
-                    }
-                    item {
-                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.PopularMovies) })
-                    }
-                }
-            }
-        }
-    }
-}
-
-fun LazyListScope.allGenres(
-    allGenres: List<Genre>?,
-    onGenreClick: (AllMoviesScreenParam) -> Unit
-) {
-    allGenres?.let {
-        item {
-            LazyRowItemsHolder(
+        Column(
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            TabRow(
                 modifier = Modifier
-                    .padding(start = SCREEN_PADDING)
-                    .height(GENRES_HEIGHT),
-                title = stringResource(R.string.genres),
-                shouldShowSeeAllButton = false
+                    .fillMaxWidth(.6f),
+                selectedTabIndex = tabPagerState.currentPage,
+                indicator = {
+                    TabIndicator(
+                        tabPositions = it,
+                        pagerState = tabPagerState
+                    )
+                },
+                divider = {}
             ) {
-                LazyRow {
-                    items(
-                        items = allGenres,
-                        key = { it.id }
-                    ) { genre ->
-                        MovieGenreItem(
-                            genre = genre,
-                            onGenreClick = { genreId ->
-                                onGenreClick(AllMoviesScreenParam.AllMoviesByGenre(genreId = genreId, name = genre.name))
+                tabs.forEachIndexed { index, tab ->
+                    Tab(
+                        modifier = Modifier.clip(MaterialTheme.shapes.small),
+                        selected = tabPagerState.currentPage == index,
+                        onClick = {
+                            scope.launch {
+                                tabPagerState.animateScrollToPage(index)
                             }
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            text = stringResource(tab.nameRes),
+                            style = MaterialTheme.typography.titleMedium
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
+
+            if (uiState.isLoading)
+                HomeShimmerEffect(modifier = Modifier.padding(paddingValues))
+            else {
+                HorizontalPager(
+                    state = tabPagerState
+                ) { page ->
+                    when (tabs[page]) {
+                        is HomeTabs.MoviesTab -> {
+                            MoviesTabContent(
+                                uiState = uiState,
+                                onMovieItemClick = onMovieItemClick,
+                                onSeeAllClick = onSeeAllMoviesClick
+                            )
+                        }
+
+                        is HomeTabs.TvShowsTab -> {
+                            TvShowsTabContent(
+                                uiState = uiState,
+                                onTvShowClick = onTvShowItemClick,
+                                onSeeAllClick = onSeeAllTvShowsClick
+                            )
+                        }
                     }
                 }
             }
@@ -295,45 +173,10 @@ fun LazyListScope.allGenres(
     }
 }
 
-fun LazyListScope.topRatedMovies(
-    topRatedMovies: List<Movie>?,
-    onSeeAllClick: (AllMoviesScreenParam) -> Unit,
-    onMovieItemClick: (Int) -> Unit
+sealed class HomeTabs(
+    @StringRes
+    val nameRes: Int
 ) {
-    topRatedMovies?.let {
-        item {
-            LazyRowItemsHolder(
-                modifier = Modifier.padding(start = SCREEN_PADDING),
-                title = stringResource(R.string.top_rated),
-                shouldShowSeeAllButton = true,
-                onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.TopRated) }
-            ) {
-                LazyRow {
-                    items(
-                        items = topRatedMovies,
-                        key = { it.id }
-                    ) { movieData ->
-                        MovieCardItem(
-                            movieData = movieData,
-                            onMovieClick = { movieId ->
-                                onMovieItemClick(movieId)
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(SPACE_BETWEEN_MOVIES))
-                    }
-                    item {
-                        SeeAllItem(onSeeAllClick = { onSeeAllClick(AllMoviesScreenParam.TopRated) })
-                    }
-                }
-            }
-        }
-    }
-}
-
-fun LazyListScope.space(
-    modifier: Modifier = Modifier
-) {
-    item {
-        Spacer(modifier = modifier.height(32.dp))
-    }
+    data object MoviesTab : HomeTabs(nameRes = R.string.movies)
+    data object TvShowsTab : HomeTabs(nameRes = R.string.tv_shows)
 }
