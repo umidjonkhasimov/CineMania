@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
-import uz.john.ui.BuildConfig
 import uz.john.ui.R
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
