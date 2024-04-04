@@ -2,12 +2,14 @@
 <resources>
     <!-- Welcome Screen -->
     <string name="app_name" translatable="false">CineMania</string>
-    <string name="enter_email">Enter your Email to Sign Up</string>
+    <string name="sign_in_or_sign_up">Sign In or Sign Up to use the full potential of the application!</string>
     <string name="continue_without_account">Continue without account</string>
     <string name="sign_up">Sign Up</string>
     <string name="already_have">Already have an account?</string>
-    <string name="login">Login</string>
+    <string name="login">Sign In</string>
     <string name="sign_up_with">Or Sign up with</string>
+    <string name="this_feature_is_under_development">This feature is under development!</string>
+    <string name="oops">Oops!</string>
 
     <!-- Login Screen -->
     <string name="hello_movie_fan">Hello, Movie fan</string>

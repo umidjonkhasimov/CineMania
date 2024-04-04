@@ -21,7 +21,11 @@ android {
             useSupportLibrary = true
         }
     }
-
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

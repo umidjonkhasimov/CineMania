@@ -22,11 +22,11 @@ class DataStoreRepository @Inject constructor(
         dataStore.updateData {
             if (isLoggedIn)
                 it.copy(
-                    isLoggedIn = isLoggedIn,
+                    isLoggedIn = true,
                 )
             else
                 it.copy(
-                    isLoggedIn = isLoggedIn,
+                    isLoggedIn = false,
                     sessionId = ""
                 )
         }

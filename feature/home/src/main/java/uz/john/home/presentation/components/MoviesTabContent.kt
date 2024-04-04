@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import uz.john.domain.model.common.Genre
 import uz.john.domain.model.movie.Movie
 import uz.john.home.R
-import uz.john.home.presentation.home_screen.HomeScreenContract.UiAction
 import uz.john.home.presentation.home_screen.HomeScreenContract.UiState
 import uz.john.paginated_movies_list.all_movies_screen.AllMoviesScreenParam
 import uz.john.ui.components.LazyRowItemsHolder

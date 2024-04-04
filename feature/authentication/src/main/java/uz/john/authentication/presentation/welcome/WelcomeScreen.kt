@@ -1,5 +1,6 @@
 package uz.john.authentication.presentation.welcome
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,10 +37,11 @@ import androidx.compose.ui.unit.dp
 import uz.john.authentication.R
 import uz.john.ui.components.CineManiaAlertDialog
 import uz.john.ui.components.CineManiaButton
+import uz.john.ui.components.CineManiaGradientIcon
 import uz.john.ui.theme.CineManiaIcons
 import uz.john.ui.theme.CineManiaTheme
 
-private val LOGO_SIZE = 200.dp
+private val SCREEN_PADDING = 24.dp
 
 @Composable
 internal fun WelcomeScreen(
@@ -86,11 +88,10 @@ fun WelcomeScreenContent(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier.size(LOGO_SIZE),
-                painter = painterResource(CineManiaIcons.CineManiaLogo),
-                contentDescription = null
-            )
+            CineManiaGradientIcon()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text(
                 text = stringResource(R.string.app_name),
                 color = MaterialTheme.colorScheme.onBackground,
@@ -101,7 +102,8 @@ fun WelcomeScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.enter_email),
+                modifier = Modifier.padding(horizontal = SCREEN_PADDING),
+                text = stringResource(R.string.sign_in_or_sign_up),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
@@ -110,7 +112,7 @@ fun WelcomeScreenContent(
             Spacer(modifier = Modifier.height(56.dp))
 
             CineManiaButton(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = SCREEN_PADDING),
                 onClick = { shouldShowAlertDialog = true }
             ) {
                 Text(
@@ -124,7 +126,7 @@ fun WelcomeScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             CineManiaButton(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = SCREEN_PADDING),
                 onClick = onContinueWithoutAccountClick
             ) {
                 Text(
@@ -188,57 +190,86 @@ fun WelcomeScreenContent(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Row {
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.extraLarge)
-                        .size(56.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(CineManiaIcons.GoogleLogo),
-                        contentDescription = null,
-                    )
-                }
+            SocialNetworkAccounts()
+        }
+    }
+}
 
-                Spacer(modifier = Modifier.width(32.dp))
+@Composable
+fun SocialNetworkAccounts() {
+    val stringRes = stringResource(R.string.this_feature_is_under_development)
+    var showDialog by remember { mutableStateOf(false) }
+    val dialogText by remember { mutableStateOf(stringRes) }
 
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.extraLarge)
-                        .size(56.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(CineManiaIcons.AppleLogo),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
-                    )
-                }
+    if (showDialog) {
+        CineManiaAlertDialog(
+            titleText = stringResource(R.string.oops),
+            alertText = dialogText,
+            onCancel = { showDialog = false },
+            onConfirm = { showDialog = false },
+            onDismissRequest = { showDialog = false }
+        )
+    }
 
-                Spacer(modifier = Modifier.width(32.dp))
+    Row {
+        Box(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.extraLarge)
+                .size(56.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable {
+                    showDialog = true
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(CineManiaIcons.GoogleLogo),
+                contentDescription = null,
+            )
+        }
 
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.extraLarge)
-                        .size(56.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(CineManiaIcons.FaceBookLogo),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
-                    )
-                }
-            }
+        Spacer(modifier = Modifier.width(32.dp))
+
+        Box(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.extraLarge)
+                .size(56.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable {
+                    showDialog = true
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(CineManiaIcons.AppleLogo),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(32.dp))
+
+        Box(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.extraLarge)
+                .size(56.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable {
+                    showDialog = true
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(CineManiaIcons.FaceBookLogo),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+            )
         }
     }
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun WelcomeScreenPreview() {
     CineManiaTheme {

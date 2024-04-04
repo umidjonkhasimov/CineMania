@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -115,7 +116,8 @@ fun ForYouScreenScreenContent(
             Text(
                 modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.for_you),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
             )
         }
     ) { paddingValues ->
@@ -137,8 +139,10 @@ fun ForYouScreenScreenContent(
                 ) {
                     Text(
                         text = stringResource(R.string.sign_in_to_your_account),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center
                     )
+                    Spacer(modifier = Modifier.height(32.dp))
                     Button(
                         onClick = onSignInClick
                     ) {

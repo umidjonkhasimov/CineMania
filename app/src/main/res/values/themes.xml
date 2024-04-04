@@ -6,7 +6,7 @@
     <style name="Theme.CineMania.Splash" parent="Theme.SplashScreen">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/cinemania_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.CineMania</item>
     </style>
 </resources>

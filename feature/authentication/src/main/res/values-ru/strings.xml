@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Welcome Screen -->
-    <string name="enter_email">Введите свой адрес электронной почты, чтобы зарегистрироваться</string>
+    <string name="sign_in_or_sign_up">Войдите или зарегистрируйтесь, чтобы использовать весь потенциал приложения!</string>
     <string name="continue_without_account">Продолжить без аккаунта</string>
     <string name="sign_up">Зарегистрироваться</string>
     <string name="already_have">У вас уже есть аккаунт?</string>
-    <string name="login">Авторизоваться</string>
+    <string name="login">Войти</string>
     <string name="sign_up_with">Или зарегистрируйтесь через</string>
+    <string name="this_feature_is_under_development">Эта функция находится в разработке!</string>
+    <string name="oops">Ой!</string>
 
     <!-- Login Screen -->
     <string name="hello_movie_fan">Привет, киноман</string>
