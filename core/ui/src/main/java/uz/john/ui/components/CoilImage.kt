@@ -9,7 +9,7 @@ import coil.compose.AsyncImage
 import uz.john.ui.BuildConfig
 import uz.john.ui.R
 
-private const val IMAGE_BASE_URL = BuildConfig.IMAGE_BASE_URL
+private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
 
 @Composable
 fun CoilImage(

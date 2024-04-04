@@ -17,8 +17,6 @@ android {
         consumerProguardFiles("consumer-rules.pro")
         val properties = Properties()
         properties.load(FileInputStream(project.rootProject.file("local.properties")))
-
-        buildConfigField("String", "IMAGE_BASE_URL", "\"${properties.getProperty("IMAGE_BASE_URL")}\"")
     }
 
     buildTypes {

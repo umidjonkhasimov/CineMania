@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import uz.john.data.BuildConfig
 import uz.john.data.remote.api.AuthenticationApi
 import uz.john.data.remote.api.MoviesApi
 import uz.john.data.remote.api.PersonApi
@@ -18,6 +17,8 @@ import uz.john.data.remote.api.TvShowsApi
 import uz.john.data.remote.interceptors.ApiKeyInterceptor
 import uz.john.data.remote.interceptors.InternetConnectionInterceptor
 import javax.inject.Singleton
+
+private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -65,7 +66,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
