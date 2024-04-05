@@ -6,7 +6,7 @@ CineMania application is built on top of the concept that is well know for any A
 * View - covers all presentation related code;
 * Intent - is an event that presentation layer sends to a ViewModel which reacts to that event and changes UiState accordingly or emits SideEffect to the presentation layer. UiState is observed by presentation layer, which means any change to UiState changes the state of the application.
 # App Structure
-In the image, you can see all modules and their dependencies. Module "A" pointing to module "B" means module "A" depends on module "B"
+CineMania application is divided into modules based on their responsibilities. In the image, you can see all modules and their dependencies. Module "A" pointing to module "B" means module "A" depends on module "B"
 ![App Structure](https://github.com/umidjonkhasimov/CineMania/blob/master/images/Untitled-2024-02-24-1431.png?raw=true)
 # Setup
 Get your api key from [TMDB API](https://developer.themoviedb.org/docs/getting-started) and replace it in the ```local.properties``` file:
